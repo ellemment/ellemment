@@ -23,11 +23,11 @@ function GlobalHeader() {
             to="/"
             className="text-primary underlined block whitespace-nowrap text-sm font-medium transition focus:outline-none"
           >
-            <h1>ellemment</h1>
+            <h1>Doni Alior</h1>
           </Link>
         </div>
 
-        <NavLinks className="hidden lg:flex text-primary" />
+        <NavLinks className="hidden lg:flex text-primary" username={user?.username ?? ''} />
 
         <div className="flex items-center justify-center">
           <NavbarMobile className="block lg:hidden" />
