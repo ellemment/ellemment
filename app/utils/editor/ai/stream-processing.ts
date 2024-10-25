@@ -1,3 +1,5 @@
+// #app/utils/editor/ai/utils.ts
+
 import { customAlphabet } from "nanoid";
 
 // 7-character random string

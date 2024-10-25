@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/lib/ai/openai/openai-stream.ts
+
 import { type ParsedEvent, type ReconnectInterval, createParser } from "eventsource-parser";
 
 export type ChatGPTAgent = "user" | "assistant" | "system";

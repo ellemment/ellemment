@@ -1,6 +1,8 @@
+// #app/routes/_editor+/editor.tsx
+
 import { json, type LoaderFunction } from "@remix-run/node";
-import Editor from "#app/components/tiptap/modules/ui/editor";
-import { getUserInfo, type UserSession } from "#app/utils/editor/session.server";
+import Editor from "#app/components/tiptap/editor";
+import { getUserInfo, type UserSession } from "#app/utils/editor/utils/session.server";
 
 type LoaderData = {
   userSession: UserSession;

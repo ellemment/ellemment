@@ -1,15 +1,16 @@
+// #app/components/tiptap/modules/ui/editor/extensions/slash-command.tsx
+
 import { type Editor, type Range, Extension } from "@tiptap/core";
 import { ReactRenderer } from "@tiptap/react";
 import Suggestion from "@tiptap/suggestion";
-import { Heading1, Heading2, Heading3, List, ListOrdered, MessageSquarePlus, Text, TextQuote, Image as ImageIcon, Code } from "lucide-react";
-import React, { useState, useEffect, useCallback, type ReactNode, useRef, useLayoutEffect } from "react";
+import { Heading1, Heading2, Heading3, List, ListOrdered, Text, TextQuote, Image as ImageIcon, Code } from "lucide-react";
+import { useState, useEffect, useCallback, type ReactNode, useRef, useLayoutEffect } from "react";
 import { toast } from "react-hot-toast";
 import tippy from "tippy.js";
-import { useCompletion } from "#app/components/tiptap/modules/lib/ai/react/useCompletion";
-// import va from "@vercel/analytics";
-import { handleImageUpload } from "#app/components/tiptap/modules/lib/utils/editor";
-import LoadingCircle from "#app/components/tiptap/modules/ui/shared/loading-circle";
-import Magic from "#app/components/tiptap/modules/ui/shared/magic";
+import LoadingCircle from "#app/components/tiptap/icons/loading-circle.js";
+import Magic from "#app/components/tiptap/icons/magic.js";
+import { useCompletion } from "#app/utils/editor/ai/use-completion.js";
+import { handleImageUpload } from "#app/utils/editor/editor";
 
 interface CommandItemProps {
   title: string;
@@ -50,15 +51,6 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       title: "Continue writing",
       description: "Use AI to expand your thoughts.",
       icon: <Magic className="w-7 text-black" />,
-    },
-    {
-      title: "Send Feedback",
-      description: "Let us know how we can improve.",
-      icon: <MessageSquarePlus size={18} />,
-      command: ({ editor, range }: Command) => {
-        editor.chain().focus().deleteRange(range).run();
-        window.open("/feedback", "_blank");
-      },
     },
     {
       title: "Text",

@@ -1,9 +1,11 @@
+// #app/components/tiptap/modules/lib/ai/react/use-completion.ts
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { type UseCompletionOptions, type RequestOptions } from "./types";
-import { createChunkDecoder } from "./utils";
+import { type UseCompletionOptions, type RequestOptions } from "../utils/types";
+import { createChunkDecoder } from "./stream-processing";
 
 export type UseCompletionHelpers = {
   /** The current completion result */

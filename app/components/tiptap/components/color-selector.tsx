@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/ui/editor/components/color-selector.tsx
+
 import { type Editor } from "@tiptap/core";
 import clsx from "clsx";
 import { Check, ChevronDown } from "lucide-react";

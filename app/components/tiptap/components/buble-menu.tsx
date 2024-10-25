@@ -1,10 +1,17 @@
+// #app/components/tiptap/modules/ui/editor/components/buble-menu.tsx
+
 import { BubbleMenu, type BubbleMenuProps } from "@tiptap/react";
 import clsx from "clsx";
-import { BoldIcon, ItalicIcon, UnderlineIcon, StrikethroughIcon, CodeIcon } from "lucide-react";
+import { 
+  BoldIcon, 
+  ItalicIcon, 
+  UnderlineIcon, 
+  StrikethroughIcon, 
+  CodeIcon 
+} from "lucide-react";
 import { type FC, useState, useMemo } from "react";
-
-import { ColorSelector } from "./ColorSelector";
-import { NodeSelector } from "./NodeSelector";
+import { ColorSelector } from "./color-selector";
+import { NodeSelector } from "./node-selector";
 
 export interface BubbleMenuItem {
   name: string;
@@ -18,7 +25,7 @@ type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   const items: BubbleMenuItem[] = useMemo(() => {
     if (!props.editor) return [];
-    
+
     return [
       {
         name: "bold",
@@ -79,7 +86,10 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   }
 
   return (
-    <BubbleMenu {...bubbleMenuProps} className="flex overflow-hidden rounded border border-stone-200 bg-white shadow-xl">
+    <BubbleMenu 
+      {...bubbleMenuProps} 
+      className="flex overflow-hidden rounded border border-stone-200 bg-white shadow-xl"
+    >
       <NodeSelector
         editor={props.editor}
         isOpen={isNodeSelectorOpen}
@@ -88,9 +98,12 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
           setIsColorSelectorOpen(false);
         }}
       />
-
       {items.map((item, index) => (
-        <button key={index} onClick={item.command} className="p-2 text-stone-600 hover:bg-stone-100 active:bg-stone-200">
+        <button 
+          key={index}
+          onClick={item.command}
+          className="p-2 text-stone-600 hover:bg-stone-100 active:bg-stone-200"
+        >
           <item.icon
             className={clsx("h-4 w-4", {
               "text-blue-500": item.isActive(),

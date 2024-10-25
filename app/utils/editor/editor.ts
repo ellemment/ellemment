@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/lib/utils/editor.ts
+
 import { type EditorView } from "@tiptap/pm/view";
 import { toast } from "react-hot-toast";
 

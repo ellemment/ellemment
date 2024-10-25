@@ -1,3 +1,5 @@
+// #app/routes/_editor+/_api/upload.tsx
+
 import { type ActionFunctionArgs, json } from "@remix-run/node";
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
