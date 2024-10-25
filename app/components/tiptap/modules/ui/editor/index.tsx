@@ -1,19 +1,17 @@
 import { useEditor, EditorContent } from "@tiptap/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useDebouncedCallback } from "use-debounce";
 import { useCompletion } from "../../lib/ai/react/useCompletion";
 import useLocalStorage from "../../lib/hooks/use-local-storage";
 import { EditorBubbleMenu } from "./components";
 import DEFAULT_EDITOR_CONTENT from "./default-content";
-
 import { TiptapExtensions } from "./extensions";
 import { TiptapEditorProps } from "./props";
 
 export default function Editor() {
   const [content, setContent] = useLocalStorage("content", DEFAULT_EDITOR_CONTENT);
   const [saveStatus, setSaveStatus] = useState("Saved");
-
   const [hydrated, setHydrated] = useState(false);
 
   const debouncedUpdates = useDebouncedCallback(async ({ editor }) => {
@@ -26,34 +24,12 @@ export default function Editor() {
     }, 500);
   }, 750);
 
-  const editor = useEditor({
-    extensions: TiptapExtensions,
-    editorProps: TiptapEditorProps,
-    onUpdate: (e) => {
-      setSaveStatus("Unsaved");
-      const selection = e.editor.state.selection;
-      const lastTwo = e.editor.state.doc.textBetween(selection.from - 2, selection.from, "\n");
-      if (lastTwo === "++" && !isLoading) {
-        e.editor.commands.deleteRange({
-          from: selection.from - 2,
-          to: selection.from,
-        });
-        void complete(e.editor.getText());
-        // va.track("Autocomplete Shortcut Used");
-      } else {
-        debouncedUpdates(e);
-      }
-    },
-    autofocus: "end",
-  });
-
   const { complete, completion, isLoading, stop } = useCompletion({
     id: "novel",
     api: "/api/ai/generate",
     onResponse: (response) => {
       if (response.status === 429) {
         toast.error("You have reached your request limit for the day.");
-        // va.track("Rate Limit Reached");
         return;
       }
     },
@@ -66,6 +42,41 @@ export default function Editor() {
     onError: () => {
       toast.error("Something went wrong.");
     },
+  });
+
+  // Move handleComplete into useCallback to prevent unnecessary rerenders
+  const handleComplete = useCallback(async (text: string) => {
+    try {
+      await complete(text);
+    } catch (error) {
+      console.error('Error during completion:', error);
+      toast.error('Failed to generate completion');
+    }
+  }, [complete]); // Add complete as a dependency
+
+  const editor = useEditor({
+    extensions: TiptapExtensions,
+    editorProps: TiptapEditorProps,
+    onUpdate: (e) => {
+      setSaveStatus("Unsaved");
+      const selection = e.editor.state.selection;
+      const lastTwo = e.editor.state.doc.textBetween(
+        selection.from - 2,
+        selection.from,
+        "\n"
+      );
+      
+      if (lastTwo === "++" && !isLoading) {
+        e.editor.commands.deleteRange({
+          from: selection.from - 2,
+          to: selection.from,
+        });
+        void handleComplete(e.editor.getText());
+      } else {
+        debouncedUpdates(e);
+      }
+    },
+    autofocus: "end",
   });
 
   const prev = useRef("");
@@ -96,14 +107,20 @@ export default function Editor() {
         editor?.commands.insertContent("++");
       }
     };
-    const mousedownHandler = (e: MouseEvent) => {
+
+    const mousedownHandler = async (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
       stop();
       if (window.confirm("AI writing paused. Continue?")) {
-        void complete(editor?.getText() || "");
+        const text = editor?.getText() || "";
+        await handleComplete(text).catch(error => {
+          console.error('Error resuming completion:', error);
+          toast.error('Failed to resume completion');
+        });
       }
     };
+
     if (isLoading) {
       document.addEventListener("keydown", onKeyDown);
       window.addEventListener("mousedown", mousedownHandler);
@@ -115,7 +132,7 @@ export default function Editor() {
       document.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("mousedown", mousedownHandler);
     };
-  }, [stop, isLoading, editor, complete, completion.length]);
+  }, [stop, isLoading, editor, completion.length, handleComplete]); // Added handleComplete to dependencies
 
   // Hydrate the editor with the content from localStorage.
   useEffect(() => {
@@ -130,9 +147,11 @@ export default function Editor() {
       onClick={() => {
         editor?.chain().focus().run();
       }}
-      className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+      className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 m-4 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
     >
-      <div className="absolute right-5 top-5 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">{saveStatus}</div>
+      <div className="absolute right-5 top-5 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
+        {saveStatus}
+      </div>
 
       {editor ? (
         <>

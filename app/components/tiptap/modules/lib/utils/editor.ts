@@ -1,59 +1,111 @@
 import { type EditorView } from "@tiptap/pm/view";
-// import { BlobResult } from "@vercel/blob";
 import { toast } from "react-hot-toast";
 
-export const handleImageUpload = (file: File, view: EditorView, event: ClipboardEvent | DragEvent | Event) => {
-  // check if the file is an image
+export const handleImageUpload = async (
+  file: File,
+  view: EditorView,
+  event: ClipboardEvent | DragEvent | Event
+): Promise<void> => {
+  // Check if the file is an image
   if (!file.type.includes("image/")) {
     toast.error("File type not supported.");
+    return;
+  }
 
-    // check if the file size is less than 50MB
-  } else if (file.size / 1024 / 1024 > 50) {
+  // Check if the file size is less than 50MB
+  if (file.size / 1024 / 1024 > 50) {
     toast.error("File size too big (max 50MB).");
-  } else {
-    // const reader = new FileReader();
-    // reader.onload = (e) => {
-    //   const { schema } = view.state;
-    //   const node = schema.nodes.image.create({
-    //     src: e.target?.result,
-    //     alt: file,
-    //     title: file.name,
-    //   }); // creates the image element
-    //   const transaction = view.state.tr.replaceSelectionWith(node);
-    //   view.dispatch(transaction);
-    // };
-    // reader.readAsDataURL(file);
+    return;
+  }
 
-    // upload to Vercel Blob
-    toast.promise(
-      fetch("/api/ai/upload", {
-        method: "POST",
-        headers: {
-          "content-type": file?.type || "application/octet-stream",
-          "x-vercel-filename": file?.name || "image.png",
-        },
-        body: file,
-      }).then(async (res) => {
-        // Successfully uploaded image
+  const insertImage = (url: string): void => {
+    const schema = view.state.schema;
+    const imageNode = schema.nodes.image;
+    
+    if (!imageNode) {
+      console.error('Image node is not defined in the schema');
+      return;
+    }
+
+    const createImageNode = () =>
+      imageNode.create({
+        src: url,
+        alt: file.name,
+        title: file.name,
+      });
+
+    try {
+      // for paste events
+      if (event instanceof ClipboardEvent) {
+        view.dispatch(
+          view.state.tr.replaceSelectionWith(createImageNode())
+        );
+      }
+      // for drag and drop events
+      else if (event instanceof DragEvent) {
+        const coordinates = view.posAtCoords({
+          left: event.clientX,
+          top: event.clientY,
+        });
+        const transaction = view.state.tr.insert(
+          coordinates?.pos || 0,
+          createImageNode()
+        );
+        view.dispatch(transaction);
+      }
+      // for input upload events
+      else if (event instanceof Event) {
+        view.dispatch(
+          view.state.tr.replaceSelectionWith(createImageNode())
+        );
+      }
+    } catch (error) {
+      console.error('Error inserting image:', error);
+      toast.error('Failed to insert image');
+    }
+  };
+
+  try {
+    const uploadPromise = fetch("/api/ai/upload", {
+      method: "POST",
+      headers: {
+        "content-type": file?.type || "application/octet-stream",
+        "x-vercel-filename": file?.name || "image.png",
+      },
+      body: file,
+    });
+
+    await toast.promise(
+      uploadPromise.then(async (res) => {
         if (res.status === 200) {
+          // Successfully uploaded image
           const { url } = await res.json();
-          // preload the image
-          let image = new Image();
-          image.src = url;
-          image.onload = () => {
-            insertImage(url);
-          };
-
-          // No blob store configured
+          
+          // Return a promise that resolves when the image is loaded
+          return new Promise<void>((resolve, reject) => {
+            const image = new Image();
+            image.src = url;
+            image.onload = () => {
+              insertImage(url);
+              resolve();
+            };
+            image.onerror = () => reject(new Error('Failed to load image'));
+          });
         } else if (res.status === 401) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            insertImage(e.target?.result as string);
-          };
-          reader.readAsDataURL(file);
-          throw new Error("`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead.");
-
-          // Unknown error
+          // No blob store configured
+          return new Promise<void>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              if (e.target?.result) {
+                insertImage(e.target.result as string);
+                resolve();
+              } else {
+                reject(new Error('Failed to read image'));
+              }
+            };
+            reader.onerror = () => reject(new Error('Failed to read image'));
+            reader.readAsDataURL(file);
+          });
         } else {
           throw new Error(`Error uploading image. Please try again.`);
         }
@@ -61,47 +113,11 @@ export const handleImageUpload = (file: File, view: EditorView, event: Clipboard
       {
         loading: "Uploading image...",
         success: "Image uploaded successfully.",
-        error: (e) => e.message,
+        error: (e: Error) => e.message,
       }
     );
+  } catch (error) {
+    console.error('Error handling image upload:', error);
+    toast.error('Failed to upload image');
   }
-
-  const insertImage = (url: string) => {
-    const schema = view.state.schema;
-    const imageNode = schema.nodes.image;
-
-    if (!imageNode) {
-      console.error('Image node is not defined in the schema');
-      return;
-    }
-
-    const createImageNode = (pos?: number) => 
-      imageNode.create({
-        src: url,
-        alt: file.name,
-        title: file.name,
-      });
-
-    // for paste events
-    if (event instanceof ClipboardEvent) {
-      return view.dispatch(
-        view.state.tr.replaceSelectionWith(createImageNode())
-      );
-
-      // for drag and drop events
-    } else if (event instanceof DragEvent) {
-      const coordinates = view.posAtCoords({
-        left: event.clientX,
-        top: event.clientY,
-      });
-      const transaction = view.state.tr.insert(coordinates?.pos || 0, createImageNode());
-      return view.dispatch(transaction);
-
-      // for input upload events
-    } else if (event instanceof Event) {
-      return view.dispatch(
-        view.state.tr.replaceSelectionWith(createImageNode())
-      );
-    }
-  };
 };
