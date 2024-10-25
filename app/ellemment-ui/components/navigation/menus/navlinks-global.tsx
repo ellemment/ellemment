@@ -51,12 +51,10 @@ interface NavLinksProps {
   username: string  
 }
 
-export function NavLinks({ isMobile = false, className, username }: NavLinksProps) {
-  const links = isMobile ? MOBILE_LINKS : LINKS
-
+export function NavLinks({ className, username }: NavLinksProps) {
   return (
     <ul className={className}>
-      {links.map((link, index) => (
+      {LINKS.map((link, index) => (
         <NavLink 
           key={`${link.name}-${index}`}
           to={link.to}

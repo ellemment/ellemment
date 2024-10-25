@@ -43,32 +43,7 @@ export function NavbarMobile({ className }: NavbarMobileProps) {
   const username = user?.username ?? ''
 
   return (
-    <div
-      className={className}
-      onBlur={(event) => {
-        if (!popoverRef.current || !menuButtonRef.current) return
-        if (
-          popoverRef.current.matches(':popover-open') &&
-          !event.currentTarget.contains(event.relatedTarget)
-        ) {
-          const isRelatedTargetBeforeMenu =
-            event.relatedTarget instanceof Node &&
-            event.currentTarget.compareDocumentPosition(event.relatedTarget) ===
-              Node.DOCUMENT_POSITION_PRECEDING
-          const focusableElements = Array.from(
-            event.currentTarget.querySelectorAll('button,a'),
-          )
-          const elToFocus = isRelatedTargetBeforeMenu
-            ? focusableElements.at(-1)
-            : focusableElements.at(0)
-          if (elToFocus instanceof HTMLElement) {
-            elToFocus.focus()
-          } else {
-            menuButtonRef.current.focus()
-          }
-        }
-      }}
-    >
+    <div className={className}>
       <MobileMenuButton menuButtonRef={menuButtonRef} />
       
       <div
