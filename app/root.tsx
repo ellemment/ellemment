@@ -215,7 +215,7 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
-			<div className="flex h-screen flex-col justify-between">
+			<div className="flex flex-col justify-between">
 				{showHeader && (
 					<GlobalHeader />
 				)}

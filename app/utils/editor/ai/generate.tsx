@@ -1,5 +1,5 @@
 import  { type ActionFunctionArgs } from "@remix-run/node";
-import OpenAIService from "./stream-llm";
+import OpenAIService from "./openai-stream";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   let { prompt } = (await request.json()) as {

@@ -15,7 +15,7 @@ function MobileMenuButton({ menuButtonRef }: MobileMenuButtonProps) {
     <button
       ref={menuButtonRef}
       className="focus:border-primary hover:border-primary border-secondary text-primary inline-flex h-14 w-14 items-center justify-center rounded-full border-2 p-1 transition focus:outline-none"
-      popoverTarget="mobile-menu"
+      // popoverTarget="mobile-menu"
     >
       <svg
         width="32"
