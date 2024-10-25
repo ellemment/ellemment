@@ -102,7 +102,7 @@ export function useCompletion({
         setAbortController(abortController);
 
         // Empty the completion immediately.
-        mutate("", false);
+        await mutate("", false);
 
         const res = await fetch(api, {
           method: "POST",
@@ -148,11 +148,11 @@ export function useCompletion({
 
           // Update the completion state with the new message tokens.
           result += decoder(value);
-          mutate(result, false);
+          await mutate(result, false);
 
           // The request has been aborted, stop reading the stream.
           if (abortController === null) {
-            void reader.cancel();
+            await reader.cancel();
             break;
           }
         }
@@ -192,7 +192,7 @@ export function useCompletion({
 
   const setCompletion = useCallback(
     (completion: string) => {
-      mutate(completion, false);
+      void mutate(completion, false);
     },
     [mutate]
   );
@@ -213,15 +213,15 @@ export function useCompletion({
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!input) return;
-      void (async () => {
-        try {
-          await complete(input);
-        } catch (error) {
-          console.error('Error during completion:', error);
+      
+      complete(input).catch((error) => {
+        console.error('Error during completion:', error);
+        if (onError && error instanceof Error) {
+          onError(error);
         }
-      })();
+      });
     },
-    [input, complete]
+    [input, complete, onError]
   );
 
   const handleInputChange = (e: any) => {

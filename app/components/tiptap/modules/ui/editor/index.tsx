@@ -15,13 +15,19 @@ export default function Editor() {
   const [hydrated, setHydrated] = useState(false);
 
   const debouncedUpdates = useDebouncedCallback(async ({ editor }) => {
-    const json = editor.getJSON();
-    setSaveStatus("Saving...");
-    setContent(json);
-    // Simulate a delay in saving.
-    setTimeout(() => {
-      setSaveStatus("Saved");
-    }, 500);
+    try {
+      const json = editor.getJSON();
+      setSaveStatus("Saving...");
+      setContent(json);
+      // Simulate a delay in saving.
+      setTimeout(() => {
+        setSaveStatus("Saved");
+      }, 500);
+    } catch (error) {
+      console.error('Error saving content:', error);
+      setSaveStatus("Error saving");
+      toast.error('Failed to save content');
+    }
   }, 750);
 
   const { complete, completion, isLoading, stop } = useCompletion({
@@ -44,7 +50,6 @@ export default function Editor() {
     },
   });
 
-  // Move handleComplete into useCallback to prevent unnecessary rerenders
   const handleComplete = useCallback(async (text: string) => {
     try {
       await complete(text);
@@ -52,36 +57,37 @@ export default function Editor() {
       console.error('Error during completion:', error);
       toast.error('Failed to generate completion');
     }
-  }, [complete]); // Add complete as a dependency
+  }, [complete]);
+
+  const handleEditorUpdate = useCallback((e: any) => {
+    setSaveStatus("Unsaved");
+    const selection = e.editor.state.selection;
+    const lastTwo = e.editor.state.doc.textBetween(
+      selection.from - 2,
+      selection.from,
+      "\n"
+    );
+    
+    if (lastTwo === "++" && !isLoading) {
+      e.editor.commands.deleteRange({
+        from: selection.from - 2,
+        to: selection.from,
+      });
+      void handleComplete(e.editor.getText());
+    } else {
+      void debouncedUpdates(e);
+    }
+  }, [debouncedUpdates, isLoading, handleComplete]);
 
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
-    onUpdate: (e) => {
-      setSaveStatus("Unsaved");
-      const selection = e.editor.state.selection;
-      const lastTwo = e.editor.state.doc.textBetween(
-        selection.from - 2,
-        selection.from,
-        "\n"
-      );
-      
-      if (lastTwo === "++" && !isLoading) {
-        e.editor.commands.deleteRange({
-          from: selection.from - 2,
-          to: selection.from,
-        });
-        void handleComplete(e.editor.getText());
-      } else {
-        debouncedUpdates(e);
-      }
-    },
+    onUpdate: handleEditorUpdate,
     autofocus: "end",
   });
 
   const prev = useRef("");
 
-  // Insert chunks of the generated text
   useEffect(() => {
     const diff = completion.slice(prev.current.length);
     prev.current = completion;
@@ -93,8 +99,6 @@ export default function Editor() {
   }, [isLoading, editor, completion]);
 
   useEffect(() => {
-    // if user presses escape or cmd + z and it's loading,
-    // stop the request, delete the completion, and insert back the "++"
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" || (e.metaKey && e.key === "z")) {
         stop();
@@ -132,9 +136,8 @@ export default function Editor() {
       document.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("mousedown", mousedownHandler);
     };
-  }, [stop, isLoading, editor, completion.length, handleComplete]); // Added handleComplete to dependencies
+  }, [stop, isLoading, editor, completion.length, handleComplete]);
 
-  // Hydrate the editor with the content from localStorage.
   useEffect(() => {
     if (editor && content && !hydrated) {
       editor.commands.setContent(content);

@@ -1,10 +1,11 @@
-import { type EditorProps } from "@tiptap/pm/view";
+import  { type EditorProps } from "@tiptap/pm/view";
 import { handleImageUpload } from "#app/components/tiptap/modules/lib/utils/editor";
 
-export const TiptapEditorProps: EditorProps = {
+export const TiptapEditorProps: Partial<EditorProps> = {
   attributes: {
-    class: "prose-lg prose-headings:font-display focus:outline-none",
+    class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
   },
+
   handleDOMEvents: {
     keydown: (_view, event) => {
       // prevent default event listeners from firing when slash command is active
@@ -16,20 +17,26 @@ export const TiptapEditorProps: EditorProps = {
       }
     },
   },
+
   handlePaste: (view, event, _slice) => {
-    if (event.clipboardData && event.clipboardData.files && event.clipboardData.files[0]) {
+    if (event.clipboardData?.files?.[0]) {
       event.preventDefault();
       const file = event.clipboardData.files[0];
-      return handleImageUpload(file, view, event);
+      void handleImageUpload(file, view, event);
+      return true;
     }
     return false;
   },
+
   handleDrop: (view, event, _slice, moved) => {
-    if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
+    if (!moved && event.dataTransfer?.files?.[0]) {
       event.preventDefault();
       const file = event.dataTransfer.files[0];
-      return handleImageUpload(file, view, event);
+      void handleImageUpload(file, view, event);
+      return true;
     }
     return false;
   },
 };
+
+export default TiptapEditorProps;
