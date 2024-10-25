@@ -1,9 +1,10 @@
-// app/ellemment-ui/components/navigation/headers/navbar-mobile.tsx
+// app/ellemment-ui/components/navigation/headers/header-global-sm.tsx
 import './navbar.css'
 import { Link } from '@remix-run/react'
 import * as React from 'react'
 import { ThemeSwitch } from '#app/ellemment-ui/components/controls/theme-switch'
-import { MOBILE_LINKS } from '#app/ellemment-ui/components/navigation/menus/navlinks-global'
+import { LINKS } from '#app/ellemment-ui/components/navigation/menus/navlinks-global'
+import { useOptionalUser } from '#app/utils/use-root-data'
 
 interface MobileMenuButtonProps {
   menuButtonRef: React.RefObject<HTMLButtonElement>
@@ -38,34 +39,11 @@ interface NavbarMobileProps {
 export function NavbarMobile({ className }: NavbarMobileProps) {
   const menuButtonRef = React.useRef<HTMLButtonElement>(null)
   const popoverRef = React.useRef<HTMLDivElement>(null)
+  const user = useOptionalUser()
+  const username = user?.username ?? ''
 
   return (
-    <div
-      className={className}
-      onBlur={(event) => {
-        if (!popoverRef.current || !menuButtonRef.current) return
-        if (
-          popoverRef.current.matches(':popover-open') &&
-          !event.currentTarget.contains(event.relatedTarget)
-        ) {
-          const isRelatedTargetBeforeMenu =
-            event.relatedTarget instanceof Node &&
-            event.currentTarget.compareDocumentPosition(event.relatedTarget) ===
-              Node.DOCUMENT_POSITION_PRECEDING
-          const focusableElements = Array.from(
-            event.currentTarget.querySelectorAll('button,a'),
-          )
-          const elToFocus = isRelatedTargetBeforeMenu
-            ? focusableElements.at(-1)
-            : focusableElements.at(0)
-          if (elToFocus instanceof HTMLElement) {
-            elToFocus.focus()
-          } else {
-            menuButtonRef.current.focus()
-          }
-        }
-      }}
-    >
+    <div className={className}>
       <MobileMenuButton menuButtonRef={menuButtonRef} />
       
       <div
@@ -76,18 +54,21 @@ export function NavbarMobile({ className }: NavbarMobileProps) {
         className="fixed bottom-0 left-0 right-0 top-[128px] m-0 h-[calc(100svh-128px)] w-full"
       >
         <div className="bg-background flex h-full flex-col overflow-y-scroll border-t pb-12 dark:border-gray-600">
-          {MOBILE_LINKS.map((link) => (
-            <Link
-              className="bg-background hover:bg-secondary focus:bg-secondary text-primary border-b px-4 border-gray-200 px-5vw py-9 hover:text-team-current"
-              key={link.to}
-              to={link.to}
-              onClick={() => {
-                popoverRef.current?.hidePopover()
-              }}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {LINKS.map((link, index) => {
+            const to = typeof link.to === 'function' ? link.to(username) : link.to
+            return (
+              <Link
+                className="bg-background hover:bg-secondary focus:bg-secondary text-primary border-b px-4 border-gray-200 px-5vw py-9 hover:text-team-current"
+                key={`${link.name}-${to}-${index}`}
+                to={to}
+                onClick={() => {
+                  popoverRef.current?.hidePopover()
+                }}
+              >
+                {link.name}
+              </Link>
+            )
+          })}
           <div className="py-9 text-center">
             <ThemeSwitch variant="labelled" />
           </div>

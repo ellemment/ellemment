@@ -5,23 +5,27 @@ import { clsx } from 'clsx'
 import * as React from 'react'
 
 export const LINKS = [
-  { name: 'Keynote', to: '/#keynote' },
-  { name: 'Application', to: '/account/beta' },
-  { name: 'Documentation', to: '/docs' },
-  { name: 'Changelog', to: '/engine' },
-  { name: 'Information', to: '/#info' },
+  { name: 'Discover', to: '/#discover' },
+  { name: 'Develop', to: '/account/beta' },
+  { name: 'Design', to: '/engine' },
+  { name: 'Connect', to: '/engine' },
+  { name: 'Calendar', to: (username: string) => `/account/${username}/content/new` },
+  { name: 'Career', to: '/account/settings' },
+
 ]
 
-export const MOBILE_LINKS = [{ name: 'Home', to: '/' }, ...LINKS]
+export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]
 
 interface NavLinkProps extends Omit<Parameters<typeof Link>['0'], 'to'> {
-  to: string
+  to: string | ((username: string) => string)
+  username: string
 }
 
-export function NavLink({ to, ...rest }: NavLinkProps) {
+export function NavLink({ to, username, ...rest }: NavLinkProps) {
   const location = useLocation()
+  const resolvedTo = typeof to === 'function' ? to(username) : to
   const isSelected =
-    to === location.pathname || location.pathname.startsWith(`${to}/`)
+    resolvedTo === location.pathname || location.pathname.startsWith(`${resolvedTo}/`)
 
   return (
     <li className="px-5 py-2 text-primary">
@@ -34,7 +38,7 @@ export function NavLink({ to, ...rest }: NavLinkProps) {
             'text-primary': !isSelected,
           },
         )}
-        to={to}
+        to={resolvedTo}
         {...rest}
       />
     </li>
@@ -44,15 +48,18 @@ export function NavLink({ to, ...rest }: NavLinkProps) {
 interface NavLinksProps {
   isMobile?: boolean
   className?: string
+  username: string  
 }
 
-export function NavLinks({ isMobile = false, className }: NavLinksProps) {
-  const links = isMobile ? MOBILE_LINKS : LINKS
-
+export function NavLinks({ className, username }: NavLinksProps) {
   return (
     <ul className={className}>
-      {links.map((link) => (
-        <NavLink key={link.to} to={link.to}>
+      {LINKS.map((link, index) => (
+        <NavLink 
+          key={`${link.name}-${index}`}
+          to={link.to}
+          username={username}
+        >
           {link.name}
         </NavLink>
       ))}

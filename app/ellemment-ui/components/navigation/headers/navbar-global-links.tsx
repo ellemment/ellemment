@@ -5,12 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 
 const navItems = [
-  { label: 'Keynote', href: '/#keynote' },
-  { label: 'Application', href: '/account/beta' },
-  { label: 'Documentation', href: '/engine' },
-  { label: 'Changelog', href: '/engine' },
-  { label: 'Information', href: '/docs' },
-  { label: 'Account', href: '/account/settings' },
+  { label: 'Discover', href: '/#discover' },
+  { label: 'Develop', href: '/account/beta' },
+  { label: 'Design', href: '/engine' },
+  { label: 'Connect', href: '/engine' },
+  { label: 'Content', href: '/docs' },
+  { label: 'Career', href: '/account/settings' },
 ] as const;
 
 export function NavLinks() {
