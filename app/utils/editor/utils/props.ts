@@ -1,5 +1,5 @@
 import  { type EditorProps } from "@tiptap/pm/view";
-import { handleImageUpload } from "#app/components/tiptap/modules/lib/utils/editor";
+import { handleImageUpload } from "../editor";
 
 export const TiptapEditorProps: Partial<EditorProps> = {
   attributes: {

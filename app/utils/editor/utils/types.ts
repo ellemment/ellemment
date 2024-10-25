@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/lib/ai/react/types.ts
+
 /**
  * Shared types between the API and UI packages.
  */

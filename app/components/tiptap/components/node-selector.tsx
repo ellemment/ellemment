@@ -1,9 +1,11 @@
+// #app/components/tiptap/modules/ui/editor/components/node-selector.tsx
+
 import { type Editor } from "@tiptap/core";
 import clsx from "clsx";
 import { Check, ChevronDown, Heading1, Heading2, Heading3, TextQuote, ListOrdered, TextIcon, Code } from "lucide-react";
 import { type FC } from "react";
 
-import { type BubbleMenuItem } from "./EditorBubbleMenu";
+import { type BubbleMenuItem } from "./buble-menu";
 
 interface NodeSelectorProps {
   editor: Editor;

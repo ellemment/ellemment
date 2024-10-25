@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/ui/editor/extensions/extensions.tsx
+
 import { InputRule } from "@tiptap/core";
 import { Color } from "@tiptap/extension-color";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
@@ -57,7 +59,7 @@ export const TiptapExtensions = [
       return [
         new InputRule({
           find: /^(?:---|—-|___\s|\*\*\*\s)$/,
-          handler: ({ state, range, match }) => {
+          handler: ({ state, range }) => {
             const attributes = {};
 
             const { tr } = state;

@@ -1,5 +1,5 @@
 import  { type ActionFunctionArgs } from "@remix-run/node";
-import OpenAIService from "#app/components/tiptap/modules/lib/ai/openai/OpenAIStream";
+import OpenAIService from "./stream-llm";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   let { prompt } = (await request.json()) as {

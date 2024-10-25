@@ -2,12 +2,12 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useDebouncedCallback } from "use-debounce";
-import { useCompletion } from "../../lib/ai/react/useCompletion";
-import useLocalStorage from "../../lib/hooks/use-local-storage";
-import { EditorBubbleMenu } from "./components";
-import DEFAULT_EDITOR_CONTENT from "./default-content";
-import { TiptapExtensions } from "./extensions";
-import { TiptapEditorProps } from "./props";
+import DEFAULT_EDITOR_CONTENT from "#app/utils/editor/utils/default-content";
+import { useCompletion } from "../../utils/editor/ai/use-completion";
+import { TiptapEditorProps } from "../../utils/editor/utils/props";
+import useLocalStorage from "../../utils/editor/utils/use-local-storage";
+import { EditorBubbleMenu } from "./components/buble-menu";
+import { TiptapExtensions } from "./extensions/extensions";
 
 export default function Editor() {
   const [content, setContent] = useLocalStorage("content", DEFAULT_EDITOR_CONTENT);

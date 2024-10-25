@@ -4,7 +4,7 @@ import Underline from '@tiptap/extension-underline'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React, { useRef, useCallback } from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 
 interface TiptapEditorProps {
   title: string

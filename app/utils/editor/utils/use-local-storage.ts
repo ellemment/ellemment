@@ -1,3 +1,5 @@
+// #app/components/tiptap/modules/lib/hooks/use-local-storage.ts
+
 import { useEffect, useState } from "react";
 
 const useLocalStorage = <T>(
