@@ -1,3 +1,5 @@
+// #app/routes/account+/$username+/index.tsx
+
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
@@ -86,7 +88,7 @@ export default function ProfileRoute() {
 							</>
 						) : (
 							<Button asChild>
-								<Link to="/account/content" prefetch="intent">
+								<Link to={(`/account/${user.username}/content`)} prefetch="intent">
 									{userDisplayName}'s Content
 								</Link>
 							</Button>

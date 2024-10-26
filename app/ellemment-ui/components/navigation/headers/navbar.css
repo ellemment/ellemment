@@ -1,7 +1,7 @@
 body:has(#mobile-menu:popover-open) {
 	overflow: hidden;
 
-	[popovertarget='mobile-menu'] {
+	[data-popovertarget='mobile-menu'] {
 		rect:nth-of-type(1) {
 			transform: translateY(7px) rotate(45deg);
 			transform-origin: 16px 10px;
