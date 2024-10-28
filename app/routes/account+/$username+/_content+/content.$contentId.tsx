@@ -1,6 +1,5 @@
 // #app/routes/account+/$username+/_content+/content.$contentId.tsx
 
-import { getFormProps, useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import {
@@ -9,27 +8,19 @@ import {
 	type ActionFunctionArgs,
 } from '@remix-run/node'
 import {
-	Form,
-	Link,
-	useActionData,
 	useLoaderData,
 	type MetaFunction,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { z } from 'zod'
-import { GeneralErrorBoundary } from '#app/components/core/error-boundary.tsx'
-import { floatingToolbarClassName } from '#app/components/core/floating-toolbar.tsx'
-import { ErrorList } from '#app/components/core/forms.tsx'
-import { Button } from '#app/components/ui/button.tsx'
-import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
-import { requireUserId } from '#app/utils/auth.server.ts'
-import { prisma } from '#app/utils/db.server.ts'
-import { getContentImgSrc, useIsPending } from '#app/utils/misc.tsx'
-import { requireUserWithPermission } from '#app/utils/permissions.server.ts'
-import { redirectWithToast } from '#app/utils/toast.server.ts'
-import { userHasPermission, useOptionalUser } from '#app/utils/user.ts'
-import { type loader as contentLoader } from './content.tsx'
+import { ContentView } from '#app/components/content/content-view-module/content-view.js'
+import { GeneralErrorBoundary } from '#app/components/core/error-boundary'
+import { requireUserId } from '#app/utils/auth.server'
+import { DeleteFormSchema } from '#app/utils/content-types/types'
+import { prisma } from '#app/utils/db.server'
+import { requireUserWithPermission } from '#app/utils/permissions.server'
+import { redirectWithToast } from '#app/utils/toast.server'
+import { userHasPermission, useOptionalUser } from '#app/utils/user'
+import { type loader as contentLoader } from './content'
 
 export async function loader({ params }: LoaderFunctionArgs) {
 	const content = await prisma.content.findUnique({
@@ -59,11 +50,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 		timeAgo,
 	})
 }
-
-const DeleteFormSchema = z.object({
-	intent: z.literal('delete-content'),
-	contentId: z.string(),
-})
 
 export async function action({ request }: ActionFunctionArgs) {
 	const userId = await requireUserId(request)
@@ -109,81 +95,14 @@ export default function ContentRoute() {
 		user,
 		isOwner ? `delete:content:own` : `delete:content:any`,
 	)
-	const displayBar = canDelete || isOwner
 
 	return (
-		<div className="absolute inset-0 flex flex-col px-10">
-			<h2 className="mb-2 pt-12 text-h2 lg:mb-6">{data.content.title}</h2>
-			<div className={`${displayBar ? 'pb-24' : 'pb-12'} overflow-y-auto`}>
-				<ul className="flex flex-wrap gap-5 py-5">
-					{data.content.images.map((image) => (
-						<li key={image.id}>
-							<a href={getContentImgSrc(image.id)}>
-								<img
-									src={getContentImgSrc(image.id)}
-									alt={image.altText ?? ''}
-									className="h-32 w-32 rounded-lg object-cover"
-								/>
-							</a>
-						</li>
-					))}
-				</ul>
-				<p className="whitespace-break-spaces text-sm md:text-lg">
-					{data.content.content}
-				</p>
-			</div>
-			{displayBar ? (
-				<div className={floatingToolbarClassName}>
-					<span className="text-sm text-foreground/90 max-[524px]:hidden">
-						<Icon name="clock" className="scale-125">
-							{data.timeAgo} ago
-						</Icon>
-					</span>
-					<div className="grid flex-1 grid-cols-2 justify-end gap-2 min-[525px]:flex md:gap-4">
-						{canDelete ? <DeleteContent id={data.content.id} /> : null}
-						<Button
-							asChild
-							className="min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0"
-						>
-							<Link to="edit">
-								<Icon name="pencil-1" className="scale-125 max-md:scale-150">
-									<span className="max-md:hidden">Edit</span>
-								</Icon>
-							</Link>
-						</Button>
-					</div>
-				</div>
-			) : null}
-		</div>
-	)
-}
-
-export function DeleteContent({ id }: { id: string }) {
-	const actionData = useActionData<typeof action>()
-	const isPending = useIsPending()
-	const [form] = useForm({
-		id: 'delete-content',
-		lastResult: actionData?.result,
-	})
-
-	return (
-		<Form method="POST" {...getFormProps(form)}>
-			<input type="hidden" name="contentId" value={id} />
-			<StatusButton
-				type="submit"
-				name="intent"
-				value="delete-content"
-				variant="destructive"
-				status={isPending ? 'pending' : (form.status ?? 'idle')}
-				disabled={isPending}
-				className="w-full max-md:aspect-square max-md:px-0"
-			>
-				<Icon name="trash" className="scale-125 max-md:scale-150">
-					<span className="max-md:hidden">Delete</span>
-				</Icon>
-			</StatusButton>
-			<ErrorList errors={form.errors} id={form.errorId} />
-		</Form>
+		<ContentView
+			content={data.content}
+			timeAgo={data.timeAgo}
+			canDelete={canDelete}
+			isOwner={isOwner}
+		/>
 	)
 }
 
