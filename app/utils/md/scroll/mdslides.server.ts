@@ -5,7 +5,7 @@ import { LRUCache } from "lru-cache";
 import type * as Mdast from "mdast";
 import invariant from "tiny-invariant";
 import type * as Unist from "unist";
-import { type UnistNode as UnistNode } from "#app/utils/markdown/types";
+import { type UnistNode as UnistNode } from "#app/utils/content/content-markdown/types";
 import { loadPlugins } from "#app/utils/md/plugins";
 
 interface SequenceNode extends Unist.Parent {

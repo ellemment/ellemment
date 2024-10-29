@@ -6,7 +6,7 @@ import { ErrorList } from '#app/components/core/forms'
 import { Icon } from '#app/components/ui/icon'
 import { Label } from '#app/components/ui/label'
 import { Textarea } from '#app/components/ui/textarea'
-import  { type ImageFieldset } from '#app/utils/content-schemas/schemas'
+import  { type ImageFieldset } from '#app/utils/content/content-schemas/schemas.js'
 import { cn, getContentImgSrc } from '#app/utils/misc'
 
 export function ImageChooser({ meta }: { meta: FieldMetadata<ImageFieldset> }) {

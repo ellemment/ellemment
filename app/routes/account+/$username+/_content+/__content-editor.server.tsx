@@ -1,5 +1,4 @@
 // #app/routes/account+/$username+/_content+/__content-editor.server.tsx
-
 import { parseWithZod } from '@conform-to/zod'
 import { createId as cuid } from '@paralleldrive/cuid2'
 import {
@@ -10,13 +9,13 @@ import {
   type ActionFunctionArgs,
 } from '@remix-run/node'
 import { z } from 'zod'
-
 import { requireUserId } from '#app/utils/auth.server'
+
 import {
   ContentEditorSchema,
   MAX_UPLOAD_SIZE,
   type ImageFieldset,
-} from '#app/utils/content-schemas/schemas'
+} from '#app/utils/content/content-schemas/schemas.js'
 import { prisma } from '#app/utils/db.server'
 
 function imageHasFile(
@@ -51,18 +50,21 @@ export async function handleContentSubmission(
     newImages = [],
   } = submission.value
 
+  // Store raw markdown content directly
+  const rawMarkdownContent = content
+
   const updatedContent = await prisma.content.upsert({
     select: { id: true, owner: { select: { username: true } } },
     where: { id: contentId ?? '__new_content__' },
     create: {
       ownerId: userId,
       title,
-      content,
+      content: rawMarkdownContent, // Store raw markdown
       images: { create: newImages },
     },
     update: {
       title,
-      content,
+      content: rawMarkdownContent, // Store raw markdown
       images: {
         deleteMany: { id: { notIn: imageUpdates.map((i: { id: string }) => i.id) } },
         updateMany: imageUpdates.map((updates: { id: string; blob?: Buffer }) => ({

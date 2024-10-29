@@ -1,52 +1,57 @@
 // #app/routes/account+/$username+/_content+/content.$contentId_.edit.tsx
-
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { GeneralErrorBoundary } from '#app/components/core/error-boundary.tsx'
-import { requireUserId } from '#app/utils/auth.server.ts'
-import { prisma } from '#app/utils/db.server.ts'
-import { ContentEditor } from './__content-editor.tsx'
+import { GeneralErrorBoundary } from '#app/components/core/error-boundary'
+import { requireUserId } from '#app/utils/auth.server'
+import { prisma } from '#app/utils/db.server'
+import { ContentEditor } from './__content-editor'
 
-export { action } from './__content-editor.server.tsx'
+export { action } from './__content-editor.server'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	const userId = await requireUserId(request)
 	const content = await prisma.content.findFirst({
-		select: {
+	  select: {
+		id: true,
+		title: true,
+		content: true,
+		images: {
+		  select: {
 			id: true,
-			title: true,
-			content: true,
-			images: {
-				select: {
-					id: true,
-					altText: true,
-				},
-			},
+			altText: true,
+		  },
 		},
-		where: {
-			id: params.contentId,
-			ownerId: userId,
-		},
+	  },
+	  where: {
+		id: params.contentId,
+		ownerId: userId,
+	  },
 	})
+	
 	invariantResponse(content, 'Not found', { status: 404 })
-	return json({ content: content })
-}
-
-export default function ContentEdit() {
-	const data = useLoaderData<typeof loader>()
-
-	return <ContentEditor content={data.content} />
+  
+  
+	return json({ 
+	  content: {
+		...content,
+		content: content.content
+	  } 
+	})
+  }
+export default function EditContent() {
+  const data = useLoaderData<typeof loader>()
+  return <ContentEditor content={data.content} />
 }
 
 export function ErrorBoundary() {
-	return (
-		<GeneralErrorBoundary
-			statusHandlers={{
-				404: ({ params }) => (
-					<p>No content with the id "{params.contentId}" exists</p>
-				),
-			}}
-		/>
-	)
+  return (
+    <GeneralErrorBoundary
+      statusHandlers={{
+        404: ({ params }) => (
+          <p>No content with the id "{params.contentId}" exists</p>
+        ),
+      }}
+    />
+  )
 }
