@@ -1,3 +1,5 @@
+// #app/utils/editor/utils/default-content.tsx
+
 const DEFAULT_EDITOR_CONTENT = {
   type: "doc",
   content: [

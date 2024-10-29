@@ -1,5 +1,4 @@
-// app/routes/account+/$username+/_content+/__content-editor.server.tsx
-
+// #app/routes/account+/$username+/_content+/__content-editor.server.tsx
 import { parseWithZod } from '@conform-to/zod'
 import { createId as cuid } from '@paralleldrive/cuid2'
 import {
@@ -9,13 +8,15 @@ import {
   redirect,
   type ActionFunctionArgs,
 } from '@remix-run/node'
-import { checkAdminStatus, checkOwnerStatus } from '#app/utils/adminstatus.js'
-import { prisma } from '#app/utils/db.server.js'
+import { z } from 'zod'
+import { requireUserId } from '#app/utils/auth.server'
+
 import {
-  MAX_UPLOAD_SIZE,
   ContentEditorSchema,
+  MAX_UPLOAD_SIZE,
   type ImageFieldset,
-} from './utils/contentEditorSchema'
+} from '#app/utils/content/content-schemas/schemas.js'
+import { prisma } from '#app/utils/db.server'
 
 function imageHasFile(
   image: ImageFieldset,
@@ -29,36 +30,78 @@ function imageHasId(
   return image.id != null
 }
 
+export async function handleContentSubmission(
+  request: Request,
+  userId: string,
+  submission: Awaited<ReturnType<typeof parseWithZod>>,
+) {
+  if (submission.status !== 'success') {
+    return json(
+      { result: submission.reply() },
+      { status: submission.status === 'error' ? 400 : 200 },
+    )
+  }
+
+  const {
+    id: contentId,
+    title,
+    content,
+    imageUpdates = [],
+    newImages = [],
+  } = submission.value
+
+  // Store raw markdown content directly
+  const rawMarkdownContent = content
+
+  const updatedContent = await prisma.content.upsert({
+    select: { id: true, owner: { select: { username: true } } },
+    where: { id: contentId ?? '__new_content__' },
+    create: {
+      ownerId: userId,
+      title,
+      content: rawMarkdownContent, // Store raw markdown
+      images: { create: newImages },
+    },
+    update: {
+      title,
+      content: rawMarkdownContent, // Store raw markdown
+      images: {
+        deleteMany: { id: { notIn: imageUpdates.map((i: { id: string }) => i.id) } },
+        updateMany: imageUpdates.map((updates: { id: string; blob?: Buffer }) => ({
+          where: { id: updates.id },
+          data: { ...updates, id: updates.blob ? cuid() : updates.id },
+        })),
+        create: newImages,
+      },
+    },
+  })
+
+  return redirect(
+    `/account/${updatedContent.owner.username}/content/${updatedContent.id}`,
+  )
+}
+
 export async function action({ request }: ActionFunctionArgs) {
-  const { userId, isAdmin } = await checkAdminStatus(request)
+  const userId = await requireUserId(request)
 
   const formData = await parseMultipartFormData(
     request,
     createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
   )
 
-  const action = formData.get('_action')
-
   const submission = await parseWithZod(formData, {
     schema: ContentEditorSchema.superRefine(async (data, ctx) => {
-      if (!data.id) return // This is a new content creation
+      if (!data.id) return
+
       const content = await prisma.content.findUnique({
-        select: { id: true, ownerId: true },
-        where: { id: data.id },
+        select: { id: true },
+        where: { id: data.id, ownerId: userId },
       })
       if (!content) {
         ctx.addIssue({
-          code: 'custom',
+          code: z.ZodIssueCode.custom,
           message: 'Content not found',
         })
-      } else {
-        const { isOwner } = await checkOwnerStatus(request, content.ownerId)
-        if (!isAdmin && !isOwner) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'You do not have permission to edit this content',
-          })
-        }
       }
     }).transform(async ({ images = [], ...data }) => {
       return {
@@ -97,85 +140,5 @@ export async function action({ request }: ActionFunctionArgs) {
     async: true,
   })
 
-  if (submission.status !== 'success') {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === 'error' ? 400 : 200 },
-    )
-  }
-
-  const {
-    id: contentId,
-    title,
-    content,
-    imageUpdates = [],
-    newImages = [],
-  } = submission.value
-
-  // Check if the user is allowed to create/edit content
-  if (contentId) {
-    const contentOwnerId = await getContentOwnerId(contentId)
-    if (contentOwnerId) {
-      const { isOwner } = await checkOwnerStatus(request, contentOwnerId)
-      if (!isAdmin && !isOwner) {
-        return json(
-          { error: 'You do not have permission to edit this content' },
-          { status: 403 },
-        )
-      }
-    }
-  }
-
-  const isPublished = action === 'publish'
-
-  const updatedContent = await prisma.content.upsert({
-    select: { id: true, ownerId: true },
-    where: { id: contentId ?? '__new_content__' },
-    create: {
-      ownerId: userId,
-      title,
-      content, // Save HTML content as-is
-      images: { create: newImages },
-      status: isPublished ? 'published' : 'draft',
-    },
-    update: {
-      title,
-      content, // Save HTML content as-is
-      status: isPublished ? 'published' : 'draft',
-      images: {
-        deleteMany: { id: { notIn: imageUpdates.map((i) => i.id) } },
-        updateMany: imageUpdates.map((updates) => ({
-          where: { id: updates.id },
-          data: { ...updates, id: updates.blob ? cuid() : updates.id },
-        })),
-        create: newImages,
-      },
-    },
-  })
-
-  if (action === 'saveDraft') {
-    return json({ draftSaved: true, contentId: updatedContent.id })
-  }
-
-  const owner = await prisma.user.findUnique({
-    where: { id: updatedContent.ownerId },
-    select: { username: true },
-  })
-
-  if (!owner) {
-    throw new Error('Owner not found')
-  }
-
-  return redirect(
-    `/account/${owner.username}/content/${updatedContent.id}`,
-  )
-}
-
-
-async function getContentOwnerId(contentId: string): Promise<string | null> {
-  const content = await prisma.content.findUnique({
-    where: { id: contentId },
-    select: { ownerId: true },
-  })
-  return content?.ownerId ?? null
+  return handleContentSubmission(request, userId, submission)
 }

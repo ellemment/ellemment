@@ -1,21 +1,24 @@
-// app/ellemment-ui/components/navigation/headers/header-global-sm.tsx
-import './navbar.css'
-import { Link } from '@remix-run/react'
-import * as React from 'react'
-import { ThemeSwitch } from '#app/ellemment-ui/components/controls/theme-switch'
-import { LINKS } from '#app/ellemment-ui/components/navigation/menus/navlinks-global'
-import { useOptionalUser } from '#app/utils/use-root-data'
+import { Link } from '@remix-run/react';
+import * as React from 'react';
+import { ThemeSwitch } from '#app/ellemment-ui/components/controls/theme-switch';
+import { LINKS } from '#app/ellemment-ui/components/navigation/menus/navlinks-global';
+import { useOptionalUser } from '#app/utils/use-root-data';
+import './navbar.css';
 
 interface MobileMenuButtonProps {
-  menuButtonRef: React.RefObject<HTMLButtonElement>
+  menuButtonRef: React.RefObject<HTMLButtonElement>;
 }
 
 function MobileMenuButton({ menuButtonRef }: MobileMenuButtonProps) {
   return (
     <button
       ref={menuButtonRef}
-      className="focus:border-primary hover:border-primary border-secondary text-primary inline-flex h-14 w-14 items-center justify-center rounded-full border-2 p-1 transition focus:outline-none"
-      popoverTarget="mobile-menu"
+      className="inline-flex h-14 w-14 items-center justify-center rounded-full border-2 border-secondary p-1 transition focus:outline-none focus:border-primary hover:border-primary text-primary"
+      popovertarget="mobile-menu"
+      type="button"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      {...({ popovertarget: 'mobile-menu' } as any)}
     >
       <svg
         width="32"
@@ -23,24 +26,30 @@ function MobileMenuButton({ menuButtonRef }: MobileMenuButtonProps) {
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
       >
         <rect x="6" y="9" width="20" height="2" rx="1" fill="currentColor" />
         <rect x="6" y="15" width="20" height="2" rx="1" fill="currentColor" />
         <rect x="6" y="21" width="20" height="2" rx="1" fill="currentColor" />
       </svg>
+      <span className="sr-only">Toggle mobile menu</span>
     </button>
-  )
+  );
 }
 
 interface NavbarMobileProps {
-  className?: string
+  className?: string;
 }
 
 export function NavbarMobile({ className }: NavbarMobileProps) {
-  const menuButtonRef = React.useRef<HTMLButtonElement>(null)
-  const popoverRef = React.useRef<HTMLDivElement>(null)
-  const user = useOptionalUser()
-  const username = user?.username ?? ''
+  const menuButtonRef = React.useRef<HTMLButtonElement>(null);
+  const popoverRef = React.useRef<HTMLDivElement>(null);
+  const user = useOptionalUser();
+  const username = user?.username ?? '';
+
+  const handleLinkClick = React.useCallback(() => {
+    popoverRef.current?.hidePopover();
+  }, []);
 
   return (
     <div className={className}>
@@ -49,31 +58,34 @@ export function NavbarMobile({ className }: NavbarMobileProps) {
       <div
         id="mobile-menu"
         ref={popoverRef}
-        popover=""
-        onToggle={() => window.scrollTo(0, 0)}
-        className="fixed bottom-0 left-0 right-0 top-[128px] m-0 h-[calc(100svh-128px)] w-full"
+        popover="auto"
+        onToggle={(e) => {
+          if (e.newState === 'open') {
+            window.scrollTo(0, 0);
+          }
+        }}
+        className="fixed inset-x-0 top-[128px] m-0 h-[calc(100svh-128px)] w-full"
       >
-        <div className="bg-background flex h-full flex-col overflow-y-scroll border-t pb-12 dark:border-gray-600">
+        <nav className="flex h-full flex-col overflow-y-scroll border-t pb-12 dark:border-gray-600 bg-background">
           {LINKS.map((link, index) => {
-            const to = typeof link.to === 'function' ? link.to(username) : link.to
+            const to = typeof link.to === 'function' ? link.to(username) : link.to;
             return (
               <Link
-                className="bg-background hover:bg-secondary focus:bg-secondary text-primary border-b px-4 border-gray-200 px-5vw py-9 hover:text-team-current"
                 key={`${link.name}-${to}-${index}`}
                 to={to}
-                onClick={() => {
-                  popoverRef.current?.hidePopover()
-                }}
+                onClick={handleLinkClick}
+                className="border-b border-gray-200 px-4 py-9 hover:bg-secondary focus:bg-secondary text-primary hover:text-team-current px-5vw"
               >
                 {link.name}
               </Link>
-            )
+            );
           })}
+          
           <div className="py-9 text-center">
             <ThemeSwitch variant="labelled" />
           </div>
-        </div>
+        </nav>
       </div>
     </div>
-  )
+  );
 }

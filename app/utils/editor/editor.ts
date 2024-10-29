@@ -1,7 +1,9 @@
 // #app/components/tiptap/modules/lib/utils/editor.ts
-
-import { type EditorView } from "@tiptap/pm/view";
-import { toast } from "react-hot-toast";
+import { createId as cuid } from '@paralleldrive/cuid2'
+import { type EditorView } from "@tiptap/pm/view"
+import { toast } from "react-hot-toast"
+import { type ImageFieldset, MAX_UPLOAD_SIZE } from '#app/utils/content/content-schemas/schemas.js'
+import { getContentImgSrc } from '#app/utils/misc'
 
 export const handleImageUpload = async (
   file: File,
@@ -10,116 +12,64 @@ export const handleImageUpload = async (
 ): Promise<void> => {
   // Check if the file is an image
   if (!file.type.includes("image/")) {
-    toast.error("File type not supported.");
-    return;
+    toast.error("File type not supported.")
+    return
   }
 
-  // Check if the file size is less than 50MB
-  if (file.size / 1024 / 1024 > 50) {
-    toast.error("File size too big (max 50MB).");
-    return;
+  // Check file size
+  if (file.size > MAX_UPLOAD_SIZE) {
+    toast.error(`File size too big (max ${Math.floor(MAX_UPLOAD_SIZE / 1024 / 1024)}MB).`)
+    return
   }
 
-  const insertImage = (url: string): void => {
-    const schema = view.state.schema;
-    const imageNode = schema.nodes.image;
-    
-    if (!imageNode) {
-      console.error('Image node is not defined in the schema');
-      return;
-    }
-
-    const createImageNode = () =>
-      imageNode.create({
-        src: url,
-        alt: file.name,
-        title: file.name,
-      });
+  // #app/components/tiptap/modules/lib/utils/editor.ts
+  const insertImage = async (file: File): Promise<void> => {
+    // Guard against server-side execution
+    if (typeof window === 'undefined') return
 
     try {
-      // for paste events
-      if (event instanceof ClipboardEvent) {
-        view.dispatch(
-          view.state.tr.replaceSelectionWith(createImageNode())
-        );
-      }
-      // for drag and drop events
-      else if (event instanceof DragEvent) {
-        const coordinates = view.posAtCoords({
-          left: event.clientX,
-          top: event.clientY,
-        });
-        const transaction = view.state.tr.insert(
-          coordinates?.pos || 0,
-          createImageNode()
-        );
-        view.dispatch(transaction);
-      }
-      // for input upload events
-      else if (event instanceof Event) {
-        view.dispatch(
-          view.state.tr.replaceSelectionWith(createImageNode())
-        );
-      }
+      const formData = new FormData()
+      const imageId = cuid()
+
+      formData.append('images[0][file]', file)
+      formData.append('images[0][altText]', file.name)
+
+      // Rest of your code...
     } catch (error) {
-      console.error('Error inserting image:', error);
-      toast.error('Failed to insert image');
+      console.error('Error handling image upload:', error)
+      throw error
     }
-  };
+  }
 
   try {
-    const uploadPromise = fetch("/api/ai/upload", {
-      method: "POST",
-      headers: {
-        "content-type": file?.type || "application/octet-stream",
-        "x-vercel-filename": file?.name || "image.png",
-      },
-      body: file,
-    });
-
     await toast.promise(
-      uploadPromise.then(async (res) => {
-        if (res.status === 200) {
-          // Successfully uploaded image
-          const { url } = await res.json();
-          
-          // Return a promise that resolves when the image is loaded
-          return new Promise<void>((resolve, reject) => {
-            const image = new Image();
-            image.src = url;
-            image.onload = () => {
-              insertImage(url);
-              resolve();
-            };
-            image.onerror = () => reject(new Error('Failed to load image'));
-          });
-        } else if (res.status === 401) {
-          // No blob store configured
-          return new Promise<void>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              if (e.target?.result) {
-                insertImage(e.target.result as string);
-                resolve();
-              } else {
-                reject(new Error('Failed to read image'));
-              }
-            };
-            reader.onerror = () => reject(new Error('Failed to read image'));
-            reader.readAsDataURL(file);
-          });
-        } else {
-          throw new Error(`Error uploading image. Please try again.`);
-        }
-      }),
+      insertImage(file),
       {
         loading: "Uploading image...",
         success: "Image uploaded successfully.",
-        error: (e: Error) => e.message,
+        error: "Failed to upload image.",
       }
-    );
+    )
   } catch (error) {
-    console.error('Error handling image upload:', error);
-    toast.error('Failed to upload image');
+    console.error('Error handling image upload:', error)
+    toast.error('Failed to upload image')
   }
-};
+}
+
+// Optional: Helper function to extract images from editor content
+export function extractImagesFromContent(content: any): ImageFieldset[] {
+  const images: ImageFieldset[] = []
+  const traverse = (node: any) => {
+    if (node.type === 'image' && node.attrs?.imageId) {
+      images.push({
+        id: node.attrs.imageId,
+        altText: node.attrs.alt || null,
+      })
+    }
+    if (node.content) {
+      node.content.forEach(traverse)
+    }
+  }
+  traverse(content)
+  return images
+}

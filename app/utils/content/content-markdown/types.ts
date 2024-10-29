@@ -1,6 +1,5 @@
 // #app/utils/markdown/types.ts
 
-import type * as Hast from "hast";
 import type * as Shiki from "shiki";
 import type * as Unified from "unified";
 import type * as Unist from "unist";

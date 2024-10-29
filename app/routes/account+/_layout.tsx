@@ -1,3 +1,5 @@
+// #app/routes/account+/_layout.tsx
+
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react';
 import { AccountLayout } from '#app/ellemment-ui/components/account/account-layout';

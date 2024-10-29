@@ -2,7 +2,7 @@
 import { LRUCache } from "lru-cache";
 import { DateTime } from "luxon";
 import invariant from "tiny-invariant";
-import { processMarkdown } from "#app/utils/markdown/md.server.js";
+import { processMarkdown } from "#app/utils/content/content-markdown/md.server.js";
 
 // Get all markdown files from nested folders
 const docsContentsByPath = Object.fromEntries(
