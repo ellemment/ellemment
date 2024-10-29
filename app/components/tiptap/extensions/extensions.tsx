@@ -1,6 +1,6 @@
 // #app/components/tiptap/modules/ui/editor/extensions/extensions.tsx
 
-import { InputRule } from "@tiptap/core";
+import { InputRule , mergeAttributes } from "@tiptap/core";
 import { Color } from "@tiptap/extension-color";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import TiptapImage from "@tiptap/extension-image";
@@ -85,7 +85,29 @@ export const TiptapExtensions = [
         "text-stone-400 underline underline-offset-[3px] hover:text-stone-600 transition-colors cursor-pointer",
     },
   }),
-  TiptapImage.configure({
+  TiptapImage.extend({
+    addAttributes() {
+      return {
+        ...this.parent?.(),
+        src: {
+          default: null,
+        },
+        alt: {
+          default: null,
+        },
+        imageId: {
+          default: null,
+          parseHTML: element => element.getAttribute('data-image-id'),
+          renderHTML: attributes => ({
+            'data-image-id': attributes.imageId,
+          }),
+        },
+      }
+    },
+    renderHTML({ HTMLAttributes }) {
+      return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)]
+    },
+  }).configure({
     allowBase64: true,
     HTMLAttributes: {
       class: "rounded-lg border border-stone-200",

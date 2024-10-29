@@ -3,14 +3,15 @@
 import { type Editor, type Range, Extension } from "@tiptap/core";
 import { ReactRenderer } from "@tiptap/react";
 import Suggestion from "@tiptap/suggestion";
-import { Heading1, Heading2, Heading3, List, ListOrdered, Text, TextQuote, Image as ImageIcon, Code } from "lucide-react";
+import { Heading1, Heading2, Heading3, List, ListOrdered, Text, TextQuote,  Code } from "lucide-react";
+// import { Image as ImageIcon } from "#app/components/ui/image";
 import { useState, useEffect, useCallback, type ReactNode, useRef, useLayoutEffect } from "react";
 import { toast } from "react-hot-toast";
 import tippy from "tippy.js";
 import LoadingCircle from "#app/components/tiptap/icons/loading-circle.js";
 import Magic from "#app/components/tiptap/icons/magic.js";
 import { useCompletion } from "#app/utils/editor/ai/use-completion.js";
-import { handleImageUpload } from "#app/utils/editor/editor";
+// import { handleImageUpload } from "#app/utils/editor/editor";
 
 interface CommandItemProps {
   title: string;
@@ -112,27 +113,27 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       icon: <Code size={18} />,
       command: ({ editor, range }: Command) => editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
     },
-    {
-      title: "Image",
-      description: "Upload an image from your computer.",
-      icon: <ImageIcon size={18} />,
-      command: ({ editor, range }: Command) => {
-        editor.chain().focus().deleteRange(range).run();
-        // upload image
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-        input.onchange = async (event) => {
-          if (input.files?.length) {
-            const file = input.files[0];
-            if (file) {
-              return handleImageUpload(file, editor.view, event);
-            }
-          }
-        };
-        input.click();
-      },
-    },
+    // {
+    //   title: "Image",
+    //   description: "Upload an image from your computer.",
+    //   icon: <ImageIcon size={18} />,
+    //   command: ({ editor, range }: Command) => {
+    //     editor.chain().focus().deleteRange(range).run();
+    //     // upload image
+    //     const input = document.createElement("input");
+    //     input.type = "file";
+    //     input.accept = "image/*";
+    //     input.onchange = async (event) => {
+    //       if (input.files?.length) {
+    //         const file = input.files[0];
+    //         if (file) {
+    //           return handleImageUpload(file, editor.view, event);
+    //         }
+    //       }
+    //     };
+    //     input.click();
+    //   },
+    // },
   ].filter((item) => {
     if (typeof query === "string" && query.length > 0) {
       return item.title.toLowerCase().includes(query.toLowerCase());
