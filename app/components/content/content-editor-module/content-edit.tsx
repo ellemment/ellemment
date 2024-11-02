@@ -11,14 +11,12 @@ import { floatingToolbarClassName } from '#app/components/core/floating-toolbar'
 import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
-import { Label } from '#app/components/ui/label'
 import { StatusButton } from '#app/components/ui/status-button'
-import { Textarea } from '#app/components/ui/textarea'
 import { ContentEditorSchema, type ContentEditorData } from '#app/utils/content/content-schemas/schemas.js'
-import { type FormFields, type ActionData, type AltTextInputProps } from '#app/utils/content/content-types/types.js'
+import { type FormFields, type ActionData } from '#app/utils/content/content-types/types.js'
 import { useIsPending } from '#app/utils/misc'
 
-import { ContentEditImages } from './image-modules/content-image-edit'
+import { ContentEditImages } from './image-modules/content-image-module'
 import { Editor } from './tiptap-modules/editor'
 
 interface ContentEditorProps {
@@ -126,30 +124,6 @@ function DeleteContent({ id }: { id: string }) {
     )
 }
 
-function AltTextInput({
-    fields,
-    textareaKey,
-    textareaRestProps,
-    setAltText,
-}: AltTextInputProps) {
-    return (
-        <div className="flex-1">
-            <Label htmlFor={fields.altText.id}>Alt Text</Label>
-            <Textarea
-                key={textareaKey}
-                onChange={(e) => setAltText(e.currentTarget.value)}
-                {...textareaRestProps}
-            />
-            <div className="min-h-[32px] px-4 pb-3 pt-1">
-                <ErrorList
-                    id={fields.altText.errorId}
-                    errors={fields.altText.errors}
-                />
-            </div>
-        </div>
-    )
-}
-
 function ContentForm({
     form,
     fields,
@@ -208,12 +182,11 @@ export function ContentEditor({ content }: ContentEditorProps) {
     const isPending = useIsPending()
     const formRef = useRef<HTMLFormElement>(null)
 
-    // Ensure title is properly passed in defaultValue
     const [form, fields] = useForm({
         id: 'content-editor',
         defaultValue: {
             id: content?.id,
-            title: content?.title || '', // Make sure title is explicitly passed
+            title: content?.title || '',
             content: content?.content,
             images: content?.images ?? [{}],
         },
@@ -223,7 +196,6 @@ export function ContentEditor({ content }: ContentEditorProps) {
         },
         shouldRevalidate: 'onBlur',
     })
-
 
     const formProps = {
         id: form.id,
@@ -247,11 +219,9 @@ export function ContentEditor({ content }: ContentEditorProps) {
     )
 }
 
-// Export other components for use in other files if needed
 export {
     DeleteContent,
-    AltTextInput,
+    ContentForm,
+    ContentEditImages,
     ContentEditTitle,
-    ContentEditBody,
-    ContentEditToolbar
 }
