@@ -161,6 +161,7 @@
     "react": "^18.3.1",
     "react-daisyui": "^2.4.6",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.3",
     "react-highlight-words": "^0.20.0",
     "react-hot-toast": "^2.4.1",
     "react-use-measure": "^2.1.1",

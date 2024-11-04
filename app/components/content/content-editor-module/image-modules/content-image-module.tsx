@@ -147,7 +147,6 @@ export function ContentEditImages({ field, form }: ContentEditImagesProps) {
     const imageList = field.getFieldList()
     return (
         <div>
-            <Label>Images</Label>
             <ul className="flex flex-col gap-4">
                 {imageList.map((image, index: number) => {
                     const uniqueKey = `${image.key}-${index}-${image.id || 'new'}`

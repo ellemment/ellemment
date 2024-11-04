@@ -6,18 +6,27 @@ import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import { useRef } from 'react'
-
-import { floatingToolbarClassName } from '#app/components/core/floating-toolbar'
 import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
 import { StatusButton } from '#app/components/ui/status-button'
-import { ContentEditorSchema, type ContentEditorData } from '#app/utils/content/content-schemas/schemas.js'
-import { type FormFields, type ActionData } from '#app/utils/content/content-types/types.js'
+import { ContentEditorSchema } from '#app/utils/content/content-schemas/schemas.js'
+import { type ActionData } from '#app/utils/content/content-types/types.js'
 import { useIsPending } from '#app/utils/misc'
-
 import { ContentEditImages } from './image-modules/content-image-module'
 import { Editor } from './tiptap-modules/editor'
+
+// Define the form data type based on schema shape
+type ContentEditorFormData = {
+    id?: string
+    title: string
+    content: string
+    images?: Array<{
+        id?: string
+        altText?: string
+        file?: File
+    }>
+}
 
 interface ContentEditorProps {
     content?: SerializeFrom<
@@ -27,7 +36,7 @@ interface ContentEditorProps {
     >
 }
 
-function ContentEditTitle({ field }: { field: FieldMetadata<string, ContentEditorData, string[]> }) {
+function ContentTitle({ field }: { field: FieldMetadata<string, ContentEditorFormData> }) {
     return (
         <Field
             labelProps={{
@@ -37,50 +46,35 @@ function ContentEditTitle({ field }: { field: FieldMetadata<string, ContentEdito
             }}
             inputProps={{
                 autoFocus: true,
-                name: 'title',
+                name: field.name,
+                id: field.id,
                 type: 'text',
                 placeholder: 'Untitled',
                 defaultValue: field.value,
-                className: 'text-h1 font-bold'
+                className: 'w-full border-none px-0 text-4xl font-bold placeholder:text-muted-foreground/60 focus:outline-none focus:ring-0 bg-transparent'
             }}
             errors={field.errors}
         />
     )
 }
 
-function ContentEditBody({ field }: { field: FieldMetadata<string, ContentEditorData, string[]> }) {
-    return (
-        <div className="flex flex-col gap-1">
-            <Editor
-                name={field.name}
-                id={field.id}
-                defaultValue={field.value || ''}
-                onValueChange={(value) => {
-                    const input = document.getElementById(field.id) as HTMLInputElement
-                    if (input) {
-                        input.value = value
-                    }
-                }}
-            />
-            <div className="min-h-[32px] px-4 pb-3 pt-1">
-                <ErrorList id={field.errorId} errors={field.errors} />
-            </div>
-        </div>
-    )
-}
-
-function ContentEditToolbar({
+function ToolbarButtons({
     formId,
     isPending,
-    reset
+    onReset
 }: {
     formId: string
     isPending: boolean
-    reset: { getButtonProps: () => Record<string, unknown> }
+    onReset: () => void
 }) {
     return (
-        <div className={floatingToolbarClassName}>
-            <Button variant="destructive" {...reset.getButtonProps()}>
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2">
+            <Button
+                type="button"
+                variant="outline"
+                onClick={onReset}
+                className="bg-background"
+            >
                 Reset
             </Button>
             <StatusButton
@@ -88,10 +82,84 @@ function ContentEditToolbar({
                 type="submit"
                 disabled={isPending}
                 status={isPending ? 'pending' : 'idle'}
+                className="bg-primary text-primary-foreground shadow-sm"
             >
-                Submit
+                Save
             </StatusButton>
         </div>
+    )
+}
+
+interface ContentFormProps {
+    content?: ContentEditorProps['content']
+    fields: {
+        title: FieldMetadata<string, ContentEditorFormData>
+        content: FieldMetadata<string, ContentEditorFormData>
+        images: FieldMetadata<ContentEditorFormData['images'], ContentEditorFormData>
+    }
+    form: ReturnType<typeof useForm<ContentEditorFormData>>[0]
+    formRef: React.RefObject<HTMLFormElement>
+    isPending: boolean
+    handleReset: () => void
+}
+
+function ContentForm({
+    content,
+    form,
+    fields,
+    formRef,
+    isPending,
+    handleReset
+}: ContentFormProps) {
+    return (
+        <Form
+            ref={formRef}
+            method="POST"
+            className="mx-auto max-w-4xl px-4 py-8 sm:px-8"
+            id={form.id}
+            encType="multipart/form-data"
+            onSubmit={form.onSubmit}
+            noValidate={form.noValidate}
+        >
+            <div className="space-y-8">
+                <button type="submit" className="hidden" />
+                {content ? <input type="hidden" name="id" value={content.id} /> : null}
+
+                <div className="space-y-2">
+                    <ContentTitle field={fields.title} />
+                </div>
+
+                <div>
+                    <ContentEditImages
+                        field={fields.images}
+                        form={form}
+                    />
+                </div>
+
+                <div className="min-h-[500px]">
+                    <Editor
+                        name={fields.content.name}
+                        id={fields.content.id}
+                        defaultValue={fields.content.value ?? ''}
+                        onValueChange={(value) => {
+                            const input = document.getElementById(fields.content.id) as HTMLInputElement
+                            if (input) {
+                                input.value = value
+                            }
+                        }}
+                    />
+                </div>
+
+                <div className="min-h-[32px]">
+                    <ErrorList id={form.errorId} errors={form.errors || []} />
+                </div>
+                <ToolbarButtons
+                    formId={form.id}
+                    isPending={isPending}
+                    onReset={handleReset}
+                />
+            </div>
+        </Form>
     )
 }
 
@@ -99,129 +167,73 @@ function DeleteContent({ id }: { id: string }) {
     const actionData = useActionData<ActionData>()
     const isPending = useIsPending()
     const [form] = useForm({
-        id: 'delete-content',
-        lastResult: actionData?.result,
+      id: 'delete-content',
+      lastResult: actionData?.result,
     })
-
+  
     return (
-        <Form method="POST" {...form}>
-            <input type="hidden" name="contentId" value={id} />
-            <StatusButton
-                type="submit"
-                name="intent"
-                value="delete-content"
-                variant="destructive"
-                status={isPending ? 'pending' : (form.status ?? 'idle')}
-                disabled={isPending}
-                className="w-full max-md:aspect-square max-md:px-0"
-            >
-                <Icon name="trash" className="scale-125 max-md:scale-150">
-                    <span className="max-md:hidden">Delete</span>
-                </Icon>
-            </StatusButton>
-            <ErrorList errors={form.errors} id={form.errorId} />
-        </Form>
-    )
-}
-
-function ContentForm({
-    form,
-    fields,
-    content,
-    isPending
-}: {
-    form: {
-        id: string
-        ref: React.RefObject<HTMLFormElement>
-        reset: { getButtonProps: () => Record<string, unknown> }
-        remove: {
-            getButtonProps: (props: {
-                name: string
-                index: number
-            }) => Record<string, unknown>
-        }
-        insert: { getButtonProps: (props: { name: string }) => Record<string, unknown> }
-        errorId?: string
-        errors?: string[]
-    }
-    fields: FormFields
-    content?: SerializeFrom<
-        Pick<Content, 'id' | 'title' | 'content'> & {
-            images: Array<Pick<ContentImage, 'id' | 'altText'>>
-        }
-    >
-    isPending: boolean
-}) {
-    return (
-        <Form
-            method="POST"
-            className="flex h-full flex-col gap-y-4 overflow-y-auto overflow-x-hidden px-10 pb-28 pt-12"
-            ref={form.ref}
-            id={form.id}
-            encType="multipart/form-data"
+      <Form 
+        method="POST" 
+        id={form.id}
+        onSubmit={form.onSubmit}
+        noValidate={form.noValidate}
+      >
+        <input type="hidden" name="intent" value="delete-content" />
+        <input type="hidden" name="contentId" value={id} />
+        <StatusButton
+          form="delete-content"
+          type="submit"
+          variant="destructive"
+          status={isPending ? 'pending' : (form.status ?? 'idle')}
+          disabled={isPending}
+          className="w-full max-md:aspect-square max-md:px-0"
         >
-            <button type="submit" className="hidden" />
-            {content ? <input type="hidden" name="id" value={content.id} /> : null}
-            <div className="flex flex-col gap-1">
-                <ContentEditTitle field={fields.title} />
-                <ContentEditBody field={fields.content} />
-                <ContentEditImages field={fields.images} form={form} />
-            </div>
-            <ErrorList id={form.errorId} errors={form.errors ?? []} />
-            <ContentEditToolbar
-                formId={form.id}
-                isPending={isPending}
-                reset={form.reset}
-            />
-        </Form>
+          <Icon name="trash" className="scale-125 max-md:scale-150">
+            <span className="max-md:hidden">Delete</span>
+          </Icon>
+        </StatusButton>
+        <ErrorList errors={form.errors || []} id={form.errorId} />
+      </Form>
     )
-}
+  }
 
-export function ContentEditor({ content }: ContentEditorProps) {
+function ContentEditor({ content }: ContentEditorProps) {
     const actionData = useActionData<ActionData>()
     const isPending = useIsPending()
     const formRef = useRef<HTMLFormElement>(null)
 
-    const [form, fields] = useForm({
+    const [form, { title, content: contentField, images }] = useForm<ContentEditorFormData>({
         id: 'content-editor',
         defaultValue: {
             id: content?.id,
             title: content?.title || '',
-            content: content?.content,
+            content: content?.content || '',
             images: content?.images ?? [{}],
         },
         lastResult: actionData?.result,
-        onValidate({ formData }) {
+        onValidate: ({ formData }) => {
             return parseWithZod(formData, { schema: ContentEditorSchema })
         },
         shouldRevalidate: 'onBlur',
     })
 
-    const formProps = {
-        id: form.id,
-        ref: formRef,
-        reset: form.reset,
-        remove: form.remove,
-        insert: form.insert,
-        errorId: form.errorId,
-        errors: form.errors
+    const handleReset = () => {
+        formRef.current?.reset()
+        form.reset()
     }
 
     return (
-        <div className="absolute inset-0">
+        <div className="relative min-h-screen bg-background">
             <ContentForm
-                form={formProps}
-                fields={fields}
                 content={content}
+                form={form}
+                fields={{ title, content: contentField, images }}
+                formRef={formRef}
                 isPending={isPending}
+                handleReset={handleReset}
             />
         </div>
     )
 }
 
-export {
-    DeleteContent,
-    ContentForm,
-    ContentEditImages,
-    ContentEditTitle,
-}
+export { ContentEditor, DeleteContent }
