@@ -6,6 +6,7 @@ import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import { useRef } from 'react'
+import { floatingToolbarClassName } from '#app/components/core/floating-toolbar'
 import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
@@ -68,27 +69,34 @@ function ToolbarButtons({
     onReset: () => void
 }) {
     return (
-        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2">
-            <Button
-                type="button"
-                variant="outline"
-                onClick={onReset}
-                className="bg-background"
-            >
-                Reset
-            </Button>
-            <StatusButton
-                form={formId}
-                type="submit"
-                disabled={isPending}
-                status={isPending ? 'pending' : 'idle'}
-                className="bg-primary text-primary-foreground shadow-sm"
-            >
-                Save
-            </StatusButton>
+        <div className={floatingToolbarClassName}>
+            <div className="grid flex-1 grid-cols-2 justify-end gap-2 min-[525px]:flex md:gap-4">
+                <Button
+                    type="button"
+                    variant="default"
+                    onClick={onReset}
+                    className="min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0 bg-primary/80 text-primary-foreground hover:bg-primary/50"
+                >
+                    <Icon name="minus-circled" className="scale-125 max-md:scale-150">
+                        <span className="max-md:hidden">Reset</span>
+                    </Icon>
+                </Button>
+                <StatusButton
+                    form={formId}
+                    type="submit"
+                    disabled={isPending}
+                    status={isPending ? 'pending' : 'idle'}
+                    className="min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0"
+                >
+                    <Icon name="plus-circled" className="scale-125 max-md:scale-150">
+                        <span className="max-md:hidden">Save</span>
+                    </Icon>
+                </StatusButton>
+            </div>
         </div>
     )
 }
+
 
 interface ContentFormProps {
     content?: ContentEditorProps['content']
@@ -115,7 +123,7 @@ function ContentForm({
         <Form
             ref={formRef}
             method="POST"
-            className="mx-auto max-w-4xl px-4 py-8 sm:px-8"
+            className="mx-auto px-4 py-8 sm:px-8"
             id={form.id}
             encType="multipart/form-data"
             onSubmit={form.onSubmit}
@@ -128,6 +136,16 @@ function ContentForm({
                 <div className="space-y-2">
                     <ContentTitle field={fields.title} />
                 </div>
+
+                <Button
+                    className="mt-3"
+                    {...form.insert.getButtonProps({ name: fields.images.name })}
+                >
+                    <span aria-hidden>
+                        <Icon name="upload">Image</Icon>
+                    </span>{' '}
+                    <span className="sr-only">Add image</span>
+                </Button>
 
                 <div>
                     <ContentEditImages
@@ -208,7 +226,7 @@ function ContentEditor({ content }: ContentEditorProps) {
             id: content?.id,
             title: content?.title || '',
             content: content?.content || '',
-            images: content?.images ?? [{}],
+            images: content?.images ?? [],
         },
         lastResult: actionData?.result,
         onValidate: ({ formData }) => {
@@ -223,7 +241,7 @@ function ContentEditor({ content }: ContentEditorProps) {
     }
 
     return (
-        <div className="relative min-h-screen bg-background">
+        <div className="bg-background md:rounded-3xl">
             <ContentForm
                 content={content}
                 form={form}

@@ -85,7 +85,7 @@ function ContentToolbar({ timeAgo, contentId, canDelete, displayBar }: ContentTo
 export function ContentView({ content, timeAgo, canDelete, isOwner }: ContentViewProps) {
   const displayBar = canDelete || isOwner
   return (
-    <div className="absolute inset-0 flex flex-col px-10">
+    <div className="absolute inset-0 flex flex-col px-5">
       <ContentTitle title={content.title} />
       <ContentBody
         content={content.content}
