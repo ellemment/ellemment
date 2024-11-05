@@ -60,32 +60,39 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request)
   const formData = await request.formData()
-  const submission = parseWithZod(formData, {
-    schema: DeleteFormSchema,
-  })
-  if (submission.status !== 'success') {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === 'error' ? 400 : 200 },
+  const intent = formData.get('intent')
+
+  if (intent === 'delete-content') {
+    const submission = parseWithZod(formData, {
+      schema: DeleteFormSchema,
+    })
+    if (submission.status !== 'success') {
+      return json(
+        { result: submission.reply() },
+        { status: submission.status === 'error' ? 400 : 200 },
+      )
+    }
+    const { contentId } = submission.value
+    const content = await prisma.content.findFirst({
+      select: { id: true, ownerId: true, owner: { select: { username: true } } },
+      where: { id: contentId },
+    })
+    invariantResponse(content, 'Not found', { status: 404 })
+    const isOwner = content.ownerId === userId
+    await requireUserWithPermission(
+      request,
+      isOwner ? `delete:content:own` : `delete:content:any`,
     )
+    await prisma.content.delete({ where: { id: content.id } })
+    return redirectWithToast(`/account/${content.owner.username}/content`, {
+      type: 'success',
+      title: 'Success',
+      description: 'Your content has been deleted.',
+    })
   }
-  const { contentId } = submission.value
-  const content = await prisma.content.findFirst({
-    select: { id: true, ownerId: true, owner: { select: { username: true } } },
-    where: { id: contentId },
-  })
-  invariantResponse(content, 'Not found', { status: 404 })
-  const isOwner = content.ownerId === userId
-  await requireUserWithPermission(
-    request,
-    isOwner ? `delete:content:own` : `delete:content:any`,
-  )
-  await prisma.content.delete({ where: { id: content.id } })
-  return redirectWithToast(`/account/${content.owner.username}/content`, {
-    type: 'success',
-    title: 'Success',
-    description: 'Your content has been deleted.',
-  })
+
+  // Handle other intents here if needed
+  return json({ error: 'Invalid intent' }, { status: 400 })
 }
 
 export default function ContentRoute() {

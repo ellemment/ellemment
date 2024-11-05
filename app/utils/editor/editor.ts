@@ -5,53 +5,57 @@ import { toast } from "react-hot-toast"
 import { type ImageFieldset, MAX_UPLOAD_SIZE } from '#app/utils/content/content-schemas/schemas.js'
 import { getContentImgSrc } from '#app/utils/misc'
 
-export const handleImageUpload = async (
+export async function handleImageUpload(
   file: File,
   view: EditorView,
-  event: ClipboardEvent | DragEvent | Event
-): Promise<void> => {
-  // Check if the file is an image
-  if (!file.type.includes("image/")) {
-    toast.error("File type not supported.")
+  event: Event
+) {
+  event.preventDefault()
+
+  if (!file.type.includes('image/')) {
+    toast.error('File must be an image')
     return
   }
 
-  // Check file size
   if (file.size > MAX_UPLOAD_SIZE) {
-    toast.error(`File size too big (max ${Math.floor(MAX_UPLOAD_SIZE / 1024 / 1024)}MB).`)
+    toast.error('Image must be less than 3MB')
     return
-  }
-
-  // #app/components/tiptap/modules/lib/utils/editor.ts
-  const insertImage = async (file: File): Promise<void> => {
-    // Guard against server-side execution
-    if (typeof window === 'undefined') return
-
-    try {
-      const formData = new FormData()
-      const imageId = cuid()
-
-      formData.append('images[0][file]', file)
-      formData.append('images[0][altText]', file.name)
-
-      // Rest of your code...
-    } catch (error) {
-      console.error('Error handling image upload:', error)
-      throw error
-    }
   }
 
   try {
-    await toast.promise(
-      insertImage(file),
-      {
-        loading: "Uploading image...",
-        success: "Image uploaded successfully.",
-        error: "Failed to upload image.",
-      }
-    )
+    const formData = new FormData()
+    const imageId = cuid()
+    
+    // Only send image-related data
+    formData.append(`image.file`, file)
+    formData.append(`image.id`, imageId)
+    formData.append(`image.altText`, file.name)
+    formData.append('intent', 'upload-image')
+
+    const response = await fetch(window.location.pathname, {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const data = await response.json()
+      console.error('Upload error:', data)
+      throw new Error(data.message || 'Upload failed')
+    }
+
+    // Insert image into editor
+    if (view.state.schema.nodes.image) {
+      const node = view.state.schema.nodes.image.create({
+        src: getContentImgSrc(imageId), // Use the actual image URL
+        alt: file.name,
+        imageId: imageId
+      })
+      const transaction = view.state.tr.replaceSelectionWith(node)
+      view.dispatch(transaction)
+    }
+
   } catch (error) {
-    console.error('Error handling image upload:', error)
+    console.error('Error uploading image:', error)
     toast.error('Failed to upload image')
   }
 }

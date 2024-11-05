@@ -1,4 +1,5 @@
 // #app/utils/content/content-markdown/tiptap.server.ts
+
 import  { type JSONContent } from '@tiptap/core'
 import Link from '@tiptap/extension-link'
 import { generateJSON, generateHTML } from '@tiptap/html'
@@ -16,41 +17,19 @@ const extensions = [
 
 export function jsonToHtml(jsonContent: string) {
   try {
-    const json = typeof jsonContent === 'string' ? JSON.parse(jsonContent) : jsonContent
-    return generateHTML(json as JSONContent, extensions)
+    const json = JSON.parse(jsonContent) as JSONContent
+    return generateHTML(json, extensions)
   } catch (e) {
     console.error('Error converting JSON to HTML:', e)
-    return jsonContent
+    return jsonContent // Fallback to raw content if parsing fails
   }
 }
 
-export function stringToEditorContent(content: string): JSONContent {
+export function htmlToJson(html: string) {
   try {
-    // If it's already a JSON string, parse and return it
-    if (content.startsWith('{') && content.includes('"type":"doc"')) {
-      const parsedContent = JSON.parse(content) as JSONContent
-      if (!parsedContent.type) {
-        throw new Error('Invalid editor content structure')
-      }
-      return parsedContent
-    }
-    
-    // If it's plain text/markdown, convert it to editor format
-    return generateJSON(content, extensions)
+    return JSON.stringify(generateJSON(html, extensions))
   } catch (e) {
-    console.error('Error converting string to editor content:', e)
-    // Fallback to creating a basic document structure
-    return {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: content }]
-        }
-      ]
-    }
+    console.error('Error converting HTML to JSON:', e)
+    return html // Fallback to raw content if conversion fails
   }
 }
-
-// If you need to export types for use elsewhere
-export type { JSONContent }

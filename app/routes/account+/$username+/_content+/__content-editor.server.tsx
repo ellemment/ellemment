@@ -1,6 +1,6 @@
 // #app/routes/account+/$username+/_content+/__content-editor.server.tsx
+
 import { parseWithZod } from '@conform-to/zod'
-import { createId as cuid } from '@paralleldrive/cuid2'
 import {
   unstable_createMemoryUploadHandler as createMemoryUploadHandler,
   json,
@@ -10,25 +10,12 @@ import {
 } from '@remix-run/node'
 import { z } from 'zod'
 import { requireUserId } from '#app/utils/auth.server'
-
+import { processImages, generateImageDbOperations } from '#app/utils/content/content-forms/image-upload'
 import {
   ContentEditorSchema,
   MAX_UPLOAD_SIZE,
-  type ImageFieldset,
 } from '#app/utils/content/content-schemas/schemas.js'
 import { prisma } from '#app/utils/db.server'
-
-function imageHasFile(
-  image: ImageFieldset,
-): image is ImageFieldset & { file: NonNullable<ImageFieldset['file']> } {
-  return Boolean(image.file?.size && image.file?.size > 0)
-}
-
-function imageHasId(
-  image: ImageFieldset,
-): image is ImageFieldset & { id: NonNullable<ImageFieldset['id']> } {
-  return image.id != null
-}
 
 export async function handleContentSubmission(
   request: Request,
@@ -46,12 +33,24 @@ export async function handleContentSubmission(
     id: contentId,
     title,
     content,
-    imageUpdates = [],
-    newImages = [],
+    images = [],
   } = submission.value
 
-  // Store raw markdown content directly
-  const rawMarkdownContent = content
+  // Get existing image IDs if updating content
+  const existingImageIds = contentId
+    ? (
+      await prisma.content.findUnique({
+        where: { id: contentId },
+        select: { images: { select: { id: true } } },
+      })
+    )?.images.map((img) => img.id) ?? []
+    : []
+
+  // Process images
+  const imageProcessingResult = await processImages(images, existingImageIds)
+
+  // Generate database operations
+  const imageOperations = generateImageDbOperations(imageProcessingResult)
 
   const updatedContent = await prisma.content.upsert({
     select: { id: true, owner: { select: { username: true } } },
@@ -59,20 +58,13 @@ export async function handleContentSubmission(
     create: {
       ownerId: userId,
       title,
-      content: rawMarkdownContent, // Store raw markdown
-      images: { create: newImages },
+      content,
+      images: { create: imageOperations.create },
     },
     update: {
       title,
-      content: rawMarkdownContent, // Store raw markdown
-      images: {
-        deleteMany: { id: { notIn: imageUpdates.map((i: { id: string }) => i.id) } },
-        updateMany: imageUpdates.map((updates: { id: string; blob?: Buffer }) => ({
-          where: { id: updates.id },
-          data: { ...updates, id: updates.blob ? cuid() : updates.id },
-        })),
-        create: newImages,
-      },
+      content,
+      images: imageOperations,
     },
   })
 
@@ -81,18 +73,74 @@ export async function handleContentSubmission(
   )
 }
 
+
+
+
 export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request)
+  
+  // Use a regular formData parse first to check intent
+  const clonedRequest = request.clone()
+  const formData = await clonedRequest.formData()
+  const intent = formData.get('intent')
 
-  const formData = await parseMultipartFormData(
-    request,
-    createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
-  )
+  if (intent === 'upload-image') {
+    try {
+      const formData = await parseMultipartFormData(
+        request,
+        createMemoryUploadHandler({ 
+          maxPartSize: MAX_UPLOAD_SIZE,
+          filter: ({ contentType }) => contentType?.includes('image/') ?? false 
+        }),
+      )
 
+      const submission = await parseWithZod(formData, {
+        schema: ContentEditorSchema.pick({ images: true }),
+        async: true,
+      })
+
+      if (submission.status !== 'success') {
+        return json({
+          error: 'Invalid submission',
+          details: submission.reply()
+        }, { status: 400 })
+      }
+
+      const { images = [] } = submission.value
+      
+      // Process images
+      const imageProcessingResult = await processImages(images, [])
+      
+      if (!imageProcessingResult.newImages?.length) {
+        return json({
+          error: 'No images were processed'
+        })
+      }
+      
+      return json({
+        ok: true,
+        result: {
+          status: 'success',
+          data: {
+            images: imageProcessingResult.newImages.map(img => ({
+              id: img.id,
+              altText: img.altText
+            }))
+          }
+        }
+      })
+    } catch (error) {
+      console.error('Image upload error:', error)
+      return json({
+        error: error instanceof Error ? error.message : 'Failed to process image upload'
+      }, { status: 500 })
+    }
+  }
+
+  // Handle regular content submission
   const submission = await parseWithZod(formData, {
     schema: ContentEditorSchema.superRefine(async (data, ctx) => {
       if (!data.id) return
-
       const content = await prisma.content.findUnique({
         select: { id: true },
         where: { id: data.id, ownerId: userId },
@@ -103,42 +151,9 @@ export async function action({ request }: ActionFunctionArgs) {
           message: 'Content not found',
         })
       }
-    }).transform(async ({ images = [], ...data }) => {
-      return {
-        ...data,
-        imageUpdates: await Promise.all(
-          images.filter(imageHasId).map(async (i) => {
-            if (imageHasFile(i)) {
-              return {
-                id: i.id,
-                altText: i.altText,
-                contentType: i.file.type,
-                blob: Buffer.from(await i.file.arrayBuffer()),
-              }
-            } else {
-              return {
-                id: i.id,
-                altText: i.altText,
-              }
-            }
-          }),
-        ),
-        newImages: await Promise.all(
-          images
-            .filter(imageHasFile)
-            .filter((i) => !i.id)
-            .map(async (image) => {
-              return {
-                altText: image.altText,
-                contentType: image.file.type,
-                blob: Buffer.from(await image.file.arrayBuffer()),
-              }
-            }),
-        ),
-      }
     }),
     async: true,
   })
 
-  return handleContentSubmission(request, userId, submission)
+  return handleContentSubmission(request.clone(), userId, submission)
 }
