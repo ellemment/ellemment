@@ -11,9 +11,9 @@ import {
 import { z } from 'zod'
 import { requireUserId } from '#app/utils/auth.server'
 import { processImages, generateImageDbOperations } from '#app/utils/content/forms-module/image-upload'
+import { MAX_UPLOAD_SIZE } from '#app/utils/content/image-module'
 import {
   ContentEditorSchema,
-  MAX_UPLOAD_SIZE,
 } from '#app/utils/content/schemas-module/schemas'
 import { prisma } from '#app/utils/db.server'
 

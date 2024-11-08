@@ -1,8 +1,8 @@
 // #app/utils/editor/image-handler.ts
 import { type Editor } from '@tiptap/core'
 import { toast } from 'react-hot-toast'
+import { getContentImgSrc } from '#app/utils/content/image-module'
 import { type ImageFieldset, MAX_UPLOAD_SIZE } from '#app/utils/content/schemas-module/schemas.js'
-import { getContentImgSrc } from '#app/utils/misc'
 
 interface ImageUploadResponse {
   error?: string

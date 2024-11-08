@@ -1,54 +1,38 @@
-// #app/components/content/content-editor-module/image-modules/content-image-module.tsx
+// app/components/content/content-editor-module/image-modules/content-image-module.tsx
 
-import { type FieldMetadata, getFieldsetProps, getInputProps } from '@conform-to/react'
-import { useState, useEffect } from 'react'
+import { getFieldsetProps, getInputProps } from '@conform-to/react'
 import { ErrorList } from '#app/components/core/forms'
 import { Icon } from '#app/components/ui/icon'
-import { type ContentEditorData, type ImageFieldset } from '#app/utils/content/schemas-module/schemas'
-import { cn, getContentImgSrc } from '#app/utils/misc'
+import { useImageAltText, useImagePreview } from '#app/utils/content/image-module/hooks'
+import { type ImageChooserProps, type ContentEditImagesProps } from '#app/utils/content/image-module/types'
+import { cn } from '#app/utils/misc'
 
-// ImageChooser Component
-interface ImageChooserProps {
-    meta: FieldMetadata<ImageFieldset>
-    index: number
+function ImagePreview({ url }: { url: string | null }) {
+    if (!url) {
+        return (
+            <div className="flex h-32 w-32 items-center justify-center rounded-lg border border-muted-foreground text-4xl text-muted-foreground">
+                <Icon name="plus" />
+            </div>
+        )
+    }
+
+    return (
+        <div className="relative">
+            <img
+                src={url}
+                alt=""
+                className="h-32 w-32 rounded-lg object-cover"
+            />
+        </div>
+    )
 }
 
 export function ImageChooser({ meta, index }: ImageChooserProps) {
     const fields = meta.getFieldset()
     const existingImage = Boolean(fields.id.initialValue)
-    const [previewImage, setPreviewImage] = useState<string | null>(
-        fields.id.initialValue ? getContentImgSrc(fields.id.initialValue) : null,
-    )
-
-    // Get the form element to access the title input
-    useEffect(() => {
-        if (!previewImage) return
-
-        // Find the title input in the form
-        const form = document.getElementById('content-editor') as HTMLFormElement
-        if (!form) return
-
-        const titleInput = form.querySelector('input[type="text"]') as HTMLInputElement
-        if (!titleInput) return
-
-        // Generate alt text based on title and index
-        const title = titleInput.value.trim()
-        const altText = index === 0 ? title : `${title}_${index + 1}`
-
-        // Set the alt text in the hidden input
-        const altTextInput = document.createElement('input')
-        altTextInput.type = 'hidden'
-        altTextInput.name = fields.altText.name
-        altTextInput.value = altText
-
-        // Replace existing alt text input or append new one
-        const existingAltTextInput = form.querySelector(`input[name="${fields.altText.name}"]`) as HTMLInputElement
-        if (existingAltTextInput) {
-            existingAltTextInput.value = altText
-        } else {
-            form.appendChild(altTextInput)
-        }
-    }, [previewImage, index, fields.altText.name])
+    const { previewImage, handleFileChange } = useImagePreview(fields.id.initialValue)
+    
+    useImageAltText(fields, index, previewImage)
 
     const fileInputProps = getInputProps(fields.file, { type: 'file' })
     const { key: fileKey, ...fileRestProps } = fileInputProps
@@ -69,74 +53,78 @@ export function ImageChooser({ meta, index }: ImageChooserProps) {
                                 'cursor-pointer focus-within:ring-2': !existingImage,
                             })}
                         >
-                            {previewImage ? (
-                                <div className="relative">
-                                    <img
-                                        src={previewImage}
-                                        alt=""
-                                        className="h-32 w-32 rounded-lg object-cover"
-                                    />
-                                </div>
-                            ) : (
-                                <div className="flex h-32 w-32 items-center justify-center rounded-lg border border-muted-foreground text-4xl text-muted-foreground">
-                                    <Icon name="plus" />
-                                </div>
-                            )}
+                            <ImagePreview url={previewImage} />
+                            
                             {existingImage ? (
                                 <input key={hiddenKey} {...hiddenRestProps} />
                             ) : null}
+                            
                             <input
                                 key={fileKey}
                                 aria-label="Image"
                                 className="absolute left-0 top-0 z-0 h-32 w-32 cursor-pointer opacity-0"
                                 onChange={(event) => {
-                                    const file = event.target.files?.[0]
-                                    if (file) {
-                                        const reader = new FileReader()
-                                        reader.onloadend = () => {
-                                            setPreviewImage(reader.result as string)
-                                        }
-                                        reader.readAsDataURL(file)
-                                    } else {
-                                        setPreviewImage(null)
-                                    }
+                                    handleFileChange(event.target.files?.[0] ?? null)
                                 }}
                                 accept="image/*"
                                 {...fileRestProps}
                             />
                         </label>
                     </div>
-                    {fields.file.errors && fields.file.errors.length > 0 ? (
-                        <div className="min-h-[32px] px-4 pb-3 pt-1">
-                            <ErrorList id={fields.file.errorId} errors={fields.file.errors} />
-                        </div>
-                    ) : null}
+                    <ErrorContainer
+                        errorId={fields.file.errorId}
+                        errors={fields.file.errors}
+                    />
                 </div>
             </div>
-            <div className="min-h-[32px] px-4 pb-3 pt-1">
-                <ErrorList id={meta.errorId} errors={meta.errors} />
-            </div>
+            <ErrorContainer
+                errorId={meta.errorId}
+                errors={meta.errors}
+            />
         </fieldset>
     )
 }
 
-interface ContentEditImagesProps {
-    field: FieldMetadata<ImageFieldset[], ContentEditorData, string[]> & {
-        getFieldList: () => Array<FieldMetadata<ImageFieldset, ContentEditorData, string[]>>
-    }
-    form: {
-        remove: {
-            getButtonProps: (props: {
-                name: string
-                index: number
-            }) => Record<string, unknown>
-        }
-        insert: { getButtonProps: (props: { name: string }) => Record<string, unknown> }
-    }
+function ErrorContainer({ errorId, errors }: { errorId: string; errors: string[] | null | undefined }) {
+    if (!errors?.length) return null
+    
+    return (
+        <div className="min-h-[32px] px-4 pb-3 pt-1">
+            <ErrorList id={errorId} errors={errors} />
+        </div>
+    )
+}
+
+function RemoveImageButton({ 
+    form, 
+    fieldName, 
+    index 
+}: { 
+    form: ContentEditImagesProps['form']
+    fieldName: string
+    index: number 
+}) {
+    return (
+        <button
+            className="absolute -right-2 -top-2 rounded-full bg-background/80 p-1.5 text-white hover:text-destructive aspect-square h-6 w-6 inline-flex items-center justify-center drop-shadow-md transition-colors"
+            {...form.remove.getButtonProps({
+                name: fieldName,
+                index,
+            })}
+        >
+            <span aria-hidden className="h-3.5 w-3.5 inline-flex items-center justify-center">
+                <Icon name="cross-1" />
+            </span>
+            <span className="sr-only">
+                Remove image {index + 1}
+            </span>
+        </button>
+    )
 }
 
 export function ContentEditImages({ field, form }: ContentEditImagesProps) {
     const imageList = field.getFieldList()
+    
     return (
         <div>
             <ul className="flex flex-wrap gap-5">
@@ -152,20 +140,11 @@ export function ContentEditImages({ field, form }: ContentEditImagesProps) {
                                     meta={image}
                                     index={index}
                                 />
-                                <button
-                                    className="absolute -right-2 -top-2 rounded-full bg-background/80 p-1.5 text-white hover:text-destructive aspect-square h-6 w-6 inline-flex items-center justify-center drop-shadow-md transition-colors"
-                                    {...form.remove.getButtonProps({
-                                        name: field.name,
-                                        index,
-                                    })}
-                                >
-                                    <span aria-hidden className="h-3.5 w-3.5 inline-flex items-center justify-center">
-                                        <Icon name="cross-1" />
-                                    </span>
-                                    <span className="sr-only">
-                                        Remove image {index + 1}
-                                    </span>
-                                </button>
+                                <RemoveImageButton
+                                    form={form}
+                                    fieldName={field.name}
+                                    index={index}
+                                />
                             </div>
                         </li>
                     )
