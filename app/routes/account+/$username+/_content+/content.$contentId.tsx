@@ -135,7 +135,7 @@ export default function ContentRoute() {
             asChild
             className="text-muted-foreground hover:text-foreground"
           >
-            <Link to="..">
+            <Link to={`/account/${data.content.owner.username}`}>
               <Icon name="arrow-left" className="mr-2" />
               Space
             </Link>
