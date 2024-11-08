@@ -1,18 +1,18 @@
 // #app/components/content/content-view-module/content-view.tsx
 
 import { Link } from '@remix-run/react'
+import { DeleteContent } from '#app/components/content/editor-module/content-edit'
 import { floatingToolbarClassName } from '#app/components/core/floating-toolbar'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
+import { getContentImgSrc } from '#app/utils/content/image-module'
 import { 
   type ContentViewProps, 
   type ContentBodyProps, 
   type ContentTitleProps, 
   type ContentToolbarProps,
   type ImageGalleryProps 
-} from '#app/utils/content/content-types/types.js'
-import { getContentImgSrc } from '#app/utils/misc'
-import { DeleteContent } from '../content-editor-module/content-edit'
+} from '#app/utils/content/types-module/types'
 
 function ImageGallery({ images }: ImageGalleryProps) {
   return (

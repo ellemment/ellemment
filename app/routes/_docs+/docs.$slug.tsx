@@ -7,8 +7,8 @@ import { useRef } from "react";
 import invariant from "tiny-invariant";
 
 import { useDelegatedReactRouterLinks } from "#app/components/utils/delegate-links";
-import mdStyles from "#app/utils/content/content-markdown/styles/md.css?url";
 import { getContentElemment } from "#app/utils/content/content.server";
+import mdStyles from "#app/utils/content/markdown-module/styles/md.css?url";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   let { slug } = params;

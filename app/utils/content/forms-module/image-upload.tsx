@@ -3,7 +3,7 @@
 // #app/utils/content/content-forms/image-upload.ts
 
 import { createId as cuid } from '@paralleldrive/cuid2'
-import { type ImageFieldset } from '../content-schemas/schemas'
+import { type ImageFieldset } from '../schemas-module/schemas'
 
 /**
  * Type guard to check if an image has a file

@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
           data-paragraph
           className="mt-6 animate-slide-top text-xl/7 text-muted-foreground [animation-delay:0.8s] [animation-fill-mode:backwards] xl:mt-8 xl:animate-slide-left xl:text-xl/6 xl:leading-10 xl:[animation-delay:1s] xl:[animation-fill-mode:backwards]"
         >
-          meet creemson
+          meet ellemments
         </p>
         <div className="mt-8 flex gap-4">
           <Button variant="default" size="default">

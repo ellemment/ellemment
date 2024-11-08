@@ -4,7 +4,7 @@ import Discover from '#app/components/playground/discover.js'
 import Hero from '#app/components/playground/hero'
 
 
-export const meta: MetaFunction = () => [{ title: 'Creemson' }]
+export const meta: MetaFunction = () => [{ title: 'Ellemments' }]
 
 export default function Index() {
   return (

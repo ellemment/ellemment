@@ -87,7 +87,7 @@ export default function ProfileRoute() {
                         ) : null}
                         {isAdminAndOwner ? (
                             <Button asChild>
-                                <Link to="/account/beta" prefetch="intent">
+                                <Link to={`/account/${user.username}/content`} prefetch="intent">
                                     Dashboard
                                 </Link>
                             </Button>
@@ -102,10 +102,10 @@ export default function ProfileRoute() {
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
     const displayName = data?.user.name ?? params.username
     return [
-        { title: `${displayName} | Creemson` },
+        { title: `${displayName} | Ellemments` },
         {
             name: 'description',
-            content: `Profile of ${displayName} on Creemson`,
+            content: `Profile of ${displayName} on Ellemments`,
         },
     ]
 }

@@ -33,7 +33,7 @@ import {
   SidebarTrigger,
 } from "#app/components/ui/sidebar"
 
-import { docsNavigation } from "#app/utils/beta/docs-nav"
+import { docsNavigation } from "#app/utils/docs/docs-nav.js"
 
 // Define interfaces for the navigation structure
 interface NavItem {

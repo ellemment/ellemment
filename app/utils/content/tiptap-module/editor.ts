@@ -2,8 +2,8 @@
 import { createId as cuid } from '@paralleldrive/cuid2'
 import { type EditorView } from "@tiptap/pm/view"
 import { toast } from "react-hot-toast"
-import { type ImageFieldset, MAX_UPLOAD_SIZE } from '#app/utils/content/content-schemas/schemas.js'
-import { getContentImgSrc } from '#app/utils/misc'
+import { getContentImgSrc } from '#app/utils/content/image-module'
+import { type ImageFieldset, MAX_UPLOAD_SIZE } from '#app/utils/content/schemas-module/schemas.js'
 
 export async function handleImageUpload(
   file: File,

@@ -23,7 +23,7 @@ function GlobalHeader() {
             to="/"
             className="text-primary underlined block whitespace-nowrap text-sm font-medium transition focus:outline-none"
           >
-            <h1>Dony Alior</h1>
+            <h1>ellemments</h1>
           </Link>
         </div>
 

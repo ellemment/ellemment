@@ -71,7 +71,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const requestInfo = data?.requestInfo
 	return [
-		{ title: data ? 'Creemson' : 'Error | ellemment' },
+		{ title: data ? 'ellemments' : 'Error | ellemments' },
 		{ name: 'description', content: `Your own captain's log` },
 		{
 			'theme-color':
@@ -183,8 +183,10 @@ function Document({
 				)}
 				<Links />
 			</head>
-			<body className="bg-neutral-100 dark:bg-background text-primary transition duration-500">
-				{children}
+			<body className="bg-neutral-100 dark:bg-background text-primary transition duration-500 min-h-screen">
+				<div className="min-h-screen bg-neutral-100 dark:bg-background">
+					{children}
+				</div>
 				<script
 					nonce={nonce}
 					dangerouslySetInnerHTML={{
@@ -215,16 +217,16 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
-			<div className="flex flex-col justify-between">
+			<div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-background">
 				{showHeader && (
 					<GlobalHeader />
 				)}
 
-				<div className="flex-1">
+				<div className="flex-1 bg-neutral-100 dark:bg-background">
 					<Outlet />
 				</div>
 
-				<footer className="">
+				<footer className="bg-neutral-100 dark:bg-background">
 					{/* Footer content if needed */}
 				</footer>
 			</div>

@@ -193,7 +193,7 @@ export default function LoginPage() {
 }
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Login to Creemson' }]
+	return [{ title: 'Login to Ellemments' }]
 }
 
 export function ErrorBoundary() {

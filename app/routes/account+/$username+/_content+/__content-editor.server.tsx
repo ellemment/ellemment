@@ -2,19 +2,19 @@
 
 import { parseWithZod } from '@conform-to/zod'
 import {
-  unstable_createMemoryUploadHandler as createMemoryUploadHandler,
   json,
-  unstable_parseMultipartFormData as parseMultipartFormData,
   redirect,
   type ActionFunctionArgs,
 } from '@remix-run/node'
 import { z } from 'zod'
 import { requireUserId } from '#app/utils/auth.server'
-import { processImages, generateImageDbOperations } from '#app/utils/content/content-forms/image-upload'
-import {
-  ContentEditorSchema,
-  MAX_UPLOAD_SIZE,
-} from '#app/utils/content/content-schemas/schemas.js'
+import { 
+  processImages, 
+  generateImageDbOperations,
+  parseMultipartFormDataWithImage, 
+  createImageUploadResponse 
+} from '#app/utils/content/image-module/upload'
+import { ContentEditorSchema } from '#app/utils/content/schemas-module/schemas'
 import { prisma } from '#app/utils/db.server'
 
 export async function handleContentSubmission(
@@ -46,10 +46,7 @@ export async function handleContentSubmission(
     )?.images.map((img) => img.id) ?? []
     : []
 
-  // Process images
   const imageProcessingResult = await processImages(images, existingImageIds)
-
-  // Generate database operations
   const imageOperations = generateImageDbOperations(imageProcessingResult)
 
   const updatedContent = await prisma.content.upsert({
@@ -73,27 +70,16 @@ export async function handleContentSubmission(
   )
 }
 
-
-
-
 export async function action({ request }: ActionFunctionArgs) {
   const userId = await requireUserId(request)
   
-  // Use a regular formData parse first to check intent
   const clonedRequest = request.clone()
   const formData = await clonedRequest.formData()
   const intent = formData.get('intent')
 
   if (intent === 'upload-image') {
     try {
-      const formData = await parseMultipartFormData(
-        request,
-        createMemoryUploadHandler({ 
-          maxPartSize: MAX_UPLOAD_SIZE,
-          filter: ({ contentType }) => contentType?.includes('image/') ?? false 
-        }),
-      )
-
+      const formData = await parseMultipartFormDataWithImage(request)
       const submission = await parseWithZod(formData, {
         schema: ContentEditorSchema.pick({ images: true }),
         async: true,
@@ -107,28 +93,9 @@ export async function action({ request }: ActionFunctionArgs) {
       }
 
       const { images = [] } = submission.value
-      
-      // Process images
       const imageProcessingResult = await processImages(images, [])
+      return createImageUploadResponse(imageProcessingResult)
       
-      if (!imageProcessingResult.newImages?.length) {
-        return json({
-          error: 'No images were processed'
-        })
-      }
-      
-      return json({
-        ok: true,
-        result: {
-          status: 'success',
-          data: {
-            images: imageProcessingResult.newImages.map(img => ({
-              id: img.id,
-              altText: img.altText
-            }))
-          }
-        }
-      })
     } catch (error) {
       console.error('Image upload error:', error)
       return json({
