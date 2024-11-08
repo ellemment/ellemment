@@ -10,9 +10,9 @@ import {
   type ContentTitleProps, 
   type ContentToolbarProps,
   type ImageGalleryProps 
-} from '#app/utils/content/content-types/types.js'
+} from '#app/utils/content/types-module/types.js'
 import { getContentImgSrc } from '#app/utils/misc'
-import { DeleteContent } from '../content-editor-module/content-edit'
+import { DeleteContent } from '../editor-module/content-edit'
 
 function ImageGallery({ images }: ImageGalleryProps) {
   return (

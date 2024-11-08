@@ -3,7 +3,7 @@
 import { type FieldMetadata } from '@conform-to/react'
 import { ErrorList } from '#app/components/core/forms'
 import { Textarea } from '#app/components/ui/textarea'
-import { type ImageFieldset } from '#app/utils/content/content-schemas/schemas.js'
+import { type ImageFieldset } from '#app/utils/content/schemas-module/schemas'
 
 export interface AltTextInputProps {
     fields: ReturnType<FieldMetadata<ImageFieldset>['getFieldset']>

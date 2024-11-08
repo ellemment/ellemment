@@ -7,10 +7,10 @@ import { Heading1, Heading2, Heading3, List, ListOrdered, Text, TextQuote, Image
 import { useState, useEffect, useCallback, type ReactNode, useRef, useLayoutEffect } from "react";
 import { toast } from "react-hot-toast";
 import tippy from "tippy.js";
-import LoadingCircle from "#app/components/content/content-editor-module/tiptap-modules/icons/loading-circle.js";
-import Magic from "#app/components/content/content-editor-module/tiptap-modules/icons/magic.js";
-import { useCompletion } from "#app/utils/editor/ai/use-completion.js";
-import { handleImageUpload } from "#app/utils/editor/editor";
+import LoadingCircle from "#app/components/content/tiptap-modules/icons/loading-circle";
+import Magic from "#app/components/content/tiptap-modules/icons/magic.js";
+import { useCompletion } from "#app/utils/content/tiptap-module/ai/use-completion";
+import { handleImageUpload } from "#app/utils/content/tiptap-module/editor";
 
 interface CommandItemProps {
   title: string;

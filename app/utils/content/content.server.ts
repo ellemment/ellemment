@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import invariant from "tiny-invariant";
 import { LRUCache } from "lru-cache";
 import yaml from "yaml";
-import { processMarkdown } from "#app/utils/content/content-markdown/md.server.js";
+import { processMarkdown } from "#app/utils/content/markdown-module/md.server";
 import authorsYamlFileContents from "/data/authors.yml?raw";
 
 const postContentsBySlug = Object.fromEntries(

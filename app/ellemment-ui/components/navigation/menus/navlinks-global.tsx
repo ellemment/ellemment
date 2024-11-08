@@ -8,10 +8,8 @@ export const LINKS = [
   { name: 'Discover', to: '/#discover' },
   { name: 'Develop', to: '/account/beta' },
   { name: 'Design', to: '/engine' },
-  { name: 'Connect', to: '/engine' },
-  { name: 'Calendar', to: (username: string) => `/account/${username}/content/new` },
   { name: 'Career', to: '/account/settings' },
-
+  { name: 'Connect', to: (username: string) => `/account/${username}/content/new` },
 ]
 
 export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]

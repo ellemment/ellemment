@@ -1,8 +1,10 @@
+// #app/components/content/content-editor-module/image-modules/content-image-module.tsx
+
 import { type FieldMetadata, getFieldsetProps, getInputProps } from '@conform-to/react'
 import { useState, useEffect } from 'react'
 import { ErrorList } from '#app/components/core/forms'
 import { Icon } from '#app/components/ui/icon'
-import { type ContentEditorData, type ImageFieldset } from '#app/utils/content/content-schemas/schemas.js'
+import { type ContentEditorData, type ImageFieldset } from '#app/utils/content/schemas-module/schemas'
 import { cn, getContentImgSrc } from '#app/utils/misc'
 
 // ImageChooser Component

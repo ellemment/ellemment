@@ -10,11 +10,11 @@ import {
 } from '@remix-run/node'
 import { z } from 'zod'
 import { requireUserId } from '#app/utils/auth.server'
-import { processImages, generateImageDbOperations } from '#app/utils/content/content-forms/image-upload'
+import { processImages, generateImageDbOperations } from '#app/utils/content/forms-module/image-upload'
 import {
   ContentEditorSchema,
   MAX_UPLOAD_SIZE,
-} from '#app/utils/content/content-schemas/schemas.js'
+} from '#app/utils/content/schemas-module/schemas'
 import { prisma } from '#app/utils/db.server'
 
 export async function handleContentSubmission(

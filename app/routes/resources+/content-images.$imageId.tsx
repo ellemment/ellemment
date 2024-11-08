@@ -1,3 +1,5 @@
+// #app/routes/resources+/content-images/$imageId.tsx
+
 import { invariantResponse } from '@epic-web/invariant'
 import { type LoaderFunctionArgs } from '@remix-run/node'
 import { prisma } from '#app/utils/db.server.js'

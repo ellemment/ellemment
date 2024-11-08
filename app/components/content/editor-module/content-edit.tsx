@@ -11,11 +11,11 @@ import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
 import { StatusButton } from '#app/components/ui/status-button'
-import { ContentEditorSchema } from '#app/utils/content/content-schemas/schemas.js'
-import { type ActionData } from '#app/utils/content/content-types/types.js'
+import { ContentEditorSchema } from '#app/utils/content/schemas-module/schemas'
+import { type ActionData } from '#app/utils/content/types-module/types'
 import { useIsPending } from '#app/utils/misc'
-import { ContentEditImages } from './image-modules/content-image-module'
-import { Editor } from './tiptap-modules/editor'
+import { ContentEditImages } from '../image-module/image-module'
+import { Editor } from '../tiptap-modules/editor'
 
 // Define the form data type based on schema shape
 type ContentEditorFormData = {

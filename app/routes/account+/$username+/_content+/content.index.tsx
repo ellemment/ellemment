@@ -6,7 +6,7 @@ import { type loader as contentLoader } from './content'
 export default function ContentIndexRoute() {
   return (
     <div className="container pt-12">
-      <p className="text-body-md">Select a note</p>
+      <p className="text-body-md">Select an element</p>
     </div>
   )
 }

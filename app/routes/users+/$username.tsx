@@ -87,7 +87,7 @@ export default function ProfileRoute() {
                         ) : null}
                         {isAdminAndOwner ? (
                             <Button asChild>
-                                <Link to="/account/beta" prefetch="intent">
+                                <Link to={`/account/${user.username}/content`} prefetch="intent">
                                     Dashboard
                                 </Link>
                             </Button>

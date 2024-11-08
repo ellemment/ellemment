@@ -8,7 +8,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "#app/components/ui/breadcrumb";
-import { docsNavigation } from "#app/utils/beta/docs-nav";
+import { docsNavigation } from "#app/utils/docs/docs-nav.js";
 
 const DocsBreadcrumb = () => {
     const params = useParams();

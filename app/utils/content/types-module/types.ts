@@ -5,8 +5,8 @@ import { type FieldMetadata } from '@conform-to/react'
 import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
 import { z } from 'zod'
-import { type ImageFieldset } from '#app/utils/content/content-schemas/schemas.js'
-import { type ContentEditorData } from '../content-schemas/schemas'
+import { type ImageFieldset } from '#app/utils/content/schemas-module/schemas.js'
+import { type ContentEditorData } from '../schemas-module/schemas'
 
 export const DeleteFormSchema = z.object({
   intent: z.literal('delete-content'),

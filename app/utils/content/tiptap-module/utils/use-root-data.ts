@@ -2,7 +2,7 @@
 
 import { json } from "@remix-run/node";
 import { useMatches } from "@remix-run/react";
-import { getUserInfo, type UserSession } from "#app/utils/editor/utils/session.server";
+import { getUserInfo, type UserSession } from "./session.server";
 
 export type AppRootData = {
   title: string;
