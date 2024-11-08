@@ -12,7 +12,7 @@ import {
   type ContentTitleProps, 
   type ContentToolbarProps,
   type ImageGalleryProps 
-} from '#app/utils/content/types-module/types.js'
+} from '#app/utils/content/types-module/types'
 
 function ImageGallery({ images }: ImageGalleryProps) {
   return (
