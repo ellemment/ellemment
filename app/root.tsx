@@ -71,7 +71,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const requestInfo = data?.requestInfo
 	return [
-		{ title: data ? 'Creemson' : 'Error | ellemment' },
+		{ title: data ? 'ellemments' : 'Error | ellemments' },
 		{ name: 'description', content: `Your own captain's log` },
 		{
 			'theme-color':

@@ -1,4 +1,4 @@
-# creemson 🚀
+# ellemments 🚀
 
 <div align="center">
  <strong>
@@ -17,7 +17,6 @@
 ## Child Projects
 
 - **Gipocrat**: EC Support and Social Networking (Currently in Development)
-- **Creemson**: ML Dashboards
 - **ellemments**: The Everything App
 - **Moga**: Social Networking and Digital Products
 

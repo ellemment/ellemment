@@ -81,7 +81,7 @@ export function EmailChangeEmail({
 		<E.Html lang="en" dir="ltr">
 			<E.Container>
 				<h1>
-					<E.Text>Creemson Email Change</E.Text>
+					<E.Text>Ellemments Email Change</E.Text>
 				</h1>
 				<p>
 					<E.Text>
@@ -102,11 +102,11 @@ function EmailChangeNoticeEmail({ userId }: { userId: string }) {
 		<E.Html lang="en" dir="ltr">
 			<E.Container>
 				<h1>
-					<E.Text>Your Creemson email has been changed</E.Text>
+					<E.Text>Your Ellemments email has been changed</E.Text>
 				</h1>
 				<p>
 					<E.Text>
-						We're writing to let you know that your Creemson email has been
+						We're writing to let you know that your Ellemments email has been
 						changed.
 					</E.Text>
 				</p>
