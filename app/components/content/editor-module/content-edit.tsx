@@ -6,7 +6,6 @@ import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import { useRef } from 'react'
-import { floatingToolbarClassName } from '#app/components/core/floating-toolbar'
 import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
@@ -17,7 +16,6 @@ import { useIsPending } from '#app/utils/misc'
 import { ContentEditImages } from '../image-module/image-module'
 import { Editor } from '../tiptap-modules/editor'
 
-// Define the form data type based on schema shape
 type ContentEditorFormData = {
     id?: string
     title: string
@@ -59,7 +57,7 @@ function ContentTitle({ field }: { field: FieldMetadata<string, ContentEditorFor
     )
 }
 
-function ToolbarButtons({
+function ControlButtons({
     formId,
     isPending,
     onReset
@@ -69,115 +67,26 @@ function ToolbarButtons({
     onReset: () => void
 }) {
     return (
-        <div className={floatingToolbarClassName}>
-            <div className="grid flex-1 grid-cols-2 justify-end gap-2 min-[525px]:flex md:gap-4">
-                <Button
-                    type="button"
-                    variant="default"
-                    onClick={onReset}
-                    className="min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0 bg-primary/80 text-primary-foreground hover:bg-primary/50"
-                >
-                    <Icon name="minus-circled" className="scale-125 max-md:scale-150">
-                        <span className="max-md:hidden">Reset</span>
-                    </Icon>
-                </Button>
-                <StatusButton
-                    form={formId}
-                    type="submit"
-                    disabled={isPending}
-                    status={isPending ? 'pending' : 'idle'}
-                    className="min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0"
-                >
-                    <Icon name="plus-circled" className="scale-125 max-md:scale-150">
-                        <span className="max-md:hidden">Save</span>
-                    </Icon>
-                </StatusButton>
-            </div>
+        <div className="flex justify-end gap-4 mb-8">
+            <Button
+                type="button"
+                variant="outline"
+                onClick={onReset}
+            >
+                <Icon name="minus-circled" className="mr-2" />
+                Reset
+            </Button>
+            <StatusButton
+                form={formId}
+                type="submit"
+                disabled={isPending}
+                status={isPending ? 'pending' : 'idle'}
+                variant="default"
+            >
+                <Icon name="plus-circled" className="mr-2" />
+                Save
+            </StatusButton>
         </div>
-    )
-}
-
-
-interface ContentFormProps {
-    content?: ContentEditorProps['content']
-    fields: {
-        title: FieldMetadata<string, ContentEditorFormData>
-        content: FieldMetadata<string, ContentEditorFormData>
-        images: FieldMetadata<ContentEditorFormData['images'], ContentEditorFormData>
-    }
-    form: ReturnType<typeof useForm<ContentEditorFormData>>[0]
-    formRef: React.RefObject<HTMLFormElement>
-    isPending: boolean
-    handleReset: () => void
-}
-
-function ContentForm({
-    content,
-    form,
-    fields,
-    formRef,
-    isPending,
-    handleReset
-}: ContentFormProps) {
-    return (
-        <Form
-            ref={formRef}
-            method="POST"
-            className="mx-auto px-4 py-8 sm:px-8"
-            id={form.id}
-            encType="multipart/form-data"
-            onSubmit={form.onSubmit}
-            noValidate={form.noValidate}
-        >
-            <div className="space-y-8">
-                <button type="submit" className="hidden" />
-                {content ? <input type="hidden" name="id" value={content.id} /> : null}
-
-                <div className="space-y-2">
-                    <ContentTitle field={fields.title} />
-                </div>
-
-                <Button
-                    className="mt-3"
-                    {...form.insert.getButtonProps({ name: fields.images.name })}
-                >
-                    <span aria-hidden>
-                        <Icon name="upload">Image</Icon>
-                    </span>{' '}
-                    <span className="sr-only">Add image</span>
-                </Button>
-
-                <div>
-                    <ContentEditImages
-                        field={fields.images}
-                        form={form}
-                    />
-                </div>
-
-                <div className="min-h-[500px]">
-                    <Editor
-                        name={fields.content.name}
-                        id={fields.content.id}
-                        defaultValue={fields.content.value ?? ''}
-                        onValueChange={(value) => {
-                            const input = document.getElementById(fields.content.id) as HTMLInputElement
-                            if (input) {
-                                input.value = value
-                            }
-                        }}
-                    />
-                </div>
-
-                <div className="min-h-[32px]">
-                    <ErrorList id={form.errorId} errors={form.errors || []} />
-                </div>
-                <ToolbarButtons
-                    formId={form.id}
-                    isPending={isPending}
-                    onReset={handleReset}
-                />
-            </div>
-        </Form>
     )
 }
 
@@ -185,35 +94,33 @@ function DeleteContent({ id }: { id: string }) {
     const actionData = useActionData<ActionData>()
     const isPending = useIsPending()
     const [form] = useForm({
-      id: 'delete-content',
-      lastResult: actionData?.result,
+        id: 'delete-content',
+        lastResult: actionData?.result,
     })
-  
+
     return (
-      <Form 
-        method="POST" 
-        id={form.id}
-        onSubmit={form.onSubmit}
-        noValidate={form.noValidate}
-      >
-        <input type="hidden" name="intent" value="delete-content" />
-        <input type="hidden" name="contentId" value={id} />
-        <StatusButton
-          form="delete-content"
-          type="submit"
-          variant="destructive"
-          status={isPending ? 'pending' : (form.status ?? 'idle')}
-          disabled={isPending}
-          className="w-full max-md:aspect-square max-md:px-0"
+        <Form 
+            method="POST" 
+            id={form.id}
+            onSubmit={form.onSubmit}
+            noValidate={form.noValidate}
         >
-          <Icon name="trash" className="scale-125 max-md:scale-150">
-            <span className="max-md:hidden">Delete</span>
-          </Icon>
-        </StatusButton>
-        <ErrorList errors={form.errors || []} id={form.errorId} />
-      </Form>
+            <input type="hidden" name="intent" value="delete-content" />
+            <input type="hidden" name="contentId" value={id} />
+            <StatusButton
+                form="delete-content"
+                type="submit"
+                variant="destructive"
+                status={isPending ? 'pending' : (form.status ?? 'idle')}
+                disabled={isPending}
+            >
+                <Icon name="trash" className="mr-2" />
+                Delete
+            </StatusButton>
+            <ErrorList errors={form.errors || []} id={form.errorId} />
+        </Form>
     )
-  }
+}
 
 function ContentEditor({ content }: ContentEditorProps) {
     const actionData = useActionData<ActionData>()
@@ -241,15 +148,64 @@ function ContentEditor({ content }: ContentEditorProps) {
     }
 
     return (
-        <div className="bg-background md:rounded-3xl">
-            <ContentForm
-                content={content}
-                form={form}
-                fields={{ title, content: contentField, images }}
-                formRef={formRef}
-                isPending={isPending}
-                handleReset={handleReset}
-            />
+        <div className="max-w-2xl mx-auto px-4 py-8">
+            <Form
+                ref={formRef}
+                method="POST"
+                id={form.id}
+                encType="multipart/form-data"
+                onSubmit={form.onSubmit}
+                noValidate={form.noValidate}
+                className="space-y-8"
+            >
+                <button type="submit" className="hidden" />
+                {content ? <input type="hidden" name="id" value={content.id} /> : null}
+
+                <ControlButtons
+                    formId={form.id}
+                    isPending={isPending}
+                    onReset={handleReset}
+                />
+
+                <div className="space-y-2">
+                    <ContentTitle field={title} />
+                </div>
+
+                <div className="space-y-4">
+                    <Button
+                        className="w-full justify-center"
+                        {...form.insert.getButtonProps({ name: images.name })}
+                    >
+                        <span aria-hidden>
+                            <Icon name="upload" className="mr-2">Image</Icon>
+                        </span>
+                        Add Image
+                    </Button>
+
+                    <ContentEditImages
+                        field={images}
+                        form={form}
+                    />
+                </div>
+
+                <div className="min-h-[500px]">
+                    <Editor
+                        name={contentField.name}
+                        id={contentField.id}
+                        defaultValue={contentField.value ?? ''}
+                        onValueChange={(value) => {
+                            const input = document.getElementById(contentField.id) as HTMLInputElement
+                            if (input) {
+                                input.value = value
+                            }
+                        }}
+                    />
+                </div>
+
+                <div className="min-h-[32px]">
+                    <ErrorList id={form.errorId} errors={form.errors || []} />
+                </div>
+            </Form>
         </div>
     )
 }

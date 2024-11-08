@@ -1,35 +1,25 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
-import { Link, NavLink, Outlet, useLoaderData, useLocation } from '@remix-run/react'
-import { Plus, FileText } from 'lucide-react'
+import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import * as React from 'react'
-import { 
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarProvider
-} from '#app/components/core/dashboard'
 import { GeneralErrorBoundary } from '#app/components/core/error-boundary'
-import { Avatar, AvatarFallback, AvatarImage } from '#app/components/ui/avatar'
+import { Card } from '#app/components/ui/card'
+import { Icon } from '#app/components/ui/icon'
 import { prisma } from '#app/utils/db.server'
-import { getUserImgSrc } from '#app/utils/misc'
 import { useOptionalUser } from '#app/utils/user'
-
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const owner = await prisma.user.findFirst({
     select: {
       id: true,
-      name: true,
-      username: true,
-      image: { select: { id: true } },
-      content: { select: { id: true, title: true } },
+      content: { 
+        select: { 
+          id: true, 
+          title: true,
+          createdAt: true 
+        },
+        orderBy: { createdAt: 'desc' }
+      },
     },
     where: { username: params.username },
   })
@@ -38,98 +28,64 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return json({ owner })
 }
 
-function ContentSidebar() {
+export default function ContentRoute() {
   const data = useLoaderData<typeof loader>()
   const user = useOptionalUser()
   const location = useLocation()
   const isOwner = user?.id === data.owner.id
-  const ownerDisplayName = data.owner.name ?? data.owner.username
+  const isRootPath = location.pathname.split('/').length === 4
 
-  return (
-    <Sidebar variant="inset" className="col-span-1">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link to={`/account/${data.owner.username}`}>
-                <Avatar className="h-12 w-12 rounded-lg">
-                  <AvatarImage
-                    src={getUserImgSrc(data.owner.image?.id)}
-                    alt={ownerDisplayName}
-                  />
-                  <AvatarFallback className="rounded-lg">
-                    {ownerDisplayName.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{ownerDisplayName}</span>
-                  <span className="truncate text-xs">{ownerDisplayName}'s Content</span>
+  if (isRootPath) {
+    return (
+      <div className="max-w-2xl mx-auto p-6 space-y-6">
+        <div className="space-y-4">
+          {isOwner && (
+            <Card className="transition-colors hover:bg-muted">
+              <Link
+                to="new"
+                className="block p-4"
+              >
+                <div className="flex items-center gap-3">
+                  <Icon name="plus-circled" className="h-5 w-5 text-muted-foreground" />
+                  <span className="font-medium">Create Content</span>
                 </div>
               </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+            </Card>
+          )}
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Content</SidebarGroupLabel>
-          <SidebarMenu>
-            {isOwner ? (
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="New Content">
-                  <NavLink to="new">
-                    <Plus className="h-4 w-4" />
-                    <span>New Content</span>
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ) : null}
-            
-            {data.owner.content.map((content) => (
-              <SidebarMenuItem key={content.id}>
-                <SidebarMenuButton 
-                  asChild 
-                  tooltip={content.title}
-                  isActive={location.pathname.includes(content.id)}
+          {data.owner.content.map((content) => (
+            <Card 
+              key={content.id} 
+              className="transition-colors hover:bg-muted"
+            >
+              <Link
+                to={content.id}
+                className="block p-4"
+              >
+                <div className="flex items-center gap-3">
+                  <Icon name="check-circled" className="h-5 w-5 text-muted-foreground" />
+                  <span className="font-medium">{content.title}</span>
+                </div>
+                <time 
+                  className="mt-1 text-sm text-muted-foreground block"
+                  dateTime={content.createdAt}
                 >
-                  <NavLink
-                    to={content.id}
-                    preventScrollReset
-                    prefetch="intent"
-                  >
-                    <FileText className="h-4 w-4" />
-                    <span>{content.title}</span>
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
-  )
-}
+                </time>
+              </Link>
+            </Card>
+          ))}
 
-export default function ContentRoute() {
-  const [isHydrated, setIsHydrated] = React.useState(false)
-
-  React.useEffect(() => {
-    setIsHydrated(true)
-  }, [])
-
-  return (
-    <SidebarProvider defaultOpen>
-      <div className="container flex h-full min-h-[400px] px-0 pb-12">
-        <div className="grid w-full md:grid-cols-4 bg-muted md:mx-auto md:rounded-3xl md:pr-0">
-          {isHydrated ? <ContentSidebar /> : null}
-          <SidebarInset className="col-span-3">
-            <Outlet />
-          </SidebarInset>
+          {data.owner.content.length === 0 && !isOwner && (
+            <div className="text-center py-12 text-muted-foreground">
+              <p>No content found.</p>
+            </div>
+          )}
         </div>
       </div>
-    </SidebarProvider>
-  )
+    )
+  }
+
+  return <Outlet />
 }
 
 export function ErrorBoundary() {
