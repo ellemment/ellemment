@@ -4,7 +4,7 @@ import { useForm, type FieldMetadata } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
-import { Form, useActionData } from '@remix-run/react'
+import { Form, useActionData, Link } from '@remix-run/react'
 import { useRef } from 'react'
 import { ErrorList, Field } from '#app/components/core/forms'
 import { Button } from '#app/components/ui/button'
@@ -50,7 +50,7 @@ function ContentTitle({ field }: { field: FieldMetadata<string, ContentEditorFor
                 type: 'text',
                 placeholder: 'Untitled',
                 defaultValue: field.value,
-                className: 'w-full border-none px-0 text-4xl font-bold placeholder:text-muted-foreground/60 focus:outline-none focus:ring-0 bg-transparent'
+                className: 'w-full !border-none !px-0 text-4xl font-bold placeholder:text-muted-foreground/60 !focus:outline-none !focus:ring-0 !focus:ring-offset-0 !rounded-none !h-auto !py-0 bg-transparent focus-visible:!ring-0 focus-visible:!ring-offset-0'
             }}
             errors={field.errors}
         />
@@ -67,25 +67,38 @@ function ControlButtons({
     onReset: () => void
 }) {
     return (
-        <div className="flex justify-end gap-4 mb-8">
+        <div className="flex justify-between items-center mb-8">
             <Button
-                type="button"
-                variant="outline"
-                onClick={onReset}
+                variant="ghost"
+                asChild
+                className="text-muted-foreground hover:text-foreground"
             >
-                <Icon name="minus-circled" className="mr-2" />
-                Reset
+                <Link to="..">
+                    <Icon name="arrow-left" className="mr-2" />
+                    Space
+                </Link>
             </Button>
-            <StatusButton
-                form={formId}
-                type="submit"
-                disabled={isPending}
-                status={isPending ? 'pending' : 'idle'}
-                variant="default"
-            >
-                <Icon name="plus-circled" className="mr-2" />
-                Save
-            </StatusButton>
+
+            <div className="flex gap-4">
+                <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onReset}
+                >
+                    <Icon name="minus-circled" className="mr-2" />
+                    Reset
+                </Button>
+                <StatusButton
+                    form={formId}
+                    type="submit"
+                    disabled={isPending}
+                    status={isPending ? 'pending' : 'idle'}
+                    variant="default"
+                >
+                    <Icon name="plus-circled" className="mr-2" />
+                    Save
+                </StatusButton>
+            </div>
         </div>
     )
 }
@@ -99,8 +112,8 @@ function DeleteContent({ id }: { id: string }) {
     })
 
     return (
-        <Form 
-            method="POST" 
+        <Form
+            method="POST"
             id={form.id}
             onSubmit={form.onSubmit}
             noValidate={form.noValidate}
@@ -173,13 +186,13 @@ function ContentEditor({ content }: ContentEditorProps) {
 
                 <div className="space-y-4">
                     <Button
-                        className="w-full justify-center"
+                        className="flex items-center text-muted-foreground hover:text-foreground transition-colors p-0 h-auto hover:bg-transparent"
+                        variant="ghost"
                         {...form.insert.getButtonProps({ name: images.name })}
                     >
                         <span aria-hidden>
-                            <Icon name="upload" className="mr-2">Image</Icon>
+                            <Icon name="plus-circled" className="mr-1 h-5 w-5">Add Image</Icon>
                         </span>
-                        Add Image
                     </Button>
 
                     <ContentEditImages
