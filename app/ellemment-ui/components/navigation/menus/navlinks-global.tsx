@@ -4,12 +4,19 @@ import { Link, useLocation } from '@remix-run/react'
 import { clsx } from 'clsx'
 import * as React from 'react'
 
-export const LINKS = [
+// First, let's define a proper type for the link
+interface NavLink {
+  name: string;
+  to: string | ((username: string) => string);
+}
+
+// Then use it in the LINKS array
+export const LINKS: NavLink[] = [
   { name: 'Discover', to: '/#discover' },
   { name: 'Develop', to: '/account/beta' },
   { name: 'Design', to: '/engine' },
   { name: 'Career', to: '/account/settings' },
-  { name: 'Connect', to: (username: string) => `/account/${username}/content/new` },
+  { name: 'Connect', to: '/account' },
 ]
 
 export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]

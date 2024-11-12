@@ -5,6 +5,13 @@ import { LINKS } from '#app/ellemment-ui/components/navigation/menus/navlinks-gl
 import { useOptionalUser } from '#app/utils/use-root-data';
 import './navbar.css';
 
+declare global {
+  interface HTMLElement {
+    hidePopover(): void;
+    showPopover(): void;
+  }
+}
+
 interface MobileMenuButtonProps {
   menuButtonRef: React.RefObject<HTMLButtonElement>;
 }
@@ -41,6 +48,12 @@ interface NavbarMobileProps {
   className?: string;
 }
 
+// Update the ref type to include popover methods
+interface PopoverElement extends HTMLDivElement {
+  hidePopover: () => void;
+  showPopover: () => void;
+}
+
 export function NavbarMobile({ className }: NavbarMobileProps) {
   const menuButtonRef = React.useRef<HTMLButtonElement>(null);
   const popoverRef = React.useRef<HTMLDivElement>(null);
@@ -48,7 +61,7 @@ export function NavbarMobile({ className }: NavbarMobileProps) {
   const username = user?.username ?? '';
 
   const handleLinkClick = React.useCallback(() => {
-    popoverRef.current?.hidePopover();
+    (popoverRef.current as unknown as PopoverElement)?.hidePopover();
   }, []);
 
   return (

@@ -18,7 +18,7 @@ export const meta: MetaFunction<
   const contentMatch = matches.find(
     (m) => m.id === 'routes/users+/$username_+/content',
   )
-  const displayName = contentMatch?.data?.owner.name ?? params.username
+  const displayName = params.username
   const noteCount = contentMatch?.data?.owner.content.length ?? 0
   const contentText = noteCount === 1 ? 'content' : 'contents'
   return [

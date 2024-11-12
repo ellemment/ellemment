@@ -1,6 +1,4 @@
-// this is needed by things the root needs, so to avoid circular deps we have to
-// put it in its own file which is silly I know...
-
+// #app/utils/use-root-data.ts
 import { type SerializeFrom } from '@remix-run/server-runtime'
 import { useMatchLoaderData } from '#app/utils/providers/provider'
 import { handle, type RootLoaderType } from '../root.tsx'
