@@ -6,7 +6,7 @@ import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
 import { GeneralErrorBoundary } from '#app/components/core/error-boundary.tsx'
 import { Spacer } from '#app/components/core/spacer.tsx'
 import { Button } from '#app/components/ui/button.tsx'
-import { Card } from '#app/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/components/ui/card'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc } from '#app/utils/misc.tsx'
@@ -50,75 +50,45 @@ export default function ProfileRoute() {
 	const isLoggedInUser = data.user.id === loggedInUser?.id
 
 	return (
-		<div className="container mb-48 mt-36">
-			<div className="flex flex-col items-center justify-center">
-				<Spacer size="4xs" />
-
-				<div className="container flex flex-col items-center rounded-3xl bg-muted p-12">
-					<div className="relative w-52">
-						<div className="absolute -top-40">
-							<div className="relative">
-								<img
-									src={getUserImgSrc(data.user.image?.id)}
-									alt={userDisplayName}
-									className="h-52 w-52 rounded-full object-cover"
-								/>
-							</div>
+		<div className="container mb-48 mt-2">
+			<div className="mt-12 max-w-2xl mx-auto p-6 space-y-2">
+				<Card>
+					<CardHeader className="flex flex-row items-center gap-4">
+						<img
+							src={getUserImgSrc(data.user.image?.id)}
+							alt={userDisplayName}
+							className="h-20 w-20 rounded-full object-cover"
+						/>
+						<div>
+							<CardTitle>{userDisplayName}</CardTitle>
+							<CardDescription>Joined {data.userJoinedDisplay}</CardDescription>
 						</div>
-					</div>
-
-					<Spacer size="sm" />
-
-					<div className="flex flex-col items-center">
-						<div className="flex flex-wrap items-center justify-center gap-4">
-							<h1 className="text-center text-h2">{userDisplayName}</h1>
-						</div>
-						<p className="mt-2 text-center text-muted-foreground">
-							Joined {data.userJoinedDisplay}
-						</p>
+					</CardHeader>
+					<CardFooter>
 						{isLoggedInUser ? (
-							<Form action="/logout" method="POST" className="mt-3">
-								<Button type="submit" variant="link" size="sm">
-									<Icon name="exit" className="scale-125 max-md:scale-150">
-										Logout
-									</Icon>
-								</Button>
-							</Form>
-						) : null}
-						<div className="mt-10 flex gap-4">
-							{isLoggedInUser ? (
-								<>
-									<Button asChild>
-										<Link to="content" prefetch="intent">
-											My Content
-										</Link>
-									</Button>
-									<Button asChild>
-										<Link to="/account/settings" prefetch="intent">
-											Edit profile
-										</Link>
-									</Button>
-								</>
-							) : (
-								<Button asChild>
-									<Link to={(`/account/${user.username}/content`)} prefetch="intent">
-										{userDisplayName}'s Content
+							<div className="flex gap-4">
+								<Button asChild variant="link">
+									<Link to="/account/settings" prefetch="intent">
+										Edit profile
 									</Link>
 								</Button>
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
+								<Form action="/logout" method="POST">
+									<Button type="submit" variant="link" size="sm">
+										Logout
+									</Button>
+								</Form>
+							</div>
+						) : null}
+					</CardFooter>
+				</Card>
 
-			<div className="mt-12 max-w-2xl mx-auto p-6 space-y-6">
 				<div className="space-y-4">
 					{isLoggedInUser && (
 						<Card className="transition-colors hover:bg-muted">
 							<Link to="content/new" className="block p-4">
 								<div className="flex items-center gap-3">
 									<Icon name="plus-circled" className="h-5 w-5 text-muted-foreground" />
-									<span className="font-medium">Create Content</span>
+									<span className="font-medium">Create an element</span>
 								</div>
 							</Link>
 						</Card>

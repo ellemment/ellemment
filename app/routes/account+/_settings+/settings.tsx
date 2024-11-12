@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
+import { Card } from '#app/components/ui/card.tsx'
 
 
 export const BreadcrumbHandle = z.object({ breadcrumb: z.any() })
@@ -31,10 +32,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function EditUserProfile() {
 	return (
-		<div className="m-auto"> 
-			<main className="">
-				<Outlet />
-			</main>
+		<div className="m-auto max-w-2xl p-6"> 
+			<Card>
+				<main className="p-6">
+					<Outlet />
+				</main>
+			</Card>
 		</div>
 	)
 }

@@ -9,7 +9,7 @@ export const LINKS = [
   { name: 'Develop', to: '/account/beta' },
   { name: 'Design', to: '/engine' },
   { name: 'Career', to: '/account/settings' },
-  { name: 'Connect', to: (username: string) => `/account/${username}/content/new` },
+  { name: 'Connect', to: '/account' },
 ]
 
 export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]

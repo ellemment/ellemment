@@ -47,7 +47,7 @@ export default function ContentRoute() {
               >
                 <div className="flex items-center gap-3">
                   <Icon name="plus-circled" className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-medium">Create Content</span>
+                  <span className="font-medium">Create an element</span>
                 </div>
               </Link>
             </Card>
