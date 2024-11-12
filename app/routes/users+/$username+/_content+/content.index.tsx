@@ -1,4 +1,4 @@
-// #app/routes/account+/$username+/_content+/content.index.tsx
+// #app/routes/users+/$username+/_content+/content.index.tsx
 
 import { type MetaFunction } from '@remix-run/react'
 import { type loader as contentLoader } from './content'
