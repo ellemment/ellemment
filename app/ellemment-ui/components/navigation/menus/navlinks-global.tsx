@@ -13,10 +13,10 @@ interface NavLink {
 // Then use it in the LINKS array
 export const LINKS: NavLink[] = [
   { name: 'Discover', to: '/#discover' },
-  { name: 'Develop', to: '/account/beta' },
-  { name: 'Design', to: '/engine' },
+  { name: 'Develop', to: '/#develop' },
+  { name: 'Design', to: '/#design' },
   { name: 'Career', to: '/account/settings' },
-  { name: 'Connect', to: '/account' },
+  { name: 'Connect', to: '/me' },
 ]
 
 export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]

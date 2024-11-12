@@ -18,5 +18,5 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		return redirect(redirectTo)
 	}
 	
-	return redirect(`/account/${user.username}`)
+	return redirect(`/users/${user.username}`)
 }

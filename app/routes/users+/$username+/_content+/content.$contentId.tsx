@@ -1,4 +1,4 @@
-// #app/routes/account+/$username+/_content+/content.$contentId_.tsx
+// #app/routes/users+/$username+/_content+/content.$contentId.tsx
 
 import { parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
@@ -93,7 +93,7 @@ export async function action({ request }: ActionFunctionArgs) {
   
   await prisma.content.delete({ where: { id: content.id } })
   
-  return redirectWithToast(`/account/${content.owner.username}/content`, {
+  return redirectWithToast(`/users/${content.owner.username}`, {
     type: 'success',
     title: 'Success',
     description: 'Your content has been deleted.',
@@ -135,7 +135,7 @@ export default function ContentRoute() {
             asChild
             className="text-muted-foreground hover:text-foreground"
           >
-            <Link to={`/account/${data.content.owner.username}`}>
+            <Link to={`/users/${data.content.owner.username}`}>
               <Icon name="arrow-left" className="mr-2" />
               Space
             </Link>

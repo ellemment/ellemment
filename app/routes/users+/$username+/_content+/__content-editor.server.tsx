@@ -1,4 +1,4 @@
-// #app/routes/account+/$username+/_content+/__content-editor.server.tsx
+// #app/routes/users+/$username+/_content+/__content-editor.server.tsx
 
 import { parseWithZod } from '@conform-to/zod'
 import {
@@ -66,7 +66,7 @@ export async function handleContentSubmission(
   })
 
   return redirect(
-    `/account/${updatedContent.owner.username}/content/${updatedContent.id}`,
+    `/users/${updatedContent.owner.username}/content/${updatedContent.id}`,
   )
 }
 

@@ -73,7 +73,7 @@ function ControlButtons({
                 asChild
                 className="text-muted-foreground hover:text-foreground"
             >
-                <Link to="/account">
+                <Link to="/me">
                     <Icon name="arrow-left" className="mr-2" />
                     Space
                 </Link>

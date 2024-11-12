@@ -6,10 +6,10 @@ import { useRef, useState } from 'react';
 
 const navItems = [
   { label: 'Discover', href: '/#discover' },
-  { label: 'Develop', href: '/account/beta' },
-  { label: 'Design', href: '/engine' },
-  { label: 'Connect', href: '/engine' },
-  { label: 'Content', href: '/docs' },
+  { label: 'Develop', href: '/#develop' },
+  { label: 'Design', href: '/#design' },
+  { label: 'Connect', href: '/#connect' },
+  { label: 'Content', href: '/#content' },
   { label: 'Career', href: '/account/settings' },
 ] as const;
 
