@@ -1,18 +1,13 @@
 import './navbar.css'
 import { Link } from '@remix-run/react'
-import { Avatar } from '#app/ellemment-ui/components/controls/avatar'
 import { ThemeSwitch } from '#app/ellemment-ui/components/controls/theme-switch'
 import { NavbarMobile } from '#app/ellemment-ui/components/navigation/headers/header-global-sm'
 import { NavLinks } from '#app/ellemment-ui/components/navigation/menus/navlinks-global'
-import { useOptionalUser, useRootData } from '#app/utils/use-root-data'
+import { useOptionalUser} from '#app/utils/use-root-data'
+import { Icon } from '#app/components/ui/icon'
 
 function GlobalHeader() {
-  const { requestInfo } = useRootData()
   const user = useOptionalUser()
-  const avatarSrc = user?.image?.id 
-    ? `/resources/user-images/${user.image.id}` 
-    : '/img/user.png'
-  const avatarAlt = user?.name ?? 'Default avatar'
 
   return (
     <div className="px-5vw px-4 py-4 lg:py-6 text-primary">
@@ -31,14 +26,18 @@ function GlobalHeader() {
 
         <div className="flex items-center justify-center">
           <NavbarMobile className="block lg:hidden" />
-          <div className="noscript-hidden hidden lg:block">
+          <div className="noscript-hidden hidden lg:flex items-center justify-center h-full">
             <ThemeSwitch />
           </div>
-          <Avatar
-            imageUrl={avatarSrc}
-            imageAlt={avatarAlt}
-            className="ml-4"
-          />
+          <Link
+            to={user ? '/me' : '/login'}
+            className="ml-2 h-6 w-6 bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm shadow-xl text-primary inline-flex items-center justify-center overflow-hidden rounded-full transition focus:outline-none"
+          >
+            <Icon 
+              name={user ? 'github-logo' : 'plus-circled'} 
+              className="inline self-center w-4 h-4" 
+            />
+          </Link>
         </div>
       </nav>
     </div>

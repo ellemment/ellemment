@@ -52,7 +52,7 @@ export function Avatar({ imageUrl, imageAlt, className }: AvatarProps) {
       to={user ? '/me' : '/login'}
       aria-label={user ? 'My Account' : 'Login'}
       className={clsx(
-        'inline-flex h-8 w-8 items-center justify-center rounded-full focus:outline-none',
+        'inline-flex bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm shadow-xl h-6 w-6 items-center justify-center rounded-full focus:outline-none',
         className
       )}
       ref={ref}
@@ -62,7 +62,7 @@ export function Avatar({ imageUrl, imageAlt, className }: AvatarProps) {
         animate={controls}
       >
       </motion.div>
-      <RadixAvatar className="h-6 w-6 overflow-hidden">
+      <RadixAvatar className="h-4 w-4 overflow-hidden">
         <AvatarImage
           src={imageUrl}
           alt={imageAlt}

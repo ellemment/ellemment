@@ -2,7 +2,7 @@
 
 import { useFetcher } from '@remix-run/react'
 import { clsx } from 'clsx'
-import { SystemModeIcon, DarkModeIcon, LightModeIcon } from '#app/ellemment-ui/foundations/materials/icons/icons'
+import { Icon } from '#app/components/ui/icon'
 import { useRequestInfo } from '#app/utils/request-info'
 import { THEME_FETCHER_KEY, useOptimisticThemeMode } from '#app/utils/theme'
 
@@ -22,19 +22,19 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
     mode === 'system' ? 'light' : mode === 'light' ? 'dark' : 'system'
 
   const iconSpanClassName =
-    'absolute inset-0 transform transition-transform duration-700 motion-reduce:duration-[0s]'
+    'absolute inset-0 flex items-center justify-center transform transition-transform duration-700 motion-reduce:duration-[0s]'
 
   return (
-    <fetcher.Form method="POST" action="/action/set-theme">
+    <fetcher.Form method="POST" action="/action/set-theme" className='flex items-center justify-center h-full'>
       <input type="hidden" name="theme" value={nextMode} />
 
       <button
         type="submit"
         className={clsx(
-          'bg-background border-secondary/75 text-primary hover:border-primary focus:border-primary inline-flex h-8 items-center justify-center overflow-hidden rounded-full border p-1 transition focus:outline-none',
+          'bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm shadow-xl text-primary inline-flex items-center justify-center overflow-hidden rounded-full transition focus:outline-none',
           {
-            'w-8': variant === 'icon',
-            'px-8': variant === 'labelled',
+            'h-6 w-6': variant === 'icon',
+            'h-6 px-8': variant === 'labelled',
           },
         )}
       >
@@ -46,7 +46,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <DarkModeIcon size={20}/>
+            <Icon name="half-2" className="inline self-center w-4 h-4" />
           </span>
           <span
             className={clsx(
@@ -55,7 +55,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <LightModeIcon size={20} />
+            <Icon name="half-2" className="inline self-center w-4 h-4" />
           </span>
 
           <span
@@ -65,7 +65,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <SystemModeIcon size={23} />
+            <Icon name="value-none" className="inline self-center w-4 h-4" />
           </span>
         </div>
         <span className={clsx('ml-4', { 'sr-only': variant === 'icon' })}>
