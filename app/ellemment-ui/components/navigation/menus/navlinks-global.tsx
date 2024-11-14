@@ -1,73 +1,57 @@
-// app/ellemment-ui/components/navigation/menus/navlinks-global.tsx
+// #app/ellemment-ui/components/navigation/headers/navbar-local-links.tsx
 
-import { Link, useLocation } from '@remix-run/react'
-import { clsx } from 'clsx'
-import * as React from 'react'
+import { Link } from '@remix-run/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+import  { type To } from 'react-router-dom'
 
-// First, let's define a proper type for the link
-interface NavLink {
-  name: string;
-  to: string | ((username: string) => string);
-}
+type NavItem = readonly [string, To]
 
-// Then use it in the LINKS array
-export const LINKS: NavLink[] = [
-  { name: 'Discover', to: '/#discover' },
-  { name: 'Develop', to: '/#develop' },
-  { name: 'Design', to: '/#design' },
-  { name: 'Career', to: '/account/settings' },
-  { name: 'Connect', to: '/me' },
-]
+export function GlobalNavLinks() {
+  let [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  let timeoutRef = useRef<number | null>(null)
 
-export const MOBILE_LINKS = [{ name: '', to: '/' }, ...LINKS]
+  const navItems: NavItem[] = [
+    ['Discover', '/#discover'],
+    ['Develop', '/#develop'],
+    ['Design', '/#design'],
+    ['Connect', '/#connect'],
+    ['Content', '/me'],
+    ['Career', '/account/settings'],
+  ] as const
 
-interface NavLinkProps extends Omit<Parameters<typeof Link>['0'], 'to'> {
-  to: string | ((username: string) => string)
-  username: string
-}
-
-export function NavLink({ to, username, ...rest }: NavLinkProps) {
-  const location = useLocation()
-  const resolvedTo = typeof to === 'function' ? to(username) : to
-  const isSelected =
-    resolvedTo === location.pathname || location.pathname.startsWith(`${resolvedTo}/`)
-
-  return (
-    <li className="px-5 py-2 text-primary">
-      <Link
-        prefetch="intent"
-        className={clsx(
-          'text-primary block whitespace-nowrap text-xs font-normal focus:text-team-current focus:outline-none',
-          {
-            'active': isSelected,
-            'text-primary': !isSelected,
-          },
+  return navItems.map(([label, to], index) => (
+    <Link
+      key={label}
+      to={to}
+      className="relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-inherit transition-colors delay-150 hover:text-inherit/50 hover:delay-0"
+      onMouseEnter={() => {
+        if (timeoutRef.current) {
+          window.clearTimeout(timeoutRef.current)
+        }
+        setHoveredIndex(index)
+      }}
+      onMouseLeave={() => {
+        timeoutRef.current = window.setTimeout(() => {
+          setHoveredIndex(null)
+        }, 200)
+      }}
+    >
+      <AnimatePresence>
+        {hoveredIndex === index && (
+          <motion.span
+            className="absolute inset-0 rounded-lg bg-secondary"
+            layoutId="hoverBackground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.15 } }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.15 },
+            }}
+          />
         )}
-        to={resolvedTo}
-        {...rest}
-      />
-    </li>
-  )
-}
-
-interface NavLinksProps {
-  isMobile?: boolean
-  className?: string
-  username: string  
-}
-
-export function NavLinks({ className, username }: NavLinksProps) {
-  return (
-    <ul className={className}>
-      {LINKS.map((link, index) => (
-        <NavLink 
-          key={`${link.name}-${index}`}
-          to={link.to}
-          username={username}
-        >
-          {link.name}
-        </NavLink>
-      ))}
-    </ul>
-  )
+      </AnimatePresence>
+      <span className="relative z-10">{label}</span>
+    </Link>
+  ))
 }
