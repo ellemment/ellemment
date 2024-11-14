@@ -27,8 +27,8 @@ export function HeaderButton({
         'shadow-xl text-primary inline-flex items-center justify-center',
         'overflow-hidden rounded-full transition focus:outline-none',
         {
-          'h-6 w-6': variant === 'icon',
-          'h-6 px-8': variant === 'labelled',
+          'h-8 w-8': variant === 'icon',
+          'h-8 px-6': variant === 'labelled',
         },
         className,
       )}

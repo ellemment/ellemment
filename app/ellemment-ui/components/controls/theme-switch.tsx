@@ -33,8 +33,8 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
         className={clsx(
           'bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm shadow-xl text-primary inline-flex items-center justify-center overflow-hidden rounded-full transition focus:outline-none',
           {
-            'h-6 w-6': variant === 'icon',
-            'h-6 px-8': variant === 'labelled',
+            'h-8 w-8': variant === 'icon',
+            'h-8 px-6': variant === 'labelled',
           },
         )}
       >
@@ -46,7 +46,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <Icon name="half-2" className="inline self-center w-4 h-4" />
+            <Icon name="half-2" className="inline self-center w-5 h-5" />
           </span>
           <span
             className={clsx(
@@ -55,7 +55,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <Icon name="half-2" className="inline self-center w-4 h-4" />
+            <Icon name="half-2" className="inline self-center w-5 h-5" />
           </span>
 
           <span
@@ -65,7 +65,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
             )}
             style={iconTransformOrigin}
           >
-            <Icon name="value-none" className="inline self-center w-4 h-4" />
+            <Icon name="value-none" className="inline self-center w-5 h-5" />
           </span>
         </div>
         <span className={clsx('ml-4', { 'sr-only': variant === 'icon' })}>

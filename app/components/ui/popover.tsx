@@ -158,7 +158,7 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
           {/* Background layer */}
           <motion.div
             ref={backgroundRef}
-            className="fixed inset-x-0 top-[88px] bg-background shadow-lg z-50"
+            className="fixed inset-x-0 top-[70px] bg-background shadow-lg z-50"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={
@@ -176,7 +176,7 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
           <motion.div
             ref={contentRef}
             className={cn(
-              "fixed inset-x-0 top-[88px] z-[51]", // Higher z-index than background
+              "fixed inset-x-0 top-[80px] z-[51]", // Higher z-index than background
               className
             )}
             initial={{ opacity: 0, y: 20 }}
