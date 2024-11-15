@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.two-factor.index.tsx
+// app/routes/user+/_settings+/settings.two-factor.index.tsx
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import {
@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	await prisma.verification.delete({
 		where: { target_type: { target: userId, type: twoFAVerificationType } },
 	})
-	return redirectWithToast('/account/settings/two-factor', {
+	return redirectWithToast('/user/settings/two-factor', {
 		title: '2FA Disabled',
 		description: 'Two factor authentication has been disabled.',
 	})

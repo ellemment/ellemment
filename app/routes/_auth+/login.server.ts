@@ -1,7 +1,7 @@
 import { invariant } from '@epic-web/invariant'
 import { redirect } from '@remix-run/node'
 import { safeRedirect } from 'remix-utils/safe-redirect'
-import { twoFAVerificationType } from '#app/routes/account+/_settings+/settings.two-factor.js'
+import { twoFAVerificationType } from '#app/routes/user+/_settings+/settings.two-factor.js'
 import { getUserId, sessionKey } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import { combineResponseInits } from '#app/utils/misc.js'

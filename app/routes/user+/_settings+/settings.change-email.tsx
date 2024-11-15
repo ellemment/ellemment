@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.change-email.tsx
+// app/routes/user+/_settings+/settings.change-email.tsx
 
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'

@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.two-factor.tsx
+// app/routes/user+/_settings+/settings.two-factor.tsx
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { Outlet } from '@remix-run/react'

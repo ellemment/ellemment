@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.two-factor.index.tsx
+// app/routes/user+/_settings+/settings.two-factor.index.tsx
 
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
@@ -108,7 +108,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	if (intent === 'delete') {
 		await prisma.userImage.deleteMany({ where: { userId } })
-		return redirect('/account/settings')
+		return redirect('/user/settings')
 	}
 
 	await prisma.$transaction(async ($prisma) => {
@@ -119,7 +119,7 @@ export async function action({ request }: ActionFunctionArgs) {
 		})
 	})
 
-	return redirect('/account/settings')
+	return redirect('/user/settings')
 }
 
 export default function PhotoRoute() {

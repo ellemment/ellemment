@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.two-factor.verify.tsx
+// app/routes/user+/_settings+/settings.two-factor.verify.tsx
 
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
@@ -62,7 +62,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		},
 	})
 	if (!verification) {
-		return redirect('/account/settings/two-factor')
+		return redirect('/user/settings/two-factor')
 	}
 	const user = await prisma.user.findUniqueOrThrow({
 		where: { id: userId },
@@ -115,7 +115,7 @@ export async function action({ request }: ActionFunctionArgs) {
 			await prisma.verification.deleteMany({
 				where: { type: twoFAVerifyVerificationType, target: userId },
 			})
-			return redirect('/account/settings/two-factor')
+			return redirect('/user/settings/two-factor')
 		}
 		case 'verify': {
 			await prisma.verification.update({
@@ -124,7 +124,7 @@ export async function action({ request }: ActionFunctionArgs) {
 				},
 				data: { type: twoFAVerificationType },
 			})
-			return redirectWithToast('/account/settings/two-factor', {
+			return redirectWithToast('/user/settings/two-factor', {
 				type: 'success',
 				title: 'Enabled',
 				description: 'Two-factor authentication has been enabled.',

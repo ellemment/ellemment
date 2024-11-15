@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.your-sessions.tsx
+// app/routes/user+/_settings+/settings.your-sessions.tsx
 
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'

@@ -68,13 +68,13 @@ export default function ProfileRoute() {
 						{isLoggedInUser ? (
 							<div className="flex gap-4">
 								<Button asChild variant="link">
-									<Link to="/account/settings" prefetch="intent">
-										Edit profile
+									<Link to="/user/settings" prefetch="intent">
+										Settings
 									</Link>
 								</Button>
 								<Form action="/logout" method="POST">
 									<Button type="submit" variant="link" size="sm">
-										Logout
+										Sign Out
 									</Button>
 								</Form>
 							</div>

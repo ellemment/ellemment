@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.password_.create.tsx
+// app/routes/user+/_settings+/settings.password_.create.tsx
 
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'

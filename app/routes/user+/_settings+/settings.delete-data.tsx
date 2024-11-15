@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.delete-data.tsx
+// app/routes/user+/_settings+/settings.delete-data.tsx
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { type ActionFunctionArgs } from '@remix-run/node'

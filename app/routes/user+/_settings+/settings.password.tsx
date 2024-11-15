@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.password.tsx
+// app/routes/user+/_settings+/settings.password.tsx
 
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
@@ -53,7 +53,7 @@ async function requirePassword(userId: string) {
 		where: { userId },
 	})
 	if (!password) {
-		throw redirect('/account/settings/password/create')
+		throw redirect('/user/settings/password/create')
 	}
 }
 
@@ -110,7 +110,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	return redirectWithToast(
-		`/account/settings`,
+		`/user/settings`,
 		{
 			type: 'success',
 			title: 'Password Changed',

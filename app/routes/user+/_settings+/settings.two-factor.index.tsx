@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.two-factor.index.tsx
+// app/routes/user+/_settings+/settings.two-factor.index.tsx
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import {
@@ -44,7 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
 		create: verificationData,
 		update: verificationData,
 	})
-	return redirect('/account/settings/two-factor/verify')
+	return redirect('/user/settings/two-factor/verify')
 }
 
 export default function TwoFactorRoute() {

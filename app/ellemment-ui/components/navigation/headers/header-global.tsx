@@ -26,7 +26,7 @@ export function GlobalHeader() {
     <>
       <header className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm z-50">
         <nav>
-          <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-6 flex justify-between py-5">
+          <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4 flex justify-between py-1">
             {/* Left side - Logo */}
             <div className="flex items-center">
               <Link to="/" aria-label="Home">

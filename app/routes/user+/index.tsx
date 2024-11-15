@@ -1,4 +1,4 @@
-// app/routes/account+/index.tsx
+// app/routes/user+/index.tsx
 
 import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { requireUserId, logout } from '#app/utils/auth.server'

@@ -1,4 +1,4 @@
-// app/routes/account+/_settings+/settings.index.tsx
+// app/routes/user+/_settings+/settings.index.tsx
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'

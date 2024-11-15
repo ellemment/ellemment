@@ -13,7 +13,7 @@ export const navigationItems: NavItem[] = [
   ['Design', '/#design'],
   ['Connect', '/#connect'],
   ['Content', '/me'],
-  ['Career', '/account/settings'],
+  ['Career', '/user/settings'],
 ] as const
 
 export function GlobalNavLinks() {
