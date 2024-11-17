@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useSpinDelay } from 'spin-delay'
-import { Icon } from '#app/components/ui/icon'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { Button, type ButtonProps } from '#app/ellemment-ui/shadcn/button'
 import { cn } from '#app/utils/misc.js'
 import {

@@ -1,7 +1,7 @@
 
 
 import { getFieldsetProps, getInputProps } from '@conform-to/react'
-import { Icon } from '#app/components/ui/icon'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { ErrorList } from '#app/ellemment-ui/shared/forms'
 import { useImageAltText, useImagePreview } from '#app/utils/content/image-module/hooks'
 import { type ImageChooserProps, type ContentEditImagesProps } from '#app/utils/content/image-module/types'

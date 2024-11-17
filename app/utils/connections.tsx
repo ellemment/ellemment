@@ -1,6 +1,6 @@
 import { Form } from '@remix-run/react'
 import { z } from 'zod'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { useIsPending } from './misc.tsx'
 

@@ -8,7 +8,7 @@ import {
 	type ActionFunctionArgs,
 } from '@remix-run/node'
 import { Link, useFetcher, useLoaderData } from '@remix-run/react'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'

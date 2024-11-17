@@ -2,7 +2,7 @@
 
 import { useFetcher } from '@remix-run/react'
 import { clsx } from 'clsx'
-import { Icon } from '#app/components/ui/icon'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { useRequestInfo } from '#app/utils/request-info'
 import { THEME_FETCHER_KEY, useOptimisticThemeMode } from '#app/utils/theme'
 

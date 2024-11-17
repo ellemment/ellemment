@@ -1,6 +1,6 @@
 import { Form, useSearchParams, useSubmit } from '@remix-run/react'
 import { useId } from 'react'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { Input } from '#app/ellemment-ui/shadcn/input'
 import { Label } from '#app/ellemment-ui/shadcn/label'
 import { StatusButton } from '#app/ellemment-ui/shared/status-button'

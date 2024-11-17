@@ -10,7 +10,7 @@ import {
 } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
 import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { requireUserId } from '#app/utils/auth.server.js'

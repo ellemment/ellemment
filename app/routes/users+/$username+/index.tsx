@@ -3,7 +3,7 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { Button } from "#app/ellemment-ui/shadcn/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/ellemment-ui/shadcn/card'
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'

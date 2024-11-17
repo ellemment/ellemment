@@ -13,8 +13,8 @@ import {
   Link,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { Icon } from '#app/components/ui/icon'
 import { DeleteContent } from '#app/ellemment-ui/composite/content/editor-module/content-edit'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { Button } from "#app/ellemment-ui/shadcn/button"
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { requireUserId } from '#app/utils/auth.server'

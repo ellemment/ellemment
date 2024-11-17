@@ -1,8 +1,8 @@
 
 
 import { Link } from '@remix-run/react'
-import { Icon } from '#app/components/ui/icon'
 import { DeleteContent } from '#app/ellemment-ui/composite/content/editor-module/content-edit'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { Button } from "#app/ellemment-ui/shadcn/button"
 import { getContentImgSrc } from '#app/utils/content/image-module'
 import { 

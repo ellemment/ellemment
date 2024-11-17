@@ -8,7 +8,7 @@
 // message for them than the Remix and/or browser default.
 
 import { Link, useLocation } from '@remix-run/react'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary.tsx'
 
 export async function loader() {
