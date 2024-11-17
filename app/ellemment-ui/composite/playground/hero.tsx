@@ -1,7 +1,7 @@
 // app/components/creemson/creemson.tsx
 
 import React from 'react';
-import { Button } from '#app/components/ui/button.tsx'
+import { Button } from "#app/ellemment-ui/shadcn/button"
 
 const Hero: React.FC = () => {
   return (

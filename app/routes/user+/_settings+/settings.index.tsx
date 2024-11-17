@@ -3,8 +3,8 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useLoaderData, Form } from '@remix-run/react'
-import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
+import { Button } from "#app/ellemment-ui/shadcn/button"
 import { requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import { twoFAVerificationType } from './settings.two-factor.tsx'

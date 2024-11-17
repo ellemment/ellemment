@@ -18,7 +18,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from '#app/components/ui/tooltip.tsx'
+} from '#app/ellemment-ui/shadcn/tooltip'
 import { requireUserId } from '#app/utils/auth.server.js'
 import {
 	ProviderConnectionForm,

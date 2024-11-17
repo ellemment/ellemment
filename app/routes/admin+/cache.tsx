@@ -16,7 +16,7 @@ import {
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react'
-import { Button } from '#app/components/ui/button.tsx'
+import { Button } from "#app/ellemment-ui/shadcn/button"
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { Field } from '#app/ellemment-ui/shared/forms'
 import { Spacer } from '#app/ellemment-ui/shared/spacer'

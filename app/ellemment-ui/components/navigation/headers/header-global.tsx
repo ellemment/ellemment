@@ -4,7 +4,6 @@ import { Link, useNavigate } from '@remix-run/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { Icon } from '#app/components/ui/icon'
-import { HeaderButton } from '#app/ellemment-ui/components/composite/header-button'
 import {
   PopoverRoot,
   PopoverTrigger,
@@ -15,6 +14,7 @@ import {
 import { GlobalNavLinks , navigationItems } from '#app/ellemment-ui/components/navigation/menus/navlinks-global'
 import { useOptionalUser } from '#app/utils/use-root-data'
 import { ThemeSwitch } from '../../controls/theme-switch'
+import { HeaderButton } from './header-button'
 
 
 export function GlobalHeader() {

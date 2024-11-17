@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { useSpinDelay } from 'spin-delay'
+import { Button, type ButtonProps } from '#app/ellemment-ui/shadcn/button'
 import { cn } from '#app/utils/misc.js'
-import { Button, type ButtonProps } from './button.tsx'
 import { Icon } from './icon.tsx'
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from './tooltip.tsx'
+} from '../../ellemment-ui/shadcn/tooltip.tsx'
 
 export const StatusButton = React.forwardRef<
 	HTMLButtonElement,

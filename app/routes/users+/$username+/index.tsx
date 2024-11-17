@@ -3,9 +3,9 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
-import { Button } from '#app/components/ui/button.tsx'
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/components/ui/card'
 import { Icon } from '#app/components/ui/icon.tsx'
+import { Button } from "#app/ellemment-ui/shadcn/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/ellemment-ui/shadcn/card'
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc } from '#app/utils/misc.tsx'

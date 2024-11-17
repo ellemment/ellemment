@@ -1,9 +1,11 @@
+// #app/ellemment-ui/components/controls/avatar.tsx
+
 import { Link } from '@remix-run/react'
 import { clsx } from 'clsx'
 import { motion, useAnimation, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { Avatar as RadixAvatar, AvatarImage, AvatarFallback } from '#app/components/ui/avatar'
 import { useElementState } from '#app/ellemment-ui/hooks/use-element-state'
+import { Avatar as RadixAvatar, AvatarImage, AvatarFallback } from '#app/ellemment-ui/shadcn/avatar'
 import { useOptionalUser } from '#app/utils/use-root-data'
 
 const durations = {

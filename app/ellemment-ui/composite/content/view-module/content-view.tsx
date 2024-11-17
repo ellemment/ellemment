@@ -1,9 +1,9 @@
 
 
 import { Link } from '@remix-run/react'
-import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
 import { DeleteContent } from '#app/ellemment-ui/composite/content/editor-module/content-edit'
+import { Button } from "#app/ellemment-ui/shadcn/button"
 import { getContentImgSrc } from '#app/utils/content/image-module'
 import { 
   type ContentViewProps, 

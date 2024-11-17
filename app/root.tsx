@@ -24,7 +24,7 @@ import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary.ts
 import { useToast } from '#app/ellemment-ui/shared/toaster'
 import { type DonHandle } from '#app/types.ts'
 import { href as iconsHref } from './components/ui/icon.tsx'
-import { EpicToaster } from './components/ui/sonner.tsx'
+import { EpicToaster } from './ellemment-ui/shadcn/sonner.tsx'
 import { EpicProgress } from './ellemment-ui/shared/progress-bar'
 import { useTheme } from './routes/resources+/theme-switch.tsx'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
