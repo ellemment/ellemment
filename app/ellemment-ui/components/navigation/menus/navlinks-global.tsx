@@ -11,8 +11,8 @@ export const navigationItems: NavItem[] = [
   ['Discover', '/#discover'],
   ['Develop', '/#develop'],
   ['Design', '/#design'],
-  ['Connect', '/#connect'],
-  ['Content', '/me'],
+  ['Connect', '/about'],
+  ['Content', '/docs'],
   ['Career', '/user/settings'],
 ] as const
 

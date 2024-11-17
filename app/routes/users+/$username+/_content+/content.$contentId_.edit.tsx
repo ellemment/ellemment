@@ -3,7 +3,7 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { GeneralErrorBoundary } from '#app/components/core/error-boundary'
+import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 import { ContentEditor } from './__content-editor'

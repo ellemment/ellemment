@@ -20,10 +20,10 @@ import {
 } from '@remix-run/react'
 import { useState } from 'react'
 import { z } from 'zod'
-import { ErrorList } from '#app/components/core/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
+import { ErrorList } from '#app/ellemment-ui/shared/forms'
 import { requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import {

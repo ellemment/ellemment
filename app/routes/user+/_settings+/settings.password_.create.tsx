@@ -10,10 +10,10 @@ import {
   type ActionFunctionArgs,
 } from '@remix-run/node'
 import { Form, Link, useActionData } from '@remix-run/react'
-import { ErrorList, Field } from '#app/components/core/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
+import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
 import { getPasswordHash, requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import { useIsPending } from '#app/utils/misc.js'

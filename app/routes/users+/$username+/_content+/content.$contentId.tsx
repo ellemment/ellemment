@@ -13,10 +13,10 @@ import {
   Link,
 } from '@remix-run/react'
 import { formatDistanceToNow } from 'date-fns'
-import { DeleteContent } from '#app/components/content/editor-module/content-edit'
-import { GeneralErrorBoundary } from '#app/components/core/error-boundary'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon'
+import { DeleteContent } from '#app/ellemment-ui/composite/content/editor-module/content-edit'
+import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { requireUserId } from '#app/utils/auth.server'
 import { getContentImgSrc } from '#app/utils/content/image-module'
 import { jsonToHtml } from '#app/utils/content/markdown-module/tiptap.server.js'
