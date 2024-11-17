@@ -297,3 +297,19 @@ function toBase64(string: string) {
 	}
 }
 export { toBase64 }
+
+/**
+ * Formats a component path to ensure it's installed directly in the shadcn folder
+ */
+export function formatShadcnPath(componentName: string) {
+	// Remove any potential 'ui/' prefix and ensure the path is relative to the shadcn folder
+	const normalizedPath = componentName.replace(/^ui[/\\]/, '')
+	return `#app/interface/shadcn/${normalizedPath}`
+}
+
+/**
+ * Get the installation directory for shadcn components
+ */
+export function getShadcnDirectory() {
+	return '#app/interface/shadcn'
+}
