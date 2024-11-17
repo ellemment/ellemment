@@ -1,7 +1,7 @@
 
 
 import { type FieldMetadata } from '@conform-to/react'
-import { Textarea } from '#app/components/ui/textarea'
+import { Textarea } from '#app/ellemment-ui/shadcn/textarea'
 import { ErrorList } from '#app/ellemment-ui/shared/forms'
 import { type ImageFieldset } from '#app/utils/content/schemas-module/schemas'
 
