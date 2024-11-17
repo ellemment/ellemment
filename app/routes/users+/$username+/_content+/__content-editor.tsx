@@ -2,7 +2,7 @@
 
 import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
-import { ContentEditor as ContentEditorComponent } from '#app/components/content/editor-module/content-edit'
+import { ContentEditor as ContentEditorComponent } from '#app/interface/composite/content/editor-module/content-edit'
 
 interface ContentEditorProps {
   content?: SerializeFrom<

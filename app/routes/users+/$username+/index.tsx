@@ -3,11 +3,10 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
-import { GeneralErrorBoundary } from '#app/components/core/error-boundary.tsx'
-import { Spacer } from '#app/components/core/spacer.tsx'
-import { Button } from '#app/components/ui/button.tsx'
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/components/ui/card'
-import { Icon } from '#app/components/ui/icon.tsx'
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { Button } from "#app/interface/shadcn/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/interface/shadcn/card'
+import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
 import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc } from '#app/utils/misc.tsx'
 import { useOptionalUser } from '#app/utils/user.ts'
@@ -68,13 +67,13 @@ export default function ProfileRoute() {
 						{isLoggedInUser ? (
 							<div className="flex gap-4">
 								<Button asChild variant="link">
-									<Link to="/account/settings" prefetch="intent">
-										Edit profile
+									<Link to="/user/settings" prefetch="intent">
+										Settings
 									</Link>
 								</Button>
 								<Form action="/logout" method="POST">
 									<Button type="submit" variant="link" size="sm">
-										Logout
+										Sign Out
 									</Button>
 								</Form>
 							</div>

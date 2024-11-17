@@ -1,7 +1,7 @@
 import { Form } from '@remix-run/react'
 import { z } from 'zod'
-import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { StatusButton } from '#app/interface/shared/status-button'
 import { useIsPending } from './misc.tsx'
 
 export const GOOGLE_PROVIDER_NAME = 'google'
