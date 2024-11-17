@@ -12,13 +12,13 @@ import {
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
 import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from '#app/ellemment-ui/shadcn/tooltip'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { requireUserId } from '#app/utils/auth.server.js'
 import {
 	ProviderConnectionForm,

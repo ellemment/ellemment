@@ -9,9 +9,9 @@ import {
 	type MetaFunction,
 } from '@remix-run/node'
 import { Form, useActionData, useLoaderData } from '@remix-run/react'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
 import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { requireAnonymous, resetUserPassword } from '#app/utils/auth.server.js'
 import { useIsPending } from '#app/utils/misc.js'
 import { PasswordAndConfirmPasswordSchema } from '#app/utils/user-validation.js'

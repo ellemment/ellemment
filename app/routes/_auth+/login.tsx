@@ -10,9 +10,9 @@ import {
 import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary.tsx'
 import { CheckboxField, ErrorList, Field } from '#app/ellemment-ui/shared/forms'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { login, requireAnonymous } from '#app/utils/auth.server.js'
 import {
 	ProviderConnectionForm,

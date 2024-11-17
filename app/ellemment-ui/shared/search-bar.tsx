@@ -3,7 +3,7 @@ import { useId } from 'react'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { Input } from '#app/ellemment-ui/shadcn/input'
 import { Label } from '#app/ellemment-ui/shadcn/label'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { useDebounce, useIsPending } from '#app/utils/misc.js'
 
 export function SearchBar({

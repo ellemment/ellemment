@@ -11,9 +11,9 @@ import {
 } from '@remix-run/node'
 import { Form, Link, useActionData } from '@remix-run/react'
 import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { Button } from "#app/ellemment-ui/shadcn/button"
 import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import { getPasswordHash, requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import { useIsPending } from '#app/utils/misc.js'

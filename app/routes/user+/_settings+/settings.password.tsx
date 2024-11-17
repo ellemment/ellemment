@@ -12,9 +12,9 @@ import {
 import { Form, Link, useActionData } from '@remix-run/react'
 import { z } from 'zod'
 import { Icon } from '#app/components/ui/icon.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { Button } from '#app/ellemment-ui/shadcn/button'
 import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
+import { StatusButton } from '#app/ellemment-ui/shared/status-button'
 import {
 	getPasswordHash,
 	requireUserId,
