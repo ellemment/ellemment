@@ -3,8 +3,8 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
-import { Button } from "#app/ellemment-ui/shadcn/button"
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { Button } from "#app/interface/shadcn/button"
 import { requireUserId } from '#app/utils/auth.server.js'
 import { type BreadcrumbHandle } from './settings.tsx'
 

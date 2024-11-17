@@ -21,9 +21,9 @@ import {
 } from '@remix-run/react'
 import { safeRedirect } from 'remix-utils/safe-redirect'
 import { z } from 'zod'
-import { CheckboxField, ErrorList, Field } from '#app/ellemment-ui/shared/forms'
-import { Spacer } from '#app/ellemment-ui/shared/spacer'
-import { StatusButton } from '#app/ellemment-ui/shared/status-button'
+import { CheckboxField, ErrorList, Field } from '#app/interface/shared/forms'
+import { Spacer } from '#app/interface/shared/spacer'
+import { StatusButton } from '#app/interface/shared/status-button'
 import {
 	authenticator,
 	sessionKey,

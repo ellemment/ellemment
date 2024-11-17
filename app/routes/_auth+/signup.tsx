@@ -11,9 +11,9 @@ import {
 import { Form, useActionData, useSearchParams } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
-import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary.tsx'
-import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
-import { StatusButton } from '#app/ellemment-ui/shared/status-button'
+import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
+import { ErrorList, Field } from '#app/interface/shared/forms'
+import { StatusButton } from '#app/interface/shared/status-button'
 import {
 	ProviderConnectionForm,
 	providerNames,

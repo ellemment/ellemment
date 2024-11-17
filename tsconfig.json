@@ -6,7 +6,7 @@
 			"#app/*": ["./app/*"],
 			"#tests/*": ["./tests/*"],
 			"@/icon-name": [
-				"./app/ellemment-ui/foundations/icons/name.d.ts",
+				"./app/interface/foundations/icons/name.d.ts",
 				"./types/icon-name.d.ts"
 			]
 		}

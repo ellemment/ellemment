@@ -6,7 +6,7 @@ import cx from "clsx";
 import { useRef } from "react";
 import invariant from "tiny-invariant";
 
-import { useDelegatedReactRouterLinks } from "#app/ellemment-ui/composite/docs/delegate-links";
+import { useDelegatedReactRouterLinks } from "#app/interface/composite/docs/delegate-links";
 import { getContentElemment } from "#app/utils/content/content.server";
 import mdStyles from "#app/utils/content/markdown-module/styles/md.css?url";
 

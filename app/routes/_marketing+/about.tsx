@@ -1,4 +1,4 @@
-import { ScrollExperience } from '#app/ellemment-ui/composite/keynote/scroll-ux.js'
+import { ScrollExperience } from '#app/interface/composite/keynote/scroll-ux.js'
 import { type Sequence } from '#app/utils/md/scroll/mdslides.server.js'
 
 export default function AboutRoute() {

@@ -10,10 +10,10 @@ import {
   type ActionFunctionArgs,
 } from '@remix-run/node'
 import { Form, Link, useActionData } from '@remix-run/react'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
-import { Button } from "#app/ellemment-ui/shadcn/button"
-import { ErrorList, Field } from '#app/ellemment-ui/shared/forms'
-import { StatusButton } from '#app/ellemment-ui/shared/status-button'
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { Button } from "#app/interface/shadcn/button"
+import { ErrorList, Field } from '#app/interface/shared/forms'
+import { StatusButton } from '#app/interface/shared/status-button'
 import { getPasswordHash, requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import { useIsPending } from '#app/utils/misc.js'

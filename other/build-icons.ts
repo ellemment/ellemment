@@ -7,7 +7,7 @@ import { parse } from 'node-html-parser'
 const cwd = process.cwd()
 const inputDir = path.join(cwd, 'other', 'svg-icons')
 const inputDirRelative = path.relative(cwd, inputDir)
-const outputDir = path.join(cwd, 'app', 'ellemment-ui', 'foundations', 'icons', 'icons')
+const outputDir = path.join(cwd, 'app', 'interface', 'foundations', 'icons', 'icons')
 await fsExtra.ensureDir(outputDir)
 
 const files = glob

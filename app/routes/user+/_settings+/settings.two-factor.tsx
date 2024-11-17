@@ -2,7 +2,7 @@
 
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { Outlet } from '@remix-run/react'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
+import { Icon } from '#app/interface/foundations/icons/icon'
 import { type VerificationTypes } from '#app/routes/_auth+/verify.tsx'
 import { type BreadcrumbHandle } from './settings.tsx'
 

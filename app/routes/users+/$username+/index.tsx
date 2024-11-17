@@ -3,10 +3,10 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, type MetaFunction } from '@remix-run/react'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
-import { Button } from "#app/ellemment-ui/shadcn/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/ellemment-ui/shadcn/card'
-import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { Button } from "#app/interface/shadcn/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '#app/interface/shadcn/card'
+import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
 import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc } from '#app/utils/misc.tsx'
 import { useOptionalUser } from '#app/utils/user.ts'

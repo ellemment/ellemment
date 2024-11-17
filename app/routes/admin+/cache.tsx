@@ -16,10 +16,10 @@ import {
 	useSearchParams,
 	useSubmit,
 } from '@remix-run/react'
-import { Button } from "#app/ellemment-ui/shadcn/button"
-import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
-import { Field } from '#app/ellemment-ui/shared/forms'
-import { Spacer } from '#app/ellemment-ui/shared/spacer'
+import { Button } from "#app/interface/shadcn/button"
+import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
+import { Field } from '#app/interface/shared/forms'
+import { Spacer } from '#app/interface/shared/spacer'
 import {
 	cache,
 	getAllCacheKeys,

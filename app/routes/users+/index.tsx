@@ -3,9 +3,9 @@
 import { json, redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { z } from 'zod'
-import { GeneralErrorBoundary } from '#app/ellemment-ui/shared/error-boundary'
-import { ErrorList } from '#app/ellemment-ui/shared/forms'
-import { SearchBar } from '#app/ellemment-ui/shared/search-bar'
+import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
+import { ErrorList } from '#app/interface/shared/forms'
+import { SearchBar } from '#app/interface/shared/search-bar'
 import { prisma } from '#app/utils/db.server.js'
 import { cn, getUserImgSrc, useDelayedIsPending } from '#app/utils/misc.js'
 

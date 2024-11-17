@@ -20,10 +20,10 @@ import {
 } from '@remix-run/react'
 import { useState } from 'react'
 import { z } from 'zod'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
-import { Button } from "#app/ellemment-ui/shadcn/button"
-import { ErrorList } from '#app/ellemment-ui/shared/forms'
-import { StatusButton } from '#app/ellemment-ui/shared/status-button'
+import { Icon } from '#app/interface/foundations/icons/icon'
+import { Button } from "#app/interface/shadcn/button"
+import { ErrorList } from '#app/interface/shared/forms'
+import { StatusButton } from '#app/interface/shared/status-button'
 import { requireUserId } from '#app/utils/auth.server.js'
 import { prisma } from '#app/utils/db.server.js'
 import {

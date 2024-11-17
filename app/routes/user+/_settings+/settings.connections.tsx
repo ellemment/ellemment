@@ -11,14 +11,14 @@ import {
 } from '@remix-run/node'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useState } from 'react'
-import { Icon } from '#app/ellemment-ui/foundations/icons/icon'
+import { Icon } from '#app/interface/foundations/icons/icon'
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from '#app/ellemment-ui/shadcn/tooltip'
-import { StatusButton } from '#app/ellemment-ui/shared/status-button'
+} from '#app/interface/shadcn/tooltip'
+import { StatusButton } from '#app/interface/shared/status-button'
 import { requireUserId } from '#app/utils/auth.server.js'
 import {
 	ProviderConnectionForm,

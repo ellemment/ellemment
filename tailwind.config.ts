@@ -4,7 +4,7 @@ import { type Config } from 'tailwindcss'
 import colors from "tailwindcss/colors";
 import animatePlugin from 'tailwindcss-animate'
 import radixPlugin from 'tailwindcss-radix'
-import { ellemmentPreset } from './app/ellemment-ui/foundations/styles/ellemment-theme.ts'
+import { ellemmentPreset } from './app/interface/foundations/styles/ellemment-theme.ts'
 import { marketingPreset } from './app/routes/_marketing+/tailwind-preset'
 import { extendedTheme } from './app/utils/extended-theme.ts'
 

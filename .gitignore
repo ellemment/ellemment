@@ -23,4 +23,4 @@ node_modules
 *.local.*
 
 # generated files
-/app/ellemment-ui/foundations/icons/icons
+/app/interface/foundations/icons/icons
