@@ -7,7 +7,6 @@ import { Outlet, useLocation } from '@remix-run/react'
 import { z } from 'zod'
 import { AccountSettingsSidebar , settingsNavItems } from '#app/interface/composite/account/account-settings'
 import { Icon } from '#app/interface/foundations/icons/icon'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '#app/interface/shadcn/breadcrumb'
 import { Separator } from '#app/interface/shadcn/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#app/interface/shadcn/sidebar'
 import { requireUserId } from '#app/utils/auth.server.js'
@@ -61,28 +60,14 @@ export default function SettingsLayout() {
 									className="mx-2 h-4 bg-gray-700 dark:bg-gray-300" 
 									decorative 
 								/>
-								<Breadcrumb>
-									<BreadcrumbList>
-										<BreadcrumbItem>
-											<BreadcrumbLink href="/user/settings">
-												Settings
-											</BreadcrumbLink>
-										</BreadcrumbItem>
-										{currentPage && (
-											<>
-												<BreadcrumbSeparator />
-												<BreadcrumbItem>
-													<BreadcrumbPage>
-														{currentPage.title}
-													</BreadcrumbPage>
-												</BreadcrumbItem>
-											</>
-										)}
-									</BreadcrumbList>
-								</Breadcrumb>
+								{currentPage && (
+									<span className="text-lg font-semibold">
+										{currentPage.title}
+									</span>
+								)}
 							</div>
 						</header>
-						<main className="flex-1 overflow-y-auto p-4">
+						<main className="flex-1 overflow-y-auto p-4 ">
 							<Outlet />
 						</main>
 					</SidebarInset>
