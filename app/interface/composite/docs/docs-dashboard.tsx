@@ -1,6 +1,6 @@
 // #app/interface/composite/docs/docs-dashboard.tsx
 
-import { Link, useLoaderData, useLocation } from "@remix-run/react"
+import { Link, useLoaderData } from "@remix-run/react"
 import * as React from "react"
 import {
   Sidebar,
@@ -17,13 +17,6 @@ import { organizePostsByCategory } from "./docs-nav"
 export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { posts } = useLoaderData<typeof loader>()
   const navigation = organizePostsByCategory(posts)
-  const location = useLocation()
-  
-  // Get current category based on URL
-  const currentSlug = location.pathname.split('/docs/')[1]
-  const currentCategory = Object.entries(navigation).find(([_, category]) =>
-    category.items.some(item => item.slug === currentSlug)
-  )?.[1]?.label || "Documentation"
   
   return (
     <>
