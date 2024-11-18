@@ -6,9 +6,9 @@ import cx from "clsx";
 import { useRef } from "react";
 import invariant from "tiny-invariant";
 
-import { useDelegatedReactRouterLinks } from "#app/interface/composite/docs/delegate-links";
 import { getContentElemment } from "#app/utils/content/content.server";
 import mdStyles from "#app/utils/content/markdown-module/styles/md.css?url";
+import { useDelegatedReactRouterLinks } from "#app/utils/docs/delegate-links";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   let { slug } = params;
