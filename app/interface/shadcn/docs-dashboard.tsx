@@ -1,3 +1,5 @@
+// #app/interface/shadcn/docs-dashboard.tsx
+
 // #app/interface/shadcn/sidebar.tsx
 
 import { Slot } from "@radix-ui/react-slot"

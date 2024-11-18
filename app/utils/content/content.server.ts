@@ -132,7 +132,7 @@ function isMarkdownPostFrontmatter(obj: any): obj is MarkdownPost {
   );
 }
 
-interface MarkdownPostListing {
+export interface MarkdownPostListing {
   title: string;
   slug: string;
   summary: string;

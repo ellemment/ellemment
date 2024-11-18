@@ -160,5 +160,21 @@
 	.uploadmyfile {
 	  display: none;
 	}
+  
+	.scrollbar-thin {
+	  scrollbar-width: thin;
+	}
+  
+	.scrollbar-track-transparent {
+	  scrollbar-color: transparent;
+	}
+  
+	.scrollbar-thumb-gray-400 {
+	  scrollbar-color: #9ca3af;
+	}
+  
+	.dark .scrollbar-thumb-gray-600 {
+	  scrollbar-color: #4b5563;
+	}
   }
   
