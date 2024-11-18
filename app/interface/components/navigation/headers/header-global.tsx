@@ -47,7 +47,7 @@ export function GlobalHeader() {
               </div>
 
               {/* User avatar button */}
-              <Link to={user ? '/me' : '/login'}>
+              <Link to={user ? '/user' : '/login'}>
                 <HeaderButton>
                   <Icon
                     name={user ? 'github-logo' : 'plus-circled'}
@@ -129,7 +129,7 @@ export function GlobalHeader() {
       </AnimatePresence>
 
       {/* Add spacing for fixed header */}
-      <div className="h-[80px]" />
+      <div className="h-12 md:h-14" />
 
       {/* Backdrop overlay when popover is open */}
       {isOpen && (
