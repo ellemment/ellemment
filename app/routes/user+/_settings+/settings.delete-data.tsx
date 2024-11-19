@@ -31,8 +31,7 @@ export default function DeleteDataRoute() {
 	const fetcher = useFetcher<typeof action>()
 
 	return (
-		<div className="mx-auto max-w-md">
-			<h1 className="text-h1">Delete Account</h1>
+		<div className="flex flex-col justify-start">
 			<p className="mt-4">
 				Are you sure you want to delete your account? This action cannot be
 				undone.

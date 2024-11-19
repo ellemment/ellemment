@@ -135,7 +135,7 @@ export default function ChangePasswordRoute() {
 	})
 
 	return (
-		<Form method="POST" {...getFormProps(form)} className="mx-auto max-w-md">
+		<Form method="POST" {...getFormProps(form)} className="flex flex-col justify-start">
 			<Field
 				labelProps={{ children: 'Current Password' }}
 				inputProps={{

@@ -1,9 +1,9 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
-import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
-import * as React from 'react'
-import { Icon } from '#app/interface/foundations/icons/icon'
-import { Card } from '#app/interface/shadcn/card'
+import { Outlet, useLoaderData, useLocation } from '@remix-run/react'
+import { AccountDashboard } from '#app/interface/composite/account/account-dashboard'
+import { Separator } from '#app/interface/shadcn/separator'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '#app/interface/shadcn/sidebar'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
 import { prisma } from '#app/utils/db.server'
 import { useOptionalUser } from '#app/utils/user'
@@ -12,80 +12,59 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const owner = await prisma.user.findFirst({
     select: {
       id: true,
-      content: { 
-        select: { 
-          id: true, 
+      name: true,
+      username: true,
+      createdAt: true,
+      image: { select: { id: true } },
+      content: {
+        select: {
+          id: true,
           title: true,
-          createdAt: true 
+          createdAt: true
         },
         orderBy: { createdAt: 'desc' }
-      },
+      }
     },
     where: { username: params.username },
   })
-  
+
   invariantResponse(owner, 'Owner not found', { status: 404 })
   return json({ owner })
 }
 
 export default function ContentRoute() {
   const data = useLoaderData<typeof loader>()
-  const user = useOptionalUser()
+  const loggedInUser = useOptionalUser()
   const location = useLocation()
-  const isOwner = user?.id === data.owner.id
-  const isRootPath = location.pathname.endsWith('/content')
+  const isOwner = data.owner.id === loggedInUser?.id
+  
+  const currentPath = location.pathname.split('/').pop() || ''
+  
+  const pageTitle = currentPath === 'new' 
+    ? 'Create' 
+    : 'Elements'
 
-  if (isRootPath) {
-    return (
-      <div className="mt-12 max-w-2xl mx-auto p-6 space-y-6">
-        <div className="space-y-4">
-          {isOwner && (
-            <Card className="transition-colors hover:bg-muted">
-              <Link
-                to="new"
-                className="block p-4"
-              >
-                <div className="flex items-center gap-3">
-                  <Icon name="plus-circled" className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-medium">Create an element</span>
-                </div>
-              </Link>
-            </Card>
-          )}
-
-          {data.owner.content.map((content) => (
-            <Card 
-              key={content.id} 
-              className="transition-colors hover:bg-muted"
-            >
-              <Link
-                to={content.id}
-                className="block p-4"
-              >
-                <div className="flex items-center gap-3">
-                  <Icon name="check-circled" className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-medium">{content.title}</span>
-                </div>
-                <time 
-                  className="mt-1 text-sm text-muted-foreground block"
-                  dateTime={content.createdAt}
-                >
-                </time>
-              </Link>
-            </Card>
-          ))}
-
-          {data.owner.content.length === 0 && !isOwner && (
-            <div className="text-center py-12 text-muted-foreground">
-              <p>No content found.</p>
-            </div>
-          )}
+  return (
+    <div className="mx-auto max-w-7xl relative flex">
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex flex-1">
+          <AccountDashboard user={data.owner} />
+          <SidebarInset className="bg-gray-300 dark:bg-secondary px-2">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b">
+              <div className="flex items-center gap-2 px-4 w-full">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mx-2 h-4" />
+                <span className="text-lg font-semibold">{pageTitle}</span>
+              </div>
+            </header>
+            <main className="flex-1 overflow-y-auto">
+              <Outlet />
+            </main>
+          </SidebarInset>
         </div>
-      </div>
-    )
-  }
-
-  return <Outlet />
+      </SidebarProvider>
+    </div>
+  )
 }
 
 export function ErrorBoundary() {

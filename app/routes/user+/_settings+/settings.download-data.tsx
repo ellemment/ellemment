@@ -20,8 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function DownloadDataRoute() {
 	return (
-		<div className="mx-auto max-w-md">
-			<h1 className="text-h1">Download Your Data</h1>
+		<div className="flex flex-col justify-start">
 			<p className="mt-4">
 				You can download all of your data as a JSON file. This file will contain
 				all the information associated with your account.

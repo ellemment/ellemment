@@ -107,16 +107,22 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
   const contentRef = useRef<HTMLDivElement>(null)
   const backgroundRef = useRef<HTMLDivElement>(null)
 
-  // Sync background height with content height
+  // Calculate position based on header height
   useEffect(() => {
     if (isOpen && contentRef.current && backgroundRef.current) {
+      const header = document.querySelector('header')
+      if (header) {
+        const headerHeight = header.offsetHeight
+        backgroundRef.current.style.top = `${headerHeight}px`
+        contentRef.current.style.top = `${headerHeight + 10}px` // Add 10px padding
+      }
+      
       const updateHeight = () => {
         const contentHeight = contentRef.current?.offsetHeight || 0
         backgroundRef.current!.style.height = `${contentHeight}px`
       }
       
       updateHeight()
-      // Update height after a small delay to ensure all content is rendered
       setTimeout(updateHeight, 50)
     }
   }, [isOpen])
@@ -158,7 +164,7 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
           {/* Background layer */}
           <motion.div
             ref={backgroundRef}
-            className="fixed inset-x-0 top-[70px] bg-background shadow-lg z-50"
+            className="fixed inset-x-0 bg-background shadow-lg z-[55]"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={
@@ -176,7 +182,7 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
           <motion.div
             ref={contentRef}
             className={cn(
-              "fixed inset-x-0 top-[80px] z-[51]", // Higher z-index than background
+              "fixed inset-x-0 z-[56]",
               className
             )}
             initial={{ opacity: 0, y: 20 }}
@@ -233,7 +239,7 @@ export function PopoverButton({ children, onClick, className }: PopoverButtonPro
   return (
     <button
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-md font-medium md:text-sm md:font-normal hover:bg-zinc-100 dark:hover:bg-zinc-700",
+        "flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-md font-medium md:text-sm md:font-normal hover:text-gray-600 dark:hover:text-gray-400",
         className
       )}
       onClick={handleClick}

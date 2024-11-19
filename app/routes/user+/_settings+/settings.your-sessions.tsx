@@ -62,8 +62,7 @@ export default function YourSessionsRoute() {
 	const otherSessionsCount = data.user._count.sessions - 1
 
 	return (
-		<div className="mx-auto max-w-md">
-			<h1 className="text-h1">Your Sessions</h1>
+		<div className="flex flex-col justify-start">
 			{otherSessionsCount ? (
 				<>
 					<p className="mt-4">You are logged in on {otherSessionsCount} other devices.</p>

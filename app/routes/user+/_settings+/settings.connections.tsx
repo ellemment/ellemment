@@ -129,7 +129,7 @@ export default function Connections() {
 	const data = useLoaderData<typeof loader>()
 
 	return (
-		<div className="mx-auto max-w-md">
+		<div className="flex flex-col justify-start">
 			{data.connections.length ? (
 				<div className="flex flex-col gap-2">
 					<p>Here are your current connections:</p>
@@ -147,7 +147,7 @@ export default function Connections() {
 			) : (
 				<p>You don't have any connections yet.</p>
 			)}
-			<div className="mt-5 flex flex-col gap-5 border-b-2 border-t-2 border-border py-3">
+			<div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 border-b-2 border-t-2 border-border py-3">
 				{providerNames.map((providerName) => (
 					<ProviderConnectionForm
 						key={providerName}
