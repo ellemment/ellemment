@@ -1,7 +1,7 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import { Outlet, useLoaderData, useLocation } from '@remix-run/react'
-import { AccountDashboard, dashboardNavItems } from '#app/interface/composite/account/account-dashboard'
+import { AccountDashboard } from '#app/interface/composite/account/account-dashboard'
 import { Separator } from '#app/interface/shadcn/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '#app/interface/shadcn/sidebar'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary'
@@ -39,9 +39,10 @@ export default function ContentRoute() {
   const isOwner = data.owner.id === loggedInUser?.id
   
   const currentPath = location.pathname.split('/').pop() || ''
-  const pageTitle = dashboardNavItems
-    .flatMap(section => section.items)
-    .find(item => item.to.includes(currentPath))?.title || 'Elements'
+  
+  const pageTitle = currentPath === 'new' 
+    ? 'Create' 
+    : 'Elements'
 
   return (
     <div className="mx-auto max-w-7xl relative flex">

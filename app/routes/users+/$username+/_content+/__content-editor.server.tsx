@@ -70,9 +70,19 @@ export async function handleContentSubmission(
   )
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   const userId = await requireUserId(request)
   
+  // Check if the logged-in user is the owner of this route
+  const owner = await prisma.user.findFirst({
+    select: { id: true },
+    where: { username: params.username },
+  })
+
+  if (!owner || owner.id !== userId) {
+    throw new Response('Not authorized', { status: 403 })
+  }
+
   const clonedRequest = request.clone()
   const formData = await clonedRequest.formData()
   const intent = formData.get('intent')

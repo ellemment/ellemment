@@ -4,7 +4,7 @@ import { useForm, type FieldMetadata } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { type Content, type ContentImage } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
-import { Form, useActionData, Link } from '@remix-run/react'
+import { Form, useActionData } from '@remix-run/react'
 import { useRef } from 'react'
 import { Icon } from '#app/interface/foundations/icons/icon'
 import { Button } from "#app/interface/shadcn/button"
@@ -67,18 +67,7 @@ function ControlButtons({
     onReset: () => void
 }) {
     return (
-        <div className="flex justify-between items-center mb-8">
-            <Button
-                variant="ghost"
-                asChild
-                className="text-muted-foreground hover:text-foreground"
-            >
-                <Link to="/me">
-                    <Icon name="arrow-left" className="mr-2" />
-                    Space
-                </Link>
-            </Button>
-
+        <div className="flex justify-end items-center mb-8">
             <div className="flex gap-4">
                 <Button
                     type="button"

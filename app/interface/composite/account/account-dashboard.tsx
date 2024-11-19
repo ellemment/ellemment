@@ -14,16 +14,7 @@ import {
     SidebarMenuItem,
 } from "#app/interface/shadcn/sidebar"
 import { cn, getUserImgSrc } from "#app/utils/misc"
-
-export const dashboardNavItems = [
-    {
-        title: "Content",
-        items: [
-            { title: "Create", icon: "plus-circled", to: "./new" },
-            { title: "Elements", icon: "check-circled", to: "./" },
-        ],
-    },
-]
+import { useOptionalUser } from "#app/utils/user"
 
 interface AccountDashboardProps extends React.ComponentProps<typeof Sidebar> {
     user: {
@@ -36,6 +27,20 @@ interface AccountDashboardProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AccountDashboard({ user, ...props }: AccountDashboardProps) {
+    const loggedInUser = useOptionalUser()
+    const isOwner = loggedInUser?.id === user.id
+
+    const dashboardNavItems = [
+        {
+            items: [
+                ...(isOwner 
+                    ? [{ title: "Create", icon: "plus-circled", to: "./new" }]
+                    : []),
+                { title: "Elements", icon: "check-circled", to: "./" },
+            ],
+        },
+    ]
+
     return (
         <Sidebar
             variant="inset"
@@ -68,11 +73,8 @@ export function AccountDashboard({ user, ...props }: AccountDashboardProps) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                {dashboardNavItems.map((section) => (
-                    <div key={section.title} className="py-2">
-                        <h2 className="mb-2 px-2 text-sm font-semibold text-sidebar-foreground/60">
-                            {section.title}
-                        </h2>
+                {dashboardNavItems.map((section, index) => (
+                    <div key={index} className="py-2">
                         <SidebarMenu>
                             {section.items.map((item) => (
                                 <SidebarMenuItem key={item.to}>

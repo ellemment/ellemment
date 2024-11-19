@@ -239,7 +239,7 @@ export function PopoverButton({ children, onClick, className }: PopoverButtonPro
   return (
     <button
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-md font-medium md:text-sm md:font-normal hover:bg-zinc-100 dark:hover:bg-zinc-700",
+        "flex w-full items-center gap-2 rounded-md px-4 py-2 text-left text-md font-medium md:text-sm md:font-normal hover:text-gray-600 dark:hover:text-gray-400",
         className
       )}
       onClick={handleClick}

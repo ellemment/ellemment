@@ -120,13 +120,10 @@ export default function ContentRoute() {
   const user = useOptionalUser()
   
   const isOwner = user?.id === data.content.ownerId
-  const canDelete = userHasPermission(
-    user,
-    isOwner ? `delete:content:own` : `delete:content:any`,
-  )
+  const canDelete = isOwner && userHasPermission(user, 'delete:content:own')
   
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <div className="space-y-8 max-w-2xl mx-auto px-4 py-8">
       <div className="flex justify-end items-center">
         <div className="flex items-center gap-4">
           {isOwner && (
