@@ -10,11 +10,9 @@ import {
   PopoverButton,
   PopoverBody
 } from '#app/interface/components/navigation/menus/menu-popover'
-import { GlobalNavLinks , navigationItems } from '#app/interface/components/navigation/menus/navlinks-global'
-import { Icon } from '#app/interface/foundations/icons/icon'
+import { navigationItems } from '#app/interface/components/navigation/menus/navlinks-global'
 import { useOptionalUser } from '#app/utils/use-root-data'
 import { ThemeSwitch } from '../../controls/theme-switch'
-import { HeaderButton } from './header-button'
 
 
 export function GlobalHeader() {
@@ -24,9 +22,9 @@ export function GlobalHeader() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm z-50">
-        <nav>
-          <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4 flex justify-between py-1">
+      <header className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm z-[60]">
+        <nav className="z-[61] bg-background">
+          <div className="mx-auto max-w-7xl flex justify-between py-1 px-4">
             {/* Left side - Logo */}
             <div className="flex items-center">
               <Link to="/" aria-label="Home">
@@ -34,35 +32,23 @@ export function GlobalHeader() {
               </Link>
             </div>
 
-            {/* Center - Navigation (desktop only) */}
-            <div className="hidden md:flex items-center justify-center flex-1">
-              <GlobalNavLinks />
-            </div>
 
             {/* Right side - Theme switch & User */}
-            <div className="flex items-center gap-4">
-              {/* Theme switch - desktop only */}
-              <div className="noscript-hidden hidden md:block">
-                <ThemeSwitch />
-              </div>
-
-              {/* User avatar button */}
-              <Link to={user ? '/user' : '/login'}>
-                <HeaderButton>
-                  <Icon
-                    name={user ? 'github-logo' : 'plus-circled'}
-                    className="inline self-center w-5 h-5"
-                  />
-                </HeaderButton>
+            <div className="flex items-center gap-2">
+              {/* User account button */}
+              <Link 
+                to={user ? '/user' : '/login'}
+                className="text-sm font-normal hover:text-primary inline-flex items-center h-8 pb-0.5"
+              >
+                {user ? 'Account' : 'Sign In'}
               </Link>
 
               {/* Mobile menu button */}
-              <div className="md:hidden">
+              <div className="inline-flex items-center">
                 <PopoverRoot>
-                <HeaderButton>
-                  <PopoverTrigger className="p-2  bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm">
+                  <PopoverTrigger className="h-8 w-8 inline-flex items-center justify-center hover:text-primary">
                     {({ isOpen }) => (
-                      <div className="w-4 h-4 flex flex-col justify-center items-center relative">
+                      <div className="w-4 h-4 flex flex-col justify-center items-center">
                         <motion.span
                           className="absolute w-4 h-[2px] bg-current"
                           animate={{
@@ -82,13 +68,11 @@ export function GlobalHeader() {
                       </div>
                     )}
                   </PopoverTrigger>
-                  </HeaderButton>
-
                   <PopoverContent
-                    className="shadow-lg"
+                    className=""
                     onOpenChange={setIsOpen}
                   >
-                    <PopoverBody className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6">
+                    <PopoverBody className="max-w-7xl mx-auto pt-2 px-4">
                       <div className="space-y-4">
                         {navigationItems.map(([label, to]) => (
                           <PopoverButton
@@ -102,7 +86,7 @@ export function GlobalHeader() {
                       </div>
 
                       <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-700">
-                        <div className="flex justify-start">
+                        <div className="flex justify-start pb-4">
                           <ThemeSwitch variant="labelled" />
                         </div>
                       </div>
@@ -119,7 +103,7 @@ export function GlobalHeader() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[40]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -130,11 +114,6 @@ export function GlobalHeader() {
 
       {/* Add spacing for fixed header */}
       <div className="h-12 md:h-14" />
-
-      {/* Backdrop overlay when popover is open */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" />
-      )}
     </>
   )
 }

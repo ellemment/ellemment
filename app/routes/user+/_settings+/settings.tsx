@@ -42,14 +42,17 @@ export default function SettingsLayout() {
 	const location = useLocation()
 	
 	const currentPath = location.pathname.split('/').pop() || ''
-	const currentPage = settingsNavItems
-		.flatMap(section => section.items)
-		.find(item => item.to.includes(currentPath))
+	const isIndex = currentPath === 'settings'
+	const pageTitle = isIndex 
+		? 'Settings'
+		: settingsNavItems
+			.flatMap(section => section.items)
+			.find(item => item.to.includes(currentPath))?.title
 
 	return (
 		<div className="mx-auto max-w-7xl relative flex">
 			<SidebarProvider defaultOpen={true} className="rounded-xl">
-				<div className="flex w-full relative">
+				<div className="flex flex-1">
 					<AccountSettingsSidebar />
 					<SidebarInset className="bg-gray-300 dark:bg-secondary">
 						<header className="flex h-16 shrink-0 items-center gap-2 border-b">
@@ -60,9 +63,9 @@ export default function SettingsLayout() {
 									className="mx-2 h-4 bg-gray-700 dark:bg-gray-300" 
 									decorative 
 								/>
-								{currentPage && (
+								{pageTitle && (
 									<span className="text-lg font-semibold">
-										{currentPage.title}
+										{pageTitle}
 									</span>
 								)}
 							</div>

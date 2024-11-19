@@ -52,7 +52,7 @@ export default function TwoFactorRoute() {
 	const enable2FAFetcher = useFetcher<typeof action>()
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col justify-start gap-4">
 			{data.is2FAEnabled ? (
 				<>
 					<p className="text-lg">
@@ -86,7 +86,7 @@ export default function TwoFactorRoute() {
 							name="intent"
 							value="enable"
 							status={enable2FAFetcher.state === 'loading' ? 'pending' : 'idle'}
-							className="mx-auto"
+							className="flex justify-start"
 						>
 							Enable 2FA
 						</StatusButton>
