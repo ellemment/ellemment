@@ -40,7 +40,7 @@ export function GlobalHeader() {
                 to={user ? '/user' : '/login'}
                 className="text-sm font-normal hover:text-primary inline-flex items-center h-8 pb-0.5"
               >
-                {user ? 'Account' : 'Sign In'}
+                {user ? 'Account' : 'Get Started'}
               </Link>
 
               {/* Mobile menu button */}

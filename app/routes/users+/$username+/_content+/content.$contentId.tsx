@@ -126,49 +126,34 @@ export default function ContentRoute() {
   )
   
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="space-y-8">
-        {/* Header with Space button */}
-        <div className="flex justify-between items-center">
-          <Button
-            variant="ghost"
-            asChild
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Link to={`/users/${data.content.owner.username}`}>
-              <Icon name="arrow-left" className="mr-2" />
-              Space
-            </Link>
-          </Button>
-
-          <div className="flex items-center gap-4">
-            {isOwner && (
-              <Button asChild variant="outline">
-                <Link to="edit">
-                  <Icon name="pencil-2" className="mr-2" />
-                  Edit
-                </Link>
-              </Button>
-            )}
-            {canDelete && <DeleteContent id={data.content.id} />}
-          </div>
+    <div className="space-y-8 max-w-3xl mx-auto">
+      <div className="flex justify-end items-center">
+        <div className="flex items-center gap-4">
+          {isOwner && (
+            <Button asChild variant="outline">
+              <Link to="edit">
+                <Icon name="pencil-2" className="mr-2" />
+                Edit
+              </Link>
+            </Button>
+          )}
+          {canDelete && <DeleteContent id={data.content.id} />}
         </div>
-
-        {/* Title and timestamp on next line */}
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold">{data.content.title}</h1>
-          <p className="text-sm text-muted-foreground">{data.timeAgo} ago</p>
-        </div>
-        
-        {data.content.images && data.content.images.length > 0 && (
-          <ImageGallery images={data.content.images} />
-        )}
-        
-        <div 
-          className="prose prose-zinc dark:prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ __html: data.content.content }}
-        />
       </div>
+
+      <div className="space-y-1">
+        <h1 className="text-4xl font-bold">{data.content.title}</h1>
+        <p className="text-sm text-muted-foreground">{data.timeAgo} ago</p>
+      </div>
+      
+      {data.content.images?.length > 0 && (
+        <ImageGallery images={data.content.images} />
+      )}
+      
+      <div 
+        className="prose prose-zinc dark:prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: data.content.content }}
+      />
     </div>
   )
 }

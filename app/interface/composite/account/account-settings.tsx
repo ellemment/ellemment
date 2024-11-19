@@ -50,8 +50,8 @@ export function AccountSettingsSidebar({ ...props }: React.ComponentProps<typeof
     >
       <SidebarHeader>
         <SidebarMenu>
-          <Card className="h-16 border-0 shadow-none p-4 px-2">
-            <Link to="/user/settings" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
+            <Link to="/user/settings" className="flex items-center gap-3 hover:opacity-50 transition-opacity">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
                   <AvatarImage

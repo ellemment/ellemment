@@ -11,5 +11,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function NewContent() {
-  return <ContentEditor />
+  return (
+    <div className="space-y-8">
+      <ContentEditor />
+    </div>
+  )
 }
