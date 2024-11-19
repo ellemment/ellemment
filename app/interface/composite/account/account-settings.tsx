@@ -1,10 +1,11 @@
 // #app/interface/composite/account/account-settings.tsx
 
-import { Link, Form, useLoaderData } from "@remix-run/react"
+import { Link, Form, useLoaderData, useLocation } from "@remix-run/react"
 import * as React from "react"
 import { Icon } from "#app/interface/foundations/icons/icon"
 import { Avatar, AvatarImage, AvatarFallback } from "#app/interface/shadcn/avatar"
 import { Card } from "#app/interface/shadcn/card"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "#app/interface/shadcn/collapsible"
 import {
   Sidebar,
   SidebarContent,
@@ -15,6 +16,8 @@ import {
 } from "#app/interface/shadcn/sidebar"
 import { type loader } from "#app/routes/user+/_settings+/settings"
 import { cn, getUserImgSrc } from "#app/utils/misc"
+import { useOptionalUser } from "#app/utils/user"
+
 
 export const settingsNavItems = [
   {
@@ -38,6 +41,10 @@ export const settingsNavItems = [
 
 export function AccountSettingsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = useLoaderData<typeof loader>()
+  const loggedInUser = useOptionalUser()
+  const location = useLocation()
+  const isOwner = loggedInUser?.id === data.user.id
+  const [isOpen, setIsOpen] = React.useState(!location.pathname.includes('/settings'))
 
   return (
     <Sidebar
@@ -50,30 +57,84 @@ export function AccountSettingsSidebar({ ...props }: React.ComponentProps<typeof
     >
       <SidebarHeader>
         <SidebarMenu>
-          <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
-            <Link to="/user/settings" className="flex items-center gap-3 hover:opacity-50 transition-opacity">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage
-                    src={data.user ? getUserImgSrc(data.user.image?.id) : ''}
-                    alt={data.user?.name ?? data.user?.username}
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="text-sm">
-                    {data.user?.name?.[0]?.toUpperCase() ??
-                      data.user?.username?.[0]?.toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <span className="text-md font-semibold leading-none pb-1">{data.user?.name}</span>
-                  <span className="text-xs text-muted-foreground">@{data.user?.username}</span>
+          {isOwner ? (
+            <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+              <CollapsibleTrigger className="w-full">
+                <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-3 w-full">
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarImage
+                          src={data.user ? getUserImgSrc(data.user.image?.id) : ''}
+                          alt={data.user?.name ?? data.user?.username}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="text-sm">
+                          {data.user?.name?.[0]?.toUpperCase() ??
+                            data.user?.username?.[0]?.toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col items-start w-full">
+                        <span className="text-md font-semibold text-left">
+                          {data.user.name || data.user.username}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          Elements
+                        </span>
+                      </div>
+                    </div>
+                    <Icon
+                      name={isOpen ? "chevron-down" : "chevron-right"}
+                      className="h-4 w-4 text-muted-foreground"
+                    />
+                  </div>
+                </Card>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-2 pt-2">
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link to={`/users/${data.user.username}/content`}>Elements</Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link to="/user/settings">Settings</Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </CollapsibleContent>
+            </Collapsible>
+          ) : (
+            <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3 w-full">
+                  <Avatar className="h-10 w-10 flex-shrink-0">
+                    <AvatarImage
+                      src={data.user ? getUserImgSrc(data.user.image?.id) : ''}
+                      alt={data.user?.name ?? data.user?.username}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="text-sm">
+                      {data.user?.name?.[0]?.toUpperCase() ??
+                        data.user?.username?.[0]?.toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start w-full">
+                    <span className="text-md font-semibold text-left">
+                      {data.user.name || data.user.username}
+                    </span>
+                    <span className="text-sm text-muted-foreground text-left">
+                      Elements
+                    </span>
+                  </div>
                 </div>
               </div>
-            </Link>
-          </Card>
+            </Card>
+          )}
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-4">
         {settingsNavItems.map((section) => (
           <div key={section.title} className="py-2">
             <h2 className="mb-2 px-2 text-sm font-semibold text-sidebar-foreground/60">
