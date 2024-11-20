@@ -1,13 +1,23 @@
 import cx from "clsx";
 import * as React from "react";
 import tweenFunctions from "tween-functions";
-import { type Sequence, type Slide } from "#app/utils/md/scroll/mdslides.server.js";
+import  { type Sequence, type Slide } from "#app/utils/md/scroll/mdslides.server";
 import { BrowserChrome } from "./browser";
 import * as Fakebooks from "./fakebooks";
 import { Actor, ScrollStage, useActor, useStage } from "./stage";
 import { PrimaryButtonLink } from "./utils/buttons";
 
-const { easeOutQuad, linear } = tweenFunctions;
+const { easeOutQuad, easeInExpo, linear } = tweenFunctions;
+
+function getSlideOrDefault(slides: Slide[], index: number): Slide {
+  const defaultSlide: Slide = {
+    subject: '',
+    type: 'slide',
+    html: '',
+    // add any other required properties from the Slide type
+  };
+  return slides[index] ?? defaultSlide;
+}
 
 export function ScrollExperience({
   mutations,
@@ -26,6 +36,7 @@ export function ScrollExperience({
       <div className="h-[25vh]" />
       <Waterfall />
       <div className="h-[25vh]" />
+      <Spinnageddon />
       <Prefetching />
       <div className="h-[75vh]" />
       <Mutations slides={mutations} />
@@ -35,7 +46,6 @@ export function ScrollExperience({
     </div>
   );
 }
-
 
 function CTA() {
   return (
@@ -71,7 +81,7 @@ function ErrorBoundaries({ slides }: { slides: Sequence }) {
         <JumboText>
           <h2>
             Route Error Boundaries{" "}
-            <span className="text-inherit">
+            <span className="text-yellow-600">
               keep the happy path happy.
             </span>
           </h2>
@@ -98,8 +108,8 @@ function ErrorBoundaries({ slides }: { slides: Sequence }) {
           </JumboP>
 
           <div className="sticky bottom-[-5vh]">
-            <MutationCode start={0} end={0.25} slide={slides.slides[0]} />
-            <MutationCode start={0.25} end={0.4} slide={slides.slides[1]} />
+            <MutationCode start={0} end={0.25} slide={getSlideOrDefault(slides.slides, 0)} />
+            <MutationCode start={0.25} end={0.4} slide={getSlideOrDefault(slides.slides, 1)} />
             <Actor start={0.4} end={0.5}>
               <InvoiceError explode />
             </Actor>
@@ -143,7 +153,7 @@ function InvoiceError({ explode }: { explode?: boolean }) {
         <Fakebooks.SalesView>
           <Fakebooks.InvoicesView>
             <Fakebooks.InvoiceView
-              error={explode ? actor.progress > 0.5 : true}
+              error={explode ? actor?.progress > 0.5 : true}
             >
               {explode && <Explosion />}
             </Fakebooks.InvoiceView>
@@ -161,8 +171,8 @@ function Explosion() {
     8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7,
   ];
   let frameProgressLength = 1 / frameSpriteOrder.length;
-  let index = Math.floor(actor.progress / frameProgressLength);
-  let activeFrame = frameSpriteOrder[index] ?? 0; // Provide a fallback value
+  let index = Math.floor(actor?.progress / frameProgressLength);
+  let activeFrame = frameSpriteOrder[index] ?? 0;
   let bgOffset = activeFrame * spriteHeight;
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -208,8 +218,8 @@ function Glitch() {
         alt=""
         className="relative h-[110%] w-[110%]"
         style={{
-          left: actor.progress === 0 ? "0" : ruhRuh_Random() + "px",
-          top: actor.progress === 0 ? "0" : ruhRuh_Random() + "px",
+          left: actor?.progress === 0 ? "0" : ruhRuh_Random() + "px",
+          top: actor?.progress === 0 ? "0" : ruhRuh_Random() + "px",
         }}
         src="/busted.jpg"
       />
@@ -228,7 +238,7 @@ function Mutations({ slides }: { slides: Sequence }) {
           </span>
           <p>
             You ever notice most of the code in your app is for{" "}
-            <span className="text-inherit">changing data?</span>
+            <span className="text-yellow-600">changing data?</span>
           </p>
         </div>
         <p className="hyphen-manual mt-2 text-lg md:pr-52 md:text-xl lg:pr-72">
@@ -244,7 +254,7 @@ function Mutations({ slides }: { slides: Sequence }) {
       <div className="h-[25vh]" />
       <JumboText>
         Resilient, progressively enhanced{" "}
-        <span className="text-inherit">data updates</span> are built in.
+        <span className="text-blue-600">data updates</span> are built in.
       </JumboText>
       <div className="h-[25vh]" />
       <MutationSlides sequence={slides} />
@@ -286,27 +296,61 @@ function MutationSlides({ sequence }: { sequence: Sequence }) {
 
         <div className="sticky bottom-0 bg-[#252525] xl:bottom-auto xl:top-0 xl:flex xl:h-screen xl:flex-1 xl:items-center xl:self-start">
           <MutationCode
-            start={slideLength * 3.2}
-            end={0.66}
-            slide={sequence.slides[1]}
+            start={0}
+            end={slideLength * 1.5}
+            slide={getSlideOrDefault(sequence.slides, 0)}
           />
+          <MutationCode
+            start={slideLength * 1.5}
+            end={slideLength * 2.5}
+            slide={getSlideOrDefault(sequence.slides, 1)}
+          />
+          <Actor start={slideLength * 2.5} end={slideLength * 3.2}>
+            <MutationNetwork />
+          </Actor>
           <MutationCode
             start={slideLength * 3.2}
             end={0.66}
-            slide={sequence.slides[2]}
+            slide={getSlideOrDefault(sequence.slides, 2) || getSlideOrDefault(sequence.slides, 0)}
           />
-          <MutationCode
-            start={0.66}
-            end={2}
-            slide={sequence.slides[3]}
-          />
+          <MutationCode start={0.66} end={2} slide={getSlideOrDefault(sequence.slides, 3) || getSlideOrDefault(sequence.slides, 0)} />
         </div>
       </div>
     </ScrollStage>
   );
 }
 
-
+function MutationNetwork() {
+  return (
+    <div
+      className="flex h-[50vh] select-none items-center justify-center xl:w-full"
+      aria-hidden
+    >
+      <div className="w-4/5 pb-10">
+        <Network>
+          <Resource name="POST new" start={0} size={40} />
+          <Resource
+            name="GET invoices"
+            start={40}
+            size={10}
+            _cancel
+            _hideUntilStart
+          />
+          <Resource
+            name="GET 102000"
+            start={40}
+            size={10}
+            _cancel
+            _hideUntilStart
+          />
+          <Resource name="POST new" start={50} size={20} _hideUntilStart />
+          <Resource name="GET invoices" start={70} size={20} _hideUntilStart />
+          <Resource name="GET 102000" start={70} size={15} _hideUntilStart />
+        </Network>
+      </div>
+    </div>
+  );
+}
 
 function MutationCode({
   slide,
@@ -314,13 +358,11 @@ function MutationCode({
   end,
   persistent,
 }: {
-  slide: Slide | undefined;
+  slide: Slide;
   start: number;
   end: number;
   persistent?: boolean;
 }) {
-  if (!slide) return null;
-
   return (
     <Actor start={start} end={end} persistent={persistent}>
       <div
@@ -356,7 +398,7 @@ function Prefetching() {
       <h2 className="sr-only">Pre-fetching Everything</h2>
       <JumboText>
         Nested routes allow Remix to make your app{" "}
-        <span className="text-inherit">as fast as instant.</span>
+        <span className="text-red-600">as fast as instant.</span>
       </JumboText>
       <div className="h-[10vh]" />
 
@@ -396,7 +438,7 @@ function PrefetchBrowser() {
         </Actor>
         <Actor start={moveStart} end={clickAt}>
           <Fakebooks.DashboardView
-            highlightOnHover={stage.progress > hoverStart}
+            highlightOnHover={stage?.progress > hoverStart}
           />
         </Actor>
         <Actor start={clickAt}>
@@ -588,15 +630,10 @@ function WithoutRemix() {
   let screen: React.ReactNode = aboutBlank;
 
   // just practicing my interview skills in case remix tanks.
-  let i = jank.length;
-  while (i--) {
-    const item = jank[i];
-    if (item) {
-      const [start, element] = item;
-      if (progress >= start) {
-        screen = element;
-        break;
-      }
+  for (const [start, element] of jank || []) {
+    if (progress >= start) {
+      screen = element;
+      break;
     }
   }
 
@@ -669,8 +706,8 @@ function Network({
             left: `${actor.progress * 100}%`,
           }}
         >
-          <ProgressHead className="-ml-1 w-2 text-inherit" />
-          <div className="relative top-[-1px] h-full w-[1px] bg-secondary" />
+          <ProgressHead className="-ml-1 w-2 text-blue-600" />
+          <div className="relative top-[-1px] h-full w-[1px] bg-blue-600" />
         </div>
       </div>
     </div>
@@ -681,13 +718,14 @@ function Resource({
   name,
   size,
   start,
-  cancel,
+  _cancel,
+  _hideUntilStart,
 }: {
   name: string;
   size: number;
   start: number;
-  cancel?: boolean;
-  hideUntilStart?: boolean;
+  _cancel?: boolean;
+  _hideUntilStart?: boolean;
 }) {
   let actor = useActor();
   let progress = actor.progress * 100;
@@ -713,7 +751,7 @@ function Resource({
             "h-1 sm:h-2" +
             " " +
             (complete
-              ? cancel
+              ? _hideUntilStart
                 ? "bg-red-600"
                 : "bg-green-600"
               : "bg-blue-600")
@@ -873,10 +911,72 @@ function Waterfall() {
   );
 }
 
+const konamiCode = [
+  { code: "ArrowUp", glyph: "↑" },
+  { code: "ArrowUp", glyph: "↑" },
+  { code: "ArrowDown", glyph: "↓" },
+  { code: "ArrowDown", glyph: "↓" },
+  { code: "ArrowLeft", glyph: "←" },
+  { code: "ArrowRight", glyph: "→" },
+  { code: "ArrowLeft", glyph: "←" },
+  { code: "ArrowRight", glyph: "→" },
+  { code: "b", glyph: "B" },
+  { code: "a", glyph: "A" },
+  { code: "Enter", glyph: "↵" },
+];
 
 /**
  * @see https://en.wikipedia.org/wiki/Konami_Code
  */
+function KonamiCode(props: React.HTMLProps<HTMLSpanElement>) {
+  const [konamiState, setKonamiState] = React.useState(0);
+  const konamiRef = React.useRef<HTMLSpanElement>(null);
+
+  React.useEffect(() => {
+    const onKeyPress = (event: KeyboardEvent) => {
+      const currentRef = konamiRef.current;
+      if (!currentRef) return;
+
+      // only handle hotkeys when it's visible
+      const { top, bottom } = currentRef.getBoundingClientRect();
+      if (top < 0 || bottom > window.innerHeight) {
+        return;
+      }
+
+      setKonamiState((prevState) => {
+        if (prevState >= konamiCode.length) return prevState;
+
+        if (konamiCode[prevState]?.code === event.key) {
+          return prevState + 1;
+        }
+
+        // reset if the user messed up the code
+        return 0;
+      });
+    };
+
+    document.addEventListener("keyup", onKeyPress);
+    
+    // Cleanup function
+    return () => {
+      document.removeEventListener("keyup", onKeyPress);
+    };
+  }, []); // Empty dependency array since we don't need to re-create the listener
+
+  return (
+    <span ref={konamiRef} {...props}>
+      {konamiState < konamiCode.length ? (
+        konamiCode.map(({ glyph }, i) => (
+          <span key={i} className={konamiState > i ? "text-green-600" : ""}>
+            {glyph}
+          </span>
+        ))
+      ) : (
+        <span className="text-6xl"> 🏆🏆🏆🏆🏆🏆🏆🏆🏆 </span>
+      )}
+    </span>
+  );
+}
 
 function NestedRoutes() {
   function handleSectionFocus(event: React.FocusEvent) {
@@ -894,7 +994,7 @@ function NestedRoutes() {
           <br />
           <span className="text-yellow-600">Nested Routes.</span>
         </h2>
-  
+        <KonamiCode className="font-mono text-gray-700" aria-hidden />
       </JumboText>
       <div className="h-[25vh]" />
       <ScrollStage pages={2.75}>
@@ -920,7 +1020,176 @@ function NestedRoutes() {
   );
 }
 
+function Spinnageddon() {
+  return (
+    <ScrollStage pages={1.5}>
+      <Spinners />
+      <Actor start={0} end={SPINNER_END}>
+        <SayGoodbye />
+      </Actor>
+      <SayGoodbyeOutro />
+    </ScrollStage>
+  );
+}
 
+function Spinners() {
+  let stage = useStage();
+  let endBy = 0.5;
+  let start = (n: number) => (endBy / 20) * n;
+  return (
+    <div
+      hidden={stage.progress === 0 || stage.progress === 1}
+      className="fixed inset-0 overflow-hidden"
+    >
+      <Spinner
+        start={start(1)}
+        className="11 absolute bottom-[25vh] left-[8vw] h-[8vh] w-[8vh] md:h-[8vw] md:w-[8vw]"
+      />
+      <Spinner
+        start={start(2)}
+        className="16 absolute bottom-[23vh] right-[32vw] h-[5vh] w-[5vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(3)}
+        className="4 absolute left-[-4vw] top-[24vh] h-[13vh] w-[13vh] md:top-[16vh] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(4)}
+        className="17 absolute bottom-[-5vh] right-[18vw] h-[13vh] w-[13vh] md:bottom-[-4vh] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(5)}
+        className="13 absolute bottom-[-3vh] left-[15vw] h-[13vh] w-[13vh] md:left-[20vw] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(6)}
+        className="7 absolute right-[-2vw] top-[20vh] h-[13vh] w-[13vh] md:top-[12vh] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(7)}
+        className="14 absolute bottom-[16vh] left-[35vw] h-[5vh] w-[5vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(8)}
+        className="20 absolute bottom-[10vh] right-[-5vw] h-[13vh] w-[13vh] md:bottom-[3vh] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(9)}
+        className="10 absolute bottom-[37vh] left-[3vw] h-[5vh] w-[5vh] md:bottom-[42vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(10)}
+        className="9 absolute right-[3vw] top-[38vh] h-[5vh] w-[5vh] md:top-[50vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(11)}
+        className="19 absolute bottom-[36vh] right-[10vw] h-[5vh] w-[5vh] md:bottom-[9vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(12)}
+        className="15 absolute bottom-[30vh] right-[40vw] h-[8vh] w-[8vh] md:bottom-[2vh] md:h-[8vw] md:w-[8vw]"
+      />
+      <Spinner
+        start={start(13)}
+        className="18 absolute bottom-[25vh] right-[7vw] h-[8vh] w-[8vh] md:h-[8vw] md:w-[8vw]"
+      />
+      <Spinner
+        start={start(14)}
+        className="6 absolute right-[22vw] top-[8vh] h-[8vh] w-[8vh] md:h-[8vw] md:w-[8vw]"
+      />
+
+      <Spinner
+        start={start(15)}
+        className="3 absolute right-[10vw] top-[1vh] h-[5vh] w-[5vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(16)}
+        className="12 absolute bottom-[12vh] left-[2vw] h-[8vh] w-[8vh] md:bottom-[2vh] md:h-[8vw] md:w-[8vw]"
+      />
+      <Spinner
+        start={start(17)}
+        className="8 absolute left-[48vw] top-[35vh] h-[5vh] w-[5vh] md:top-[25vh] md:h-[5vw] md:w-[5vw]"
+      />
+      <Spinner
+        start={start(18)}
+        className="5 absolute left-[35vw] top-[20vh] h-[8vh] w-[8vh] md:top-[12vh] md:h-[8vw] md:w-[8vw]"
+      />
+      <Spinner
+        start={start(19)}
+        className="1 absolute left-[4vw] top-[-5vh] h-[13vh] w-[13vh] md:left-[13vw] md:h-[13vw] md:w-[13vw]"
+      />
+      <Spinner
+        start={start(20)}
+        className="2 absolute right-[40vw] top-[-1vh] h-[8vh] w-[8vh] md:h-[8vw] md:w-[8vw]"
+      />
+    </div>
+  );
+}
+
+let SPINNER_END = 0.8;
+
+function Spinner({ className, start }: { className: string; start: number }) {
+  return (
+    <>
+      <Actor start={start} end={SPINNER_END}>
+        <img src="/loading.gif" alt="" className={className} />
+      </Actor>
+      <Actor start={SPINNER_END} end={1}>
+        <Wave className={className} />
+      </Actor>
+    </>
+  );
+}
+
+function Wave({ className }: { className: string }) {
+  let actor = useActor();
+  let opacity = easeInExpo(actor.progress, 1, 0, 1);
+  return (
+    <img
+      src="/wave.png"
+      alt=""
+      style={{ opacity, transform: `scale(${opacity})` }}
+      className={className}
+    />
+  );
+}
+
+function SayGoodbyeOutro() {
+  let stage = useStage();
+  return (
+    <div
+      aria-hidden
+      className={
+        `sm:leading-6xl sticky top-0 flex h-screen w-screen items-center justify-center text-center text-4xl font-black text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl` +
+        " " +
+        (stage.progress < SPINNER_END ? "hidden" : "")
+      }
+    >
+      Say good&shy;bye to Spinnageddon
+    </div>
+  );
+}
+
+function SayGoodbye() {
+  let actor = useActor();
+  let opacity = easeInExpo(actor.progress, 0, 1, 1);
+  let scale = linear(actor.progress, 10, 1, 1);
+  return (
+    <div
+      style={{
+        opacity,
+        transform: `scale(${scale})`,
+      }}
+      className={
+        `flex h-screen w-screen items-center justify-center text-center text-5xl font-black text-white sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl` +
+        " " +
+        (actor.progress > 0 && actor.progress < 1 ? "fixed inset-0" : "hidden")
+      }
+    >
+      Say good&shy;bye to Spinnageddon
+    </div>
+  );
+}
 
 function Em({ children }: { children: React.ReactNode }) {
   return <b className="text-white">{children}</b>;
@@ -1227,5 +1496,3 @@ function Resources({
     </div>
   );
 }
-
-
