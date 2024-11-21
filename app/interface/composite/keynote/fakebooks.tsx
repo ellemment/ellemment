@@ -46,7 +46,7 @@ export function RootView({
   return (
     <div
       className={
-        "relative flex overflow-hidden rounded bg-white text-gray-600 md:rounded-lg" +
+        "relative flex overflow-hidden rounded-md bg-white text-gray-600 md:rounded-md" +
         " " +
         className
       }

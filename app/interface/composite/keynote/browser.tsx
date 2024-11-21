@@ -8,9 +8,9 @@ export function BrowserChrome({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative mx-2 max-h-[75vh] select-none overflow-hidden rounded bg-gray-700 shadow-md md:mx-4 md:rounded-lg lg:mx-auto lg:max-w-4xl">
+    <div className="relative mx-2 max-h-[75vh] select-none overflow-hidden rounded-sm bg-zinc-300 dark:bg-zinc-900 shadow-md md:mx-4 md:rounded-md lg:mx-auto lg:max-w-4xl">
       <URLBar url={url} />
-      <div className="px-2 pb-2 pt-1 md:px-4 md:pb-4 md:pt-2">{children}</div>
+      <div className="px-0 pb-0 pt-1 md:px-0 md:pb-0 md:pt-2">{children}</div>
     </div>
   );
 }
@@ -18,7 +18,7 @@ export function BrowserChrome({
 function URLBar({ url }: { url: string }) {
   return (
     <div className="flex items-center justify-center px-1 pb-0 pt-1 md:px-2 md:pt-2">
-      <div className="relative flex w-2/3 items-center rounded-md bg-gray-600 px-2 py-1 text-gray-100 md:px-3 md:py-1">
+      <div className="relative flex w-2/3 items-center rounded-md bg-zinc-400 dark:bg-zinc-950 px-2 py-1 text-inherit md:px-3 md:py-1">
         <span className="text-[length:10px] md:text-sm">{url}</span>
         <Refresh className="absolute right-1 h-4 w-4 md:h-5 md:w-5" />
       </div>
@@ -32,7 +32,7 @@ function URLBar({ url }: { url: string }) {
 }
 
 function Circle() {
-  return <div className="h-2 w-2 rounded-full bg-gray-400 md:h-3 md:w-3" />;
+  return <div className="h-2 w-2 rounded-full bg-zinc-200 dark:bg-zinc-700 md:h-3 md:w-3" />;
 }
 
 function Refresh({ className }: { className: string }) {

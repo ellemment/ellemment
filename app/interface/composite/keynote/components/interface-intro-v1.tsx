@@ -151,7 +151,7 @@ function SayGoodbye() {
                 transform: `scale(${scale})`,
             }}
             className={`flex h-screen w-screen items-center justify-center text-center text-5xl font-black text-inherit 
-                sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl ${actor.progress > 0 && actor.progress < 1 ? "fixed inset-0" : "hidden"}`}
+                sm:text-5xl md:text-6xl lg:text-7xl  ${actor.progress > 0 && actor.progress < 1 ? "fixed inset-0" : "hidden"}`}
         >
             Say good&shy;bye to Spinnageddon
         </div>
@@ -164,7 +164,7 @@ function SayGoodbyeOutro() {
         <div
             aria-hidden
             className={`sm:leading-6xl sticky top-0 flex h-screen w-screen items-center justify-center text-center text-4xl 
-                font-black inherit sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl ${stage.progress < SPINNER_END ? "hidden" : ""}`}
+                font-black inherit sm:text-5xl md:text-6xl lg:text-7xl ${stage.progress < SPINNER_END ? "hidden" : ""}`}
         >
             Say good&shy;bye to Spinnageddon
         </div>
