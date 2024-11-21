@@ -5,34 +5,39 @@ import tweenFunctions from "tween-functions";
 import { BrowserChrome } from "../browser";
 import * as Fakebooks from "../fakebooks";
 import { Actor, ScrollStage, useActor, useStage } from "../stage";
-import { JumboText, JumboP } from "./interface-intro-v0";
+import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
 
 const { easeOutQuad, linear } = tweenFunctions;
+
 
 export function SequenceInterfaceV2() {
     return (
         <section>
             <h2 className="sr-only">Pre-fetching Everything</h2>
-            <JumboText>
+            <Heading>
                 Nested routes allow Remix to make your app{" "}
-                <span className="text-red-600">as fast as instant.</span>
-            </JumboText>
+                <Emphasis className="text-red-600 dark:text-red-400">
+                    as fast as instant.
+                </Emphasis>
+            </Heading>
             <div className="h-[10vh]" />
 
             <ScrollStage pages={2} fallbackLength={100} fallbackFrame={75}>
                 <div className="h-[15vh]" />
-                <JumboP>
+                <Paragraph>
                     Remix can prefetch everything in parallel before the user clicks a
                     link.
-                </JumboP>
-                <JumboP>Public Data. User Data. Modules. Heck, even CSS.</JumboP>
-                <JumboP>Zero loading states. Zero skeleton UI. Zero jank.</JumboP>
-                <JumboP>
-                    <span className="text-gray-400">
-                        Alright, you caught us, they’re just prefetch link tags,
-                        #useThePlatform
-                    </span>
-                </JumboP>
+                </Paragraph>
+                <Paragraph>
+                    Public Data. User Data. Modules. Heck, even CSS.
+                </Paragraph>
+                <Paragraph>
+                    Zero loading states. Zero skeleton UI. Zero jank.
+                </Paragraph>
+                <Paragraph className="text-gray-400 dark:text-gray-500">
+                    Alright, you caught us, they're just prefetch link tags,
+                    #useThePlatform
+                </Paragraph>
                 <div className="sticky bottom-[-5vh]">
                     <PrefetchBrowser />
                 </div>
@@ -40,6 +45,7 @@ export function SequenceInterfaceV2() {
         </section>
     );
 }
+
 
 let moveStart = 0.65;
 let hoverStart = 0.68;

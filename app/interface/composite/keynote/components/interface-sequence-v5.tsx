@@ -1,40 +1,35 @@
-// #app/interface/composite/keynote/components/interface-dualscreen.tsx
+// #app/interface/composite/keynote/components/interface-sequence-v5.tsx
 
-// #app/interface/composite/keynote/components/interface-dualscreen.tsx
 import * as React from "react";
 import { type Sequence, type Slide } from "#app/utils/md/scroll/mdslides.server";
 import { Actor, ScrollStage, useActor } from "../stage";
-import { JumboText } from "./interface-intro-v0";
+import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
 
 export function SequenceInterfaceV5({ slides }: { slides: Sequence }) {
     return (
         <section>
             <div className="mx-auto max-w-5xl p-6 md:p-10">
-                <div className="mb-8 text-4xl font-black text-white sm:text-5xl md:text-6xl">
-                    <h2 className="inline">Data loading</h2>{" "}
-                    <span aria-hidden>
+                <Heading maxWidth="default">
+                    Data loading{" "}
+                    <span aria-hidden className="inline-block align-middle">
                         ... <img src="/yawn.png" alt="" className="inline h-8 md:h-14" />
                     </span>
-                    <p>
-                        You ever notice most of the code in your app is for{" "}
-                        <span className="text-yellow-600">changing data?</span>
-                    </p>
-                </div>
-                <p className="hyphen-manual mt-2 text-lg md:pr-52 md:text-xl lg:pr-72">
-                    Imagine if React only had props and no way to set state. What's the
-                    point? If a web framework helps you load data but doesn't help you
-                    update it, what's the point? Remix doesn't drop you off at the{" "}
-                    <code>&lt;form onSubmit&gt;</code> cliff.{" "}
-                    <span className="text-gray-400">
-                        (What the heck does <code>event.preventDefault</code> do anyway?)
-                    </span>
-                </p>
+                </Heading>
+                <Paragraph maxWidth="default">
+                    You ever notice most of the code in your app is for{" "}
+                    <Emphasis className="text-yellow-600 dark:text-yellow-400">
+                        changing data?
+                    </Emphasis>
+                </Paragraph>
             </div>
             <div className="h-[25vh]" />
-            <JumboText>
+            <Heading>
                 Resilient, progressively enhanced{" "}
-                <span className="text-blue-600">data updates</span> are built in.
-            </JumboText>
+                <Emphasis className="text-blue-600 dark:text-blue-400">
+                    data updates
+                </Emphasis>{" "}
+                are built in.
+            </Heading>
             <div className="h-[25vh]" />
             <SequenceInterfaceSlides sequence={slides} />
         </section>
@@ -73,22 +68,27 @@ function SequenceInterfaceSlides({ sequence }: { sequence: Sequence }) {
                     </div>
                 </div>
 
-                <div className="sticky bottom-0 bg-[#252525] xl:bottom-auto xl:top-0 xl:flex xl:h-screen xl:flex-1 xl:items-center xl:self-start">
+                <div className="sticky bottom-0 bg-zinc-200 dark:bg-zinc-900 xl:bottom-auto xl:top-0 xl:flex xl:h-screen xl:flex-1 xl:items-center xl:self-start">
                     <DualScreenCode start={0} end={slideLength * 1.5} slide={getSlideOrDefault(sequence.slides, 0)} />
                     <DualScreenCode start={slideLength * 1.5} end={slideLength * 2.5} slide={getSlideOrDefault(sequence.slides, 1)} />
                     <Actor start={slideLength * 2.5} end={slideLength * 3.2}>
                         <DualScreenNetwork />
                     </Actor>
-                    <DualScreenCode start={slideLength * 3.2} end={0.66} 
-                        slide={getSlideOrDefault(sequence.slides, 2) || getSlideOrDefault(sequence.slides, 0)} />
-                    <DualScreenCode start={0.66} end={2} 
-                        slide={getSlideOrDefault(sequence.slides, 3) || getSlideOrDefault(sequence.slides, 0)} />
+                    <DualScreenCode start={slideLength * 3.2} end={0.66} slide={getSlideOrDefault(sequence.slides, 2)} />
+                    <DualScreenCode start={0.66} end={2} slide={getSlideOrDefault(sequence.slides, 3)} />
                 </div>
             </div>
         </ScrollStage>
     );
 }
 
+function SlideContent({ children }: { children: React.ReactNode }) {
+    return (
+        <Paragraph className="min-h-[75vh] items-center" maxWidth="default">
+            {children}
+        </Paragraph>
+    );
+}
 function getSlideOrDefault(slides: Slide[], index: number): Slide {
     const defaultSlide: Slide = {
         subject: '',
@@ -98,13 +98,6 @@ function getSlideOrDefault(slides: Slide[], index: number): Slide {
     return slides[index] ?? defaultSlide;
 }
 
-function SlideContent({ children }: { children: React.ReactNode }) {
-    return (
-        <p className="flex min-h-[75vh] max-w-2xl items-center px-6 text-4xl font-black text-gray-100 sm:mx-auto sm:px-8 md:text-6xl">
-            {children}
-        </p>
-    );
-}
 
 function DualScreenNetwork() {
     return (

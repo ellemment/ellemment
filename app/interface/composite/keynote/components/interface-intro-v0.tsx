@@ -1,75 +1,137 @@
-// #app/interface/composite/keynote/components/interface-text.tsx
+// #app/interface/composite/keynote/components/interface-intro-v0.tsx
 
 import { type ReactNode } from "react";
+import { cn } from "#app/utils/misc";
 
-export function JumboText({ children }: { children: ReactNode }) {
-  return (
-    <div className="mx-auto max-w-6xl px-6 text-5xl font-black text-white md:px-12 md:text-[88px] md:leading-[96px]">
-      {children}
-    </div>
-  );
+// Typography system based on modular scale and optical adjustments
+const TEXT_STYLES = {
+    heading: cn(
+        "text-[2.5rem] md:text-[4rem]",
+        "font-bold",
+        "tracking-[-0.02em] md:tracking-[-0.025em]",
+        "leading-[1.1]",
+        "balance-text"
+    ),
+    paragraph: cn(
+        "text-[2rem] md:text-[3rem]",
+        "font-bold",
+        "tracking-[-0.005em] md:tracking-[-0.01em]",
+        "leading-[1.4] md:leading-[1.3]",
+        "max-w-[25ch] md:max-w-[28ch]"
+    ),
+} as const;
+
+const LAYOUT = {
+    container: "mx-4 md:mx-6",
+    maxWidth: {
+        default: "w-full",
+        md: "md:max-w-4xl md:mx-auto md:pr-24 md:pl-4",
+    },
+} as const;
+
+type TextStyleKey = keyof typeof TEXT_STYLES;
+type MaxWidthKey = keyof typeof LAYOUT.maxWidth;
+
+interface BaseTextProps {
+    children: ReactNode;
+    className?: string;
+    maxWidth?: MaxWidthKey;
 }
 
-export function JumboH({ 
-  children, 
-  highlight,
-  subtitle
-}: { 
-  children: ReactNode;
-  highlight?: ReactNode;
-  subtitle?: ReactNode;
+interface HeadingProps extends BaseTextProps {
+    highlight?: ReactNode;
+    subtitle?: ReactNode;
+}
+
+function Text({
+    children,
+    className = "",
+    maxWidth = "md",
+    textStyle = "paragraph",
+}: BaseTextProps & { textStyle?: TextStyleKey }) {
+    return (
+        <div
+            className={cn(
+                TEXT_STYLES[textStyle],
+                LAYOUT.container,
+                LAYOUT.maxWidth[maxWidth],
+                "text-gray-700 dark:text-gray-200",
+                "antialiased",
+                className
+            )}
+        >
+            {children}
+        </div>
+    );
+}
+
+export function Heading({
+    children,
+    highlight,
+    subtitle,
+    ...props
+}: HeadingProps) {
+    return (
+        <Text
+            textStyle="heading"
+            {...props}
+        >
+            <h2>{children}</h2>
+            {highlight && (
+                <>
+                    <br />
+                    <span className="text-gray-600 dark:text-gray-300">
+                        {highlight}
+                    </span>
+                </>
+            )}
+            {subtitle && (
+                <div className={cn(
+                    TEXT_STYLES.paragraph,
+                    "mt-6 text-gray-600 dark:text-gray-300"
+                )}>
+                    {subtitle}
+                </div>
+            )}
+        </Text>
+    );
+}
+
+export function Paragraph({
+    children,
+    className,
+    ...props
+}: BaseTextProps & React.ComponentPropsWithoutRef<"p">) {
+    return (
+        <Text
+            textStyle="paragraph"
+            className={cn(
+                "min-h-[50vh] pb-12",
+                className
+            )}
+            {...props}
+        >
+            <p>{children}</p>
+        </Text>
+    );
+}
+
+export function Emphasis({
+    children,
+    className,
+}: {
+    children: ReactNode;
+    className?: string;
 }) {
-  return (
-    <JumboText>
-      <h2>
-        {children}
-        {highlight && (
-          <>
-            <br />
-            <span className="text-yellow-600">{highlight}</span>
-          </>
-        )}
-      </h2>
-      {subtitle}
-    </JumboText>
-  );
-}
-
-export function JumboP({ children, ...props }: React.ComponentPropsWithoutRef<"p">) {
-  return (
-    <p
-      {...props}
-      className="min-h-[50vh] px-6 pb-12 text-4xl font-black text-gray-100 md:mx-auto md:max-w-3xl md:text-6xl"
-    >
-      {children}
-    </p>
-  );
-}
-
-export function P1({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={`px-6 text-lg md:text-xl md:px-10 md:max-w-2xl md:mx-auto md:text-center ${className}`}>
-      {children}
-    </p>
-  );
-}
-
-export function P2({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={`px-6 mb-10 text-lg md:text-xl md:text-center max-w-3xl mx-auto ${className}`}>
-      {children}
-    </p>
-  );
-}
-
-export function Header({ children }: { children: ReactNode }) {
-  return (
-    <div className="mb-2 text-4xl font-black text-center text-white md:text-5xl md:mb-4">
-      {children}
-    </div>
-  );
-}
-
-export function Em({ children }: { children: ReactNode }) {
-  return <b className="text-white">{children}</b>;
+    return (
+        <b
+            className={cn(
+                "font-bold text-gray-900 dark:text-gray-100",
+                "tracking-tight",
+                className
+            )}
+        >
+            {children}
+        </b>
+    );
 }

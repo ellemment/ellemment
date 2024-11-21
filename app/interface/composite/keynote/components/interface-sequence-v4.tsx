@@ -1,31 +1,40 @@
-// #app/interface/composite/keynote/components/interface-comparison.tsx
+// #app/interface/composite/keynote/components/interface-sequence-v4.tsx
 
 import cx from "clsx";
 import * as React from "react";
 import { BrowserChrome } from "../browser";
 import * as Fakebooks from "../fakebooks";
 import { Actor, ScrollStage, useActor } from "../stage";
-import { JumboText, JumboP } from "./interface-intro-v0";
+import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
 
 export function SequenceInterfaceV4() {
     return (
         <section>
             <h2 className="sr-only">What about loading states?</h2>
-            <JumboText>
+            <Heading>
                 Through nested routes, Remix can eliminate nearly{" "}
-                <span className="text-green-600">every loading state.</span>
-            </JumboText>
+                <Emphasis className="text-green-600 dark:text-green-400">
+                    every loading state.
+                </Emphasis>
+            </Heading>
             <div className="h-[25vh]" />
-            <JumboP>
+            <Paragraph>
                 Most web apps fetch inside of components, creating{" "}
-                <span className="text-aqua-600">request waterfalls</span>, slower
-                loads, and <span className="text-red-600">jank.</span>
-            </JumboP>
-            <JumboP>
+                <Emphasis className="text-blue-600 dark:text-blue-400">
+                    request waterfalls
+                </Emphasis>
+                , slower loads, and{" "}
+                <Emphasis className="text-red-600 dark:text-red-400">
+                    jank.
+                </Emphasis>
+            </Paragraph>
+            <Paragraph>
                 Remix loads data in parallel on the server and sends a fully formed HTML
                 document.{" "}
-                <span className="text-pink-600">Way faster, jank free.</span>
-            </JumboP>
+                <Emphasis className="text-pink-600 dark:text-pink-400">
+                    Way faster, jank free.
+                </Emphasis>
+            </Paragraph>
             <InterfaceComparison />
         </section>
     );
@@ -54,7 +63,7 @@ function InterfaceComparison() {
                     </div>
                 </div>
                 <Actor start={0} end={1}>
-                    <div className="absolute bottom-0 w-full pb-4 text-center text-sm text-gray-300 md:text-base">
+                    <div className="absolute bottom-0 w-full pb-4 text-center text-sm text-gray-400 dark:text-gray-500 md:text-base">
                         (Keep scrolling to compare)
                     </div>
                 </Actor>
@@ -65,7 +74,7 @@ function InterfaceComparison() {
 
 function ComparisonHeader({ children }: { children: React.ReactNode }) {
     return (
-        <div className="mb-2 text-center text-xl font-black text-white lg:mb-6 lg:text-3xl">
+        <div className="mb-2 mt-2 text-[1.5rem] md:text-[1.8rem] lg:mb-6 font-semibold text-gray-700 dark:text-gray-200 text-center">
             {children}
         </div>
     );

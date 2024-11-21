@@ -1,4 +1,4 @@
-// #app/interface/composite/keynote/components/interface-iconspin.tsx
+// #app/interface/composite/keynote/components/interface-intro-v1.tsx
 
 import * as React from "react";
 import tweenFunctions from "tween-functions";
@@ -150,7 +150,7 @@ function SayGoodbye() {
                 opacity,
                 transform: `scale(${scale})`,
             }}
-            className={`flex h-screen w-screen items-center justify-center text-center text-5xl font-black text-white 
+            className={`flex h-screen w-screen items-center justify-center text-center text-5xl font-black text-inherit 
                 sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl ${actor.progress > 0 && actor.progress < 1 ? "fixed inset-0" : "hidden"}`}
         >
             Say good&shy;bye to Spinnageddon
@@ -164,7 +164,7 @@ function SayGoodbyeOutro() {
         <div
             aria-hidden
             className={`sm:leading-6xl sticky top-0 flex h-screen w-screen items-center justify-center text-center text-4xl 
-                font-black text-white sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl ${stage.progress < SPINNER_END ? "hidden" : ""}`}
+                font-black inherit sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl ${stage.progress < SPINNER_END ? "hidden" : ""}`}
         >
             Say good&shy;bye to Spinnageddon
         </div>

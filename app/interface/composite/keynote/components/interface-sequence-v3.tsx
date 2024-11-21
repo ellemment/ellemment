@@ -1,11 +1,10 @@
 // #app/interface/composite/keynote/components/interface-sequence-v3.tsx
-
 import * as React from "react";
 import { type Sequence, type Slide } from "#app/utils/md/scroll/mdslides.server";
 import { BrowserChrome } from "../browser";
 import * as Fakebooks from "../fakebooks";
 import { Actor, ScrollStage, useActor } from "../stage";
-
+import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
 
 function getSlideOrDefault(slides: Slide[], index: number): Slide {
   const defaultSlide: Slide = {
@@ -18,53 +17,49 @@ function getSlideOrDefault(slides: Slide[], index: number): Slide {
 
 export function SequenceInterfaceV3({ slides }: { slides: Sequence }) {
   return (
-    <>
-      <section>
-        <JumboText>
-          <h2>
-            Route Error Boundaries{" "}
-            <span className="text-yellow-600">
-              keep the happy path happy.
-            </span>
-          </h2>
-        </JumboText>
-        <div className="h-[10vh]" />
-        <ScrollStage pages={3.25} fallbackLength={100} fallbackFrame={46}>
-          <div className="h-[15vh]" />
-          <JumboP>
-            Each route module can export an error boundary next to the default
-            route component.
-          </JumboP>
-          <div className="h-[25vh]" />
-          <JumboP>
-            If an error is thrown, client or server side, users see the boundary
-            instead of the default component.
-          </JumboP>
-          <JumboP>
-            Routes w/o trouble render normally, so users have more options than
-            slamming refresh.
-          </JumboP>
-          <JumboP>
-            If a route has no boundary, errors bubble up. Just put one at the
-            top and chill out about errors in code review, yeah?
-          </JumboP>
+    <section>
+      <Heading>
+        Route Error Boundaries{" "}
+        <Emphasis className="text-yellow-600 dark:text-yellow-400">
+          keep the happy path happy.
+        </Emphasis>
+      </Heading>
+      <div className="h-[10vh]" />
+      <ScrollStage pages={3.25} fallbackLength={100} fallbackFrame={46}>
+        <div className="h-[15vh]" />
+        <Paragraph>
+          Each route module can export an error boundary next to the default
+          route component.
+        </Paragraph>
+        <div className="h-[25vh]" />
+        <Paragraph>
+          If an error is thrown, client or server side, users see the boundary
+          instead of the default component.
+        </Paragraph>
+        <Paragraph>
+          Routes w/o trouble render normally, so users have more options than
+          slamming refresh.
+        </Paragraph>
+        <Paragraph>
+          If a route has no boundary, errors bubble up. Just put one at the
+          top and chill out about errors in code review, yeah?
+        </Paragraph>
 
-          <div className="sticky bottom-[-5vh]">
-            <MutationCode start={0} end={0.25} slide={getSlideOrDefault(slides.slides, 0)} />
-            <MutationCode start={0.25} end={0.4} slide={getSlideOrDefault(slides.slides, 1)} />
-            <Actor start={0.4} end={0.5}>
-              <InvoiceError explode />
-            </Actor>
-            <Actor start={0.5} end={0.75}>
-              <InvoiceError />
-            </Actor>
-            <Actor start={0.75} end={2}>
-              <SalesError />
-            </Actor>
-          </div>
-        </ScrollStage>
-      </section>
-    </>
+        <div className="sticky bottom-[-5vh]">
+          <MutationCode start={0} end={0.25} slide={getSlideOrDefault(slides.slides, 0)} />
+          <MutationCode start={0.25} end={0.4} slide={getSlideOrDefault(slides.slides, 1)} />
+          <Actor start={0.4} end={0.5}>
+            <InvoiceError explode />
+          </Actor>
+          <Actor start={0.5} end={0.75}>
+            <InvoiceError />
+          </Actor>
+          <Actor start={0.75} end={2}>
+            <SalesError />
+          </Actor>
+        </div>
+      </ScrollStage>
+    </section>
   );
 }
 
@@ -130,46 +125,25 @@ function Explosion() {
   );
 }
 
-
-
-function JumboP({ children, ...props }: React.ComponentPropsWithoutRef<"p">) {
-  return (
-    <p
-      {...props}
-      className="min-h-[50vh] px-6 pb-12 text-4xl font-black text-gray-100 md:mx-auto md:max-w-3xl md:text-6xl"
-    >
-      {children}
-    </p>
-  );
-}
-
-function JumboText({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mx-auto max-w-6xl px-6 text-5xl font-black text-white md:px-12 md:text-[88px] md:leading-[96px]">
-      {children}
-    </div>
-  );
-}
-
 function MutationCode({
-    slide,
-    start,
-    end,
-    persistent,
-  }: {
-    slide: Slide;
-    start: number;
-    end: number;
-    persistent?: boolean;
-  }) {
-    return (
-      <Actor start={start} end={end} persistent={persistent}>
-        <div
-          className="__mutation_code text-sm sm:text-base md:text-lg xl:w-full"
-          dangerouslySetInnerHTML={{ __html: slide.subject }}
-        />
-      </Actor>
-    );
-  }
+  slide,
+  start,
+  end,
+  persistent,
+}: {
+  slide: Slide;
+  start: number;
+  end: number;
+  persistent?: boolean;
+}) {
+  return (
+    <Actor start={start} end={end} persistent={persistent}>
+      <div
+        className="__mutation_code text-sm sm:text-base md:text-lg xl:w-full"
+        dangerouslySetInnerHTML={{ __html: slide.subject }}
+      />
+    </Actor>
+  );
+}
 
 export default SequenceInterfaceV3;

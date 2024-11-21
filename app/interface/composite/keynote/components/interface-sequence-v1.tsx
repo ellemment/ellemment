@@ -1,11 +1,29 @@
-// #app/interface/composite/keynote/components/interface-sequence.tsx
+// #app/interface/composite/keynote/components/interface-sequence-v1.tsx
+
 import * as React from "react";
+import { cn } from "#app/utils/misc";
 import { BrowserChrome } from "../browser";
 import * as Fakebooks from "../fakebooks";
 import { Actor, ScrollStage, useActor } from "../stage";
-import { JumboH, JumboP } from "./interface-intro-v0";
+import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
 
-// Main Components
+// Types
+interface SequenceStep {
+    content: React.ReactNode;
+    focusable?: boolean;
+    hidden?: boolean;
+}
+
+interface SequenceProps {
+    title: React.ReactNode;  // Changed from string to ReactNode
+    highlight?: React.ReactNode;
+    subtitle?: React.ReactNode;
+    steps: SequenceStep[];
+    demonstration?: React.ReactNode;
+    pages?: number;
+}
+
+// Component implementation remains the same except for this change...
 export function SequentialIntroV1({
     title,
     highlight,
@@ -16,20 +34,25 @@ export function SequentialIntroV1({
 }: SequenceProps) {
     return (
         <section>
-            <JumboH highlight={highlight} subtitle={subtitle}>
+            <Heading 
+                highlight={highlight} 
+                subtitle={subtitle}
+            >
                 {title}
-            </JumboH>
+            </Heading>
             <div className="h-[25vh]" />
             <ScrollStage pages={pages}>
                 {steps.map((step, index) => (
-                    <JumboP
+                    <Paragraph
                         key={index}
+                        className={cn(step.hidden && "text-neutral-500 dark:text-neutral-400")}
                         tabIndex={step.focusable ? 0 : undefined}
                         onFocus={step.focusable ? handleSectionFocus : undefined}
                         aria-hidden={step.hidden}
+                        maxWidth="md"
                     >
                         {step.content}
-                    </JumboP>
+                    </Paragraph>
                 ))}
                 {demonstration && (
                     <Actor start={0.2} end={0.66} persistent>
@@ -40,6 +63,47 @@ export function SequentialIntroV1({
         </section>
     );
 }
+
+export function SequenceInterfaceV1() {
+    return (
+      <SequentialIntroV1
+        title={
+          <>
+            Remix has a <Emphasis>cheat code</Emphasis>:
+          </>
+        }
+        steps={[
+          {
+            content: (
+              <>
+                Websites usually have <Emphasis>levels of navigation</Emphasis> that control child views.
+              </>
+            ),
+            focusable: true
+          },
+          {
+            content: "Not only are these components pretty much always coupled to URL segments...",
+            focusable: true
+          },
+          {
+            content: (
+              <>
+                ...they're also the <Emphasis>semantic boundary</Emphasis> of data loading and code splitting.
+              </>
+            ),
+            focusable: true
+          },
+          {
+            content: "Hover or tap the buttons to see how they're all related",
+            focusable: true
+          }
+        ]}
+        demonstration={<InteractiveTabs />}
+      />
+    );
+}
+
+
 
 export function InteractiveTabs() {
     const [activeRoute, onActiveRouteChange] = React.useState(0);
@@ -134,52 +198,7 @@ export function InteractiveTabs() {
     );
 }
 
-export function SequenceInterfaceV1() {
-    return (
-      <SequentialIntroV1
-        title="Remix has a cheat code:"
-        highlight="Nested Routes."
-        steps={[
-          {
-            content: "Websites usually have levels of navigation that control child views.",
-            focusable: true
-          },
-          {
-            content: "Not only are these components pretty much always coupled to URL segments...",
-            focusable: true
-          },
-          {
-            content: "...they're also the semantic boundary of data loading and code splitting.",
-            focusable: true
-          },
-          {
-            content: "Hover or tap the buttons to see how they're all related",
-            hidden: true
-          }
-        ]}
-        demonstration={<InteractiveTabs />}
-      />
-    );
-  }
 
-
-
-
-// Types
-interface SequenceStep {
-    content: React.ReactNode;
-    focusable?: boolean;
-    hidden?: boolean;
-}
-
-interface SequenceProps {
-    title: string;
-    highlight?: React.ReactNode;
-    subtitle?: React.ReactNode;
-    steps: SequenceStep[];
-    demonstration?: React.ReactNode;
-    pages?: number;
-}
 
 // Utility functions
 function handleSectionFocus(event: React.FocusEvent) {
