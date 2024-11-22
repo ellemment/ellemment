@@ -126,7 +126,7 @@ export function InteractiveTabs() {
         2: (
             <span>
                 example.com/
-                <span className="text-aqua-600">sales</span>/invoices/102000
+                <span className="text-blue-600">sales</span>/invoices/102000
             </span>
         ),
         3: (
@@ -155,7 +155,7 @@ export function InteractiveTabs() {
             <div className="text-center" onFocus={handleSectionFocus}>
                 {[
                     { label: "Root", class: "bg-blue-900 text-blue-300" },
-                    { label: "Sales", class: "bg-aqua-900 text-aqua-600" },
+                    { label: "Sales", class: "bg-blue-900 text-blue-300" },
                     { label: "Invoices", class: "bg-yellow-900 text-yellow-600" },
                     { label: "Invoice", class: "bg-red-900 text-red-300" }
                 ].map((button, index) => (
@@ -175,7 +175,7 @@ export function InteractiveTabs() {
             </div>
             <div className="h-4" />
 
-            <div className="sticky bottom-0 md:bottom-[-14vh]">
+            <div className="sticky bottom-0 md:bottom-[-4vh]">
                 <BrowserChrome url={getUrlForDisplay()}>
                     <Fakebooks.RootView
                         overlay={activeRoute === 1 ? getOverlayForRoute(1) : null}
@@ -267,8 +267,8 @@ function getOverlayForRoute(activeRoute: number) {
             );
         case 2:
             return (
-                <Highlighter className="bg-aqua-600 ring-aqua-600">
-                    <Resources className="bg-aqua-900" data="/sales/nav.json" mod="/sales.js" />
+                <Highlighter className="bg-blue-600 ring-blue-600">
+                    <Resources className="bg-blue-900" data="/sales/nav.json" mod="/sales.js" />
                 </Highlighter>
             );
         case 3:

@@ -1,7 +1,7 @@
 // #app/routes/_docs+/docs.index.tsx
 
 import  { type LoaderFunction } from "@remix-run/node";
-import { Outlet, useLoaderData, useLocation, redirect } from "@remix-run/react";
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { DocsSidebar } from "#app/interface/composite/docs/docs-dashboard";
 import { organizePostsByCategory } from "#app/interface/composite/docs/docs-nav";
 import { Separator } from "#app/interface/shadcn/separator";
@@ -10,19 +10,6 @@ import { getContentElemmentListings } from "#app/utils/content/content.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const posts = await getContentElemmentListings();
-  const url = new URL(request.url);
-  
-  // If we're at /docs with no slug, redirect to the first post
-  if (url.pathname === '/docs') {
-    const navigation = organizePostsByCategory(posts);
-    const firstCategory = Object.values(navigation)[0];
-    const firstPost = firstCategory?.items[0];
-    
-    if (firstPost) {
-      return redirect(`/docs/${firstPost.slug}`);
-    }
-  }
-  
   return { posts };
 };
 
@@ -32,10 +19,11 @@ export default function DocsLayout() {
   const location = useLocation()
 
   const currentSlug = location.pathname.split('/docs/')[1]
-  const currentCategory = Object.entries(navigation).find(([_, category]) =>
-    category.items.some(item => item.slug === currentSlug)
-  )?.[1]?.label || "Documentation"
-
+  const currentCategory = currentSlug 
+    ? Object.entries(navigation).find(([_, category]) =>
+        category.items.some(item => item.slug === currentSlug)
+      )?.[1]?.label 
+    : "Overview"
 
   return (
     <div className="mx-auto max-w-7xl relative flex">

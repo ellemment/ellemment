@@ -1,16 +1,48 @@
-// app/routes/_marketing+/index.tsx
-import { type MetaFunction } from '@remix-run/node'
-import Discover from '#app/interface/composite/playground/discover.js'
-import Hero from '#app/interface/composite/playground/hero.js'
+// #app/routes/_marketing+/index.tsx
+
+import { ScrollExperience } from '#app/interface/composite/keynote/scroll-ux.js'
+import { type Sequence } from '#app/utils/md/scroll/mdslides.server.js'
 
 
-export const meta: MetaFunction = () => [{ title: 'Ellemments' }]
+export default function IndexRoute() {
+	const mutations = {
+		type: 'sequence',
+			slides: [
+				{
+					type: 'slide',
+					subject: `<div>Example mutation slide 1</div>`,
+					html: `<div>Example mutation slide 1</div>`,
+				},
+				{
+					type: 'slide',
+					subject: `<div>Example mutation slide 2</div>`,
+					html: `<div>Example mutation slide 2</div>`,
+				},
+			],
+	} satisfies Sequence
 
-export default function Index() {
-  return (
-    <main className="font-poppins grid h-full place-items-center">
-      <Hero />
-      <Discover />
-    </main>
-  )
+	const errors = {
+		type: 'sequence',
+			slides: [
+				{
+					type: 'slide',
+					subject: `<div>Example error slide 1</div>`,
+					html: `<div>Example error slide 1</div>`,
+				},
+				{
+					type: 'slide',
+					subject: `<div>Example error slide 2</div>`,
+					html: `<div>Example error slide 2</div>`,
+				},
+			],
+	} satisfies Sequence
+
+	return (
+		<div className="min-h-screen bg-background">
+			<ScrollExperience
+				mutations={mutations}
+				errors={errors}
+			/>
+		</div>
+	)
 }
