@@ -3,34 +3,11 @@
 import * as React from "react";
 import { type Sequence, type Slide } from "#app/utils/md/scroll/mdslides.server";
 import { Actor, ScrollStage, useActor } from "../stage";
-import { Heading, Paragraph, Emphasis } from "./interface-intro-v0";
+import { Paragraph } from "./interface-intro-v0";
 
 export function SequenceInterfaceV5({ slides }: { slides: Sequence }) {
     return (
         <section>
-            <div className="mx-auto max-w-5xl p-6 md:p-10">
-                <Heading maxWidth="default">
-                    Data loading{" "}
-                    <span aria-hidden className="inline-block align-middle">
-                        ... <img src="/yawn.png" alt="" className="inline h-8 md:h-14" />
-                    </span>
-                </Heading>
-                <Paragraph maxWidth="default">
-                    You ever notice most of the code in your app is for{" "}
-                    <Emphasis className="text-yellow-600 dark:text-yellow-400">
-                        changing data?
-                    </Emphasis>
-                </Paragraph>
-            </div>
-            <div className="h-[25vh]" />
-            <Heading>
-                Resilient, progressively enhanced{" "}
-                <Emphasis className="text-blue-600 dark:text-blue-400">
-                    data updates
-                </Emphasis>{" "}
-                are built in.
-            </Heading>
-            <div className="h-[25vh]" />
             <SequenceInterfaceSlides sequence={slides} />
         </section>
     );
@@ -40,10 +17,10 @@ function SequenceInterfaceSlides({ sequence }: { sequence: Sequence }) {
     const slideLength = 1 / 6;
     return (
         <ScrollStage pages={5.5} fallbackLength={100} fallbackFrame={25}>
-            <div className="xl:flex">
+            <div className="xl:flex w-full mx-auto max-w-7xl">
                 <div className="p-max-w-lg flex-1 xl:mx-auto">
                     <div className="xl:h-[12vh]" />
-                    <div className="max-w-full px-6">
+                    <div className="max-w-full pr-6">
                         <SlideContent>
                             It's so simple it's kind of silly. Just make a form...
                         </SlideContent>

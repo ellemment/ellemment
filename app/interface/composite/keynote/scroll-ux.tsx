@@ -22,16 +22,18 @@ export function ScrollExperience({
       <img src="/wave.png" alt="" className="absolute -left-full" />
       <img src="/loading.gif" alt="" className="absolute -left-full" />
       <div className="h-60" />
-      <SequenceInterfaceV1 /> 
-      <div className="h-[25vh]" />
-      <SequenceInterfaceV4 />
+      <SequenceInterfaceV5 slides={mutations} /> 
       <div className="h-[25vh]" />
       <IntroInterfaceV1 />
-      <SequenceInterfaceV2 />
+      <div className="h-[25vh]" />
+      <SequenceInterfaceV1 />
+      <div className="h-[25vh]" />
+      <SequenceInterfaceV4 />
       <div className="h-[75vh]" />
       <IntroInterfaceV2 />
-      <div className="h-[25vh]" />
-      <SequenceInterfaceV5 slides={mutations} /> 
+      <div className="h-[75vh]" />
+      <SequenceInterfaceV2 />
+
       <div className="mb-[-10vh]" />
       <SequenceInterfaceV3 slides={errors} />
     </div>
