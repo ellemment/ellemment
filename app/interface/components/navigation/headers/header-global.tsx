@@ -1,6 +1,7 @@
 // #app/interface/components/navigation/headers/header-local.tsx
 
-import { Link, useNavigate } from '@remix-run/react'
+import { Link, useNavigate, useLocation } from '@remix-run/react'
+import clsx from 'clsx'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import {
@@ -19,10 +20,15 @@ export function GlobalHeader() {
   const user = useOptionalUser()
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const location = useLocation()
+  const isIndex = location.pathname === '/'
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm z-[60]">
+      <header className={clsx(
+        "left-0 right-0 bg-background/80 backdrop-blur-sm z-[60]",
+        isIndex ? "relative" : "fixed top-0"
+      )}>
         <nav className="z-[61] bg-background">
           <div className="mx-auto max-w-7xl flex justify-between py-2 px-4">
             {/* Left side - Logo */}
@@ -112,8 +118,7 @@ export function GlobalHeader() {
         )}
       </AnimatePresence>
 
-      {/* Add spacing for fixed header */}
-      <div className="h-12 md:h-14" />
+      {!isIndex && <div className="h-12 md:h-14" />}
     </>
   )
 }

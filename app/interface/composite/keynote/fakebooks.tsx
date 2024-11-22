@@ -46,7 +46,7 @@ export function RootView({
   return (
     <div
       className={
-        "relative flex overflow-hidden rounded-md bg-white text-gray-600 md:rounded-md" +
+        "relative flex overflow-hidden rounded-xs bg-white text-gray-600 md:rounded-xs" +
         " " +
         className
       }
@@ -64,7 +64,7 @@ export function RootView({
           <div className="font-bold text-gray-800">
             <NavItem>Dashboard</NavItem>
             <NavItem>Accounts</NavItem>
-            <NavItem className="rounded bg-gray-100 md:rounded-md">
+            <NavItem className="rounded-md bg-gray-100 md:rounded-none">
               Sales
             </NavItem>
             <NavItem>Expenses</NavItem>

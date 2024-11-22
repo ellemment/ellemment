@@ -49,14 +49,14 @@ function InterfaceComparison() {
             >
                 <div className="xl:flex">
                     <div className="relative xl:-right-10">
-                        <ComparisonHeader>Without Remix</ComparisonHeader>
+                        <ComparisonHeader>Business</ComparisonHeader>
                         <ComparisonBrowser>
                             <WithoutRemix />
                         </ComparisonBrowser>
                     </div>
 
                     <div className="relative xl:-left-10">
-                        <ComparisonHeader>With Remix</ComparisonHeader>
+                        <ComparisonHeader>Technology</ComparisonHeader>
                         <ComparisonBrowser>
                             <WithRemix />
                         </ComparisonBrowser>
