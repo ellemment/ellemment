@@ -222,7 +222,7 @@ function App() {
 					<GlobalHeader />
 				)}
 
-				<div className="flex-1 bg-neutral-100 dark:bg-background">
+				<div className="flex-1 bg-background dark:bg-background">
 					<Outlet />
 				</div>
 

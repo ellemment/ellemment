@@ -118,7 +118,7 @@ export function GlobalHeader() {
         )}
       </AnimatePresence>
 
-      {!isIndex && <div className="h-12 md:h-14" />}
+      {!isIndex && <div className="bg-background h-12 md:h-14" />}
     </>
   )
 }

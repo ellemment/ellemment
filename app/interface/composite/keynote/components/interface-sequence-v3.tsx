@@ -18,20 +18,8 @@ function getSlideOrDefault(slides: Slide[], index: number): Slide {
 export function SequenceInterfaceV3({ slides }: { slides: Sequence }) {
   return (
     <section>
-      <Heading>
-        Route Error Boundaries{" "}
-        <Emphasis className="text-yellow-600 dark:text-yellow-400">
-          keep the happy path happy.
-        </Emphasis>
-      </Heading>
       <div className="h-[10vh]" />
       <ScrollStage pages={3.25} fallbackLength={100} fallbackFrame={46}>
-        <div className="h-[15vh]" />
-        <Paragraph>
-          Each route module can export an error boundary next to the default
-          route component.
-        </Paragraph>
-        <div className="h-[25vh]" />
         <Paragraph>
           If an error is thrown, client or server side, users see the boundary
           instead of the default component.

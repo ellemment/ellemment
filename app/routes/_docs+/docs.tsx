@@ -30,7 +30,7 @@ export default function DocsLayout() {
       <SidebarProvider defaultOpen={true} className="rounded-xl">
         <div className="flex w-full relative">
           <DocsSidebar />
-          <SidebarInset className="bg-gray-300 dark:bg-secondary min-w-0 flex flex-col">
+          <SidebarInset className="bg-zinc-200 dark:bg-zinc-900 min-w-0 flex flex-col">
             <header className="flex h-16 shrink-0 items-center gap-2 border-b">
               <div className="flex items-center gap-2 px-4 w-full">
                 <SidebarTrigger className="-ml-1" />

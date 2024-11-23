@@ -1,4 +1,5 @@
 import * as React from "react";
+import { logos } from '#app/routes/_marketing+/logos/logos'
 
 const invoices = [
   {
@@ -46,33 +47,24 @@ export function RootView({
   return (
     <div
       className={
-        "relative flex overflow-hidden rounded-xs bg-white text-gray-600 md:rounded-xs" +
+        "relative flex overflow-hidden backdrop-blur-xl bg-transparent" +
         " " +
         className
       }
     >
-      <div className="border-r border-gray-100 bg-gray-50">
+      <div className="bg-background/75 backdrop-blur-2xl border-r border-0.5 border-border">
         <div className="p-[5.7px] lg:p-4">
-          <div className="flex items-center text-green-700">
-            <FakebooksLogo className="relative top-[1px] h-[8.5px] w-[8.5px] md:h-[18px] md:w-[18px]" />
-            <div className="w-[1px] md:w-1" />
-            <div className="text-[length:8px] font-extrabold md:text-base">
-              Fakebooks
-            </div>
-          </div>
           <div className="h-2 md:h-7" />
-          <div className="font-bold text-gray-800">
-            <NavItem>Dashboard</NavItem>
-            <NavItem>Accounts</NavItem>
-            <NavItem className="rounded-md bg-gray-100 md:rounded-none">
-              Sales
-            </NavItem>
-            <NavItem>Expenses</NavItem>
-            <NavItem>Reports</NavItem>
+          <div className="font-medium text-inherit">
+            <NavItem>Front End</NavItem>
+            <NavItem>Back End</NavItem>
+            <NavItem> Analytics & AI </NavItem>
+            <NavItem>Infrastructure</NavItem>
+            <NavItem>System Design</NavItem>
           </div>
         </div>
       </div>
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 bg-transparent">{children}</div>
       {overlay}
     </div>
   );
@@ -85,12 +77,12 @@ export function DashboardView({
 }) {
   return (
     <div className="relative p-3 md:p-6">
-      <div className="text-[length:10px] font-extrabold text-black md:text-3xl">
+      <div className="text-[length:10px] font-extrabold text-inherit md:text-3xl">
         Dashboard
       </div>
       <div className="h-2 md:h-6" />
-      <div className="flex gap-2 border-b border-gray-100 pb-1 text-[length:5px] font-medium text-gray-500 md:gap-4 md:pb-4 md:text-[length:14px]">
-        <div className="font-bold text-black">Recent Activity</div>
+      <div className="flex gap-2 border-b border-border pb-1 text-[length:5px] font-medium text-inherit md:gap-4 md:pb-4 md:text-[length:14px]">
+        <div className="font-bold text-inherit">Recent Activity</div>
         <div>Alerts</div>
         <div>Messages</div>
       </div>
@@ -122,34 +114,37 @@ export function SalesView({
   noActiveChild?: boolean;
 }) {
   return (
-    <div className="relative h-full p-3 md:p-10">
-      <div className="text-[length:10px] font-extrabold text-black md:text-3xl">
-        Sales
+    <div className="relative h-full p-3 md:p-10 bg-background/75">
+      <div className="text-[length:10px] font-extrabold text-inherit md:text-3xl">
+        Front End
       </div>
       <div className="h-2 md:h-6" />
       {shimmerNav && <div className="h-4" />}
-      <div className="flex gap-2 border-b border-gray-100 pb-1 text-[length:5px] font-medium text-gray-500 md:gap-4 md:pb-4 md:text-[length:14px]">
+      <div className="flex gap-2 border-b border-border pb-1 text-[length:5px] font-medium text-inherit md:gap-4 md:pb-4 md:text-[length:14px]">
         {shimmerNav ? (
           <>
-            <div className="w-1/3 animate-pulse rounded bg-gray-300">
+            <div className="w-1/3 animate-pulse rounded bg-background">
               &nbsp;
             </div>
-            <div className="w-1/3 animate-pulse rounded bg-gray-300">
+            <div className="w-1/3 animate-pulse rounded bg-background">
               &nbsp;
             </div>
-            <div className="w-1/3 animate-pulse rounded bg-gray-300">
+            <div className="w-1/3 animate-pulse rounded bg-background">
               &nbsp;
             </div>
           </>
         ) : (
           <>
-            <div>Overview</div>
-            <div>Subscriptions</div>
-            <div className={noActiveChild ? "" : "font-bold text-black"}>
-              Invoices
+
+            <div className={noActiveChild ? "" : "font-medium text-inherit"}>
+              Skills
             </div>
-            <div>Customers</div>
-            <div>Deposits</div>
+            <div className={noActiveChild ? "" : "font-medium text-muted"}>
+              Experience
+            </div>
+            <div className={noActiveChild ? "" : "font-medium text-muted"}>
+              Projects
+            </div>
           </>
         )}
       </div>
@@ -167,20 +162,46 @@ export function InvoicesView({
   children?: React.ReactNode;
   overlay?: React.ReactNode;
 }) {
+  // Filter front-end related logos
+  const frontEndLogos = [
+    'typescript',
+    'remix',
+    'tailwind',
+    'radix',
+    'shadcn-ui',
+    'react-email',
+    'prettier',
+    'eslint'
+  ].map(name => 
+    logos.find(logo => logo.alt.toLowerCase().includes(name.toLowerCase()))
+  ).filter(Boolean);
+
   return (
     <div className="relative">
       <div className="flex items-center justify-between gap-1 md:gap-4">
-        <InvoicesInfo label="Overdue" amount="$10,800" />
         <div className="flex h-[6px] flex-1 overflow-hidden rounded-full md:h-4">
           <div className="w-1/3 bg-yellow-brand" />
           <div className="flex-1 bg-green-brand" />
         </div>
-        <InvoicesInfo label="Due Soon" amount="$62,000" right />
       </div>
       <div className="h-3 md:h-4" />
-      <LabelText>Invoice List</LabelText>
       <div className="h-[2.8px] md:h-2" />
-      <InvoiceList children={children} />
+      <div className="flex p-4">
+        <div className="flex gap-6 items-center justify-around w-full">
+          {frontEndLogos.map((logo, index) => (
+            logo && (
+              <div key={index} className="flex flex-col items-center gap-2">
+                <img 
+                  src={logo.src} 
+                  alt={logo.alt} 
+                  className="w-12 h-12 md:w-16 md:h-16"
+                />
+                <span className="text-xs md:text-sm font-medium">{logo.alt}</span>
+              </div>
+            )
+          ))}
+        </div>
+      </div>
       {overlay}
     </div>
   );
@@ -211,7 +232,7 @@ export function InvoiceView({
       <LineItem bold label="Net Total" amount="$8,000" />
       {overlay}
       {error && (
-        <div className="absolute inset-0 flex justify-center bg-red-100 pt-4">
+        <div className="absolute inset-0 flex justify-center bg-background pt-4">
           <div className="text-center text-red-700">
             <div className="text-[10px] font-bold md:text-[14px]">Oh snap!</div>
             <div className="px-2 text-[8px] md:text-[12px]">
@@ -239,7 +260,7 @@ function InvoicesInfo({
   return (
     <div className={right ? "text-right" : ""}>
       <LabelText>{label}</LabelText>
-      <div className="text-[length:6.4px] text-black md:text-[length:18px]">
+      <div className="text-[length:6.4px] text-inherit md:text-[length:18px]">
         {amount}
       </div>
     </div>
@@ -248,16 +269,16 @@ function InvoicesInfo({
 
 function InvoiceList({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex rounded border border-gray-100 md:rounded-lg">
-      <div className="w-1/2 border-r border-gray-100">
+    <div className="flex rounded border border-border">
+      <div className="w-1/2 border-r border-border">
         {invoices.map((invoice, index) => (
           <div
             key={index}
             className={
-              "border-b border-gray-50 py-[4.2px] md:py-3" +
+              "border-b border-border py-[4.2px] md:py-3" +
               " " +
               (index === 1
-                ? "bg-gray-50 px-[5.7px] md:px-4"
+                ? "bg-transparent px-[5.7px] md:px-4"
                 : "mx-[5.7px] border-transparent md:mx-4")
             }
           >
@@ -335,9 +356,9 @@ function ActivityCard({
   return (
     <div
       className={
-        "box-border flex-1 rounded-lg border border-gray-50 p-2 md:p-10" +
+        "box-border flex-1 rounded-lg border border-border p-2 md:p-10" +
         " " +
-        (hovered ? "bg-gray-50" : "")
+        (hovered ? "bg-background" : "")
       }
     >
       <div className="text-center text-[length:5px] font-bold leading-[8.5px] md:text-[length:14px] md:leading-6">
@@ -368,7 +389,7 @@ function NewInvoiceCard({
 
 function LabelText({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[length:5px] font-medium uppercase leading-[8.5px] text-gray-500 md:text-[12px] md:leading-[24px]">
+    <div className="text-[length:5px] font-medium uppercase leading-[8.5px] text-inherit md:text-[12px] md:leading-[24px]">
       {children}
     </div>
   );
@@ -386,7 +407,7 @@ function LineItem({
   return (
     <div
       className={
-        "flex justify-between border-t border-gray-100 py-[5.7px] text-[5px] leading-[9px] md:py-4 md:text-[14px] md:leading-[24px]" +
+        "flex justify-between border-t border-border py-[5.7px] text-[5px] leading-[9px] md:py-4 md:text-[14px] md:leading-[24px]" +
         " " +
         (bold ? "font-bold" : "")
       }

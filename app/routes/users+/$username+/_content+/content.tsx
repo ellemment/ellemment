@@ -49,7 +49,7 @@ export default function ContentRoute() {
       <SidebarProvider defaultOpen={true}>
         <div className="flex flex-1">
           <AccountDashboard user={data.owner} />
-          <SidebarInset className="bg-gray-300 dark:bg-secondary px-2">
+          <SidebarInset className="bg-zinc-200 dark:bg-zinc-900 px-2">
             <header className="flex h-16 shrink-0 items-center gap-2 border-b">
               <div className="flex items-center gap-2 px-4 w-full">
                 <SidebarTrigger className="-ml-1" />

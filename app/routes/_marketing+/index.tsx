@@ -1,5 +1,6 @@
 // #app/routes/_marketing+/index.tsx
 
+import { Hero } from '#app/interface/composite/keynote/hero'
 import { ScrollExperience } from '#app/interface/composite/keynote/scroll-ux.js'
 import { type Sequence } from '#app/utils/md/scroll/mdslides.server.js'
 
@@ -39,6 +40,7 @@ export default function IndexRoute() {
 
 	return (
 		<div className="min-h-screen bg-background">
+			<Hero />
 			<ScrollExperience
 				mutations={mutations}
 				errors={errors}
