@@ -31,7 +31,7 @@ export function ThemeSwitch({ variant = 'icon' }: ThemeSwitchProps) {
       <button
         type="submit"
         className={clsx(
-          'bg-gray-300/30 hover:bg-gray-300/40 backdrop-blur-3xl hover:backdrop-blur-sm shadow-xl text-primary inline-flex items-center justify-center overflow-hidden rounded-full transition focus:outline-none',
+          'bg-background hover:bg-secondary backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 hover:backdrop-blur-sm shadow-sm text-primary inline-flex items-center justify-center overflow-hidden rounded-full transition focus:outline-none',
           {
             'h-8 w-8': variant === 'icon',
             'h-8 px-6': variant === 'labelled',

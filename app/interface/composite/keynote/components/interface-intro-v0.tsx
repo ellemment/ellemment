@@ -25,7 +25,7 @@ const LAYOUT = {
     container: "mx-4 md:mx-6",
     maxWidth: {
         default: "w-full",
-        md: "md:max-w-5xl md:mx-auto md:pr-24 md:pl-4",
+        md: "md:max-w-4xl md:mx-auto md:pr-24 md:pl-4",
     },
 } as const;
 
