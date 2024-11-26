@@ -20,9 +20,32 @@ import typescript from './typescript.svg'
 import vitest from './vitest.svg'
 import zod from './zod.svg'
 
-export { default as stars } from './stars.jpg'
+// Add these type definitions at the top of the file
+interface Logo {
+	src: string
+	alt: string
+	href: string
+	column: number
+	row: number
+}
 
-export const logos = [
+interface SkillLogo {
+	name: string
+	src: string
+}
+
+export const skillLogos: Record<string, string> = {
+	'TypeScript': typescript,
+	'Tailwind': tailwind,
+	'Prisma': prisma,
+	'Remix': remix,
+	'GitHub': github,
+	'Docker': docker,
+	'Radix UI': radixUI,
+	'shadcn/ui': shadcnUI,
+} as const;
+
+export const logos: Logo[] = [
 	{
 		src: remix,
 		alt: 'Remix',
@@ -171,3 +194,34 @@ export const logos = [
 		row: 5,
 	},
 ]
+
+// Individual exports for direct usage
+export {
+	docker,
+	typescript,
+	tailwind,
+	prisma,
+	remix,
+	github,
+	radixUI,
+	shadcnUI,
+}
+
+// Export stars image
+export { default as stars } from './stars.jpg'
+
+// Helper functions for logo handling
+export const getLogoByName = (name: keyof typeof skillLogos): string => {
+	return skillLogos[name] || '';
+};
+
+export const getLogosByCategory = (category: string): Logo[] => {
+	return logos.filter(logo => {
+		const alt = logo.alt.toLowerCase();
+		const categoryLower = category.toLowerCase();
+		return alt.includes(categoryLower);
+	});
+};
+
+// Types exports for usage in other components
+export type { Logo, SkillLogo };

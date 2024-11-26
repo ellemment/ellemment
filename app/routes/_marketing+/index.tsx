@@ -1,50 +1,13 @@
 // #app/routes/_marketing+/index.tsx
 
-import { Hero } from '#app/interface/composite/keynote/hero'
-import { ScrollExperience } from '#app/interface/composite/keynote/scroll-ux.js'
-import { type Sequence } from '#app/utils/md/scroll/mdslides.server.js'
+import { Landing } from '#app/interface/composite/portfolio/landing'
 
 
 export default function IndexRoute() {
-	const mutations = {
-		type: 'sequence',
-			slides: [
-				{
-					type: 'slide',
-					subject: `<div>Example mutation slide 1</div>`,
-					html: `<div>Example mutation slide 1</div>`,
-				},
-				{
-					type: 'slide',
-					subject: `<div>Example mutation slide 2</div>`,
-					html: `<div>Example mutation slide 2</div>`,
-				},
-			],
-	} satisfies Sequence
-
-	const errors = {
-		type: 'sequence',
-			slides: [
-				{
-					type: 'slide',
-					subject: `<div>Example error slide 1</div>`,
-					html: `<div>Example error slide 1</div>`,
-				},
-				{
-					type: 'slide',
-					subject: `<div>Example error slide 2</div>`,
-					html: `<div>Example error slide 2</div>`,
-				},
-			],
-	} satisfies Sequence
 
 	return (
-		<div className="min-h-screen bg-background">
-			<Hero />
-			<ScrollExperience
-				mutations={mutations}
-				errors={errors}
-			/>
-		</div>
+		<>
+			<Landing />
+		</>
 	)
 }

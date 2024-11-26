@@ -165,7 +165,7 @@ export function InvoicesView({
   // Filter front-end related logos
   const frontEndLogos = [
     'typescript',
-    'remix',
+    'github',
     'tailwind',
     'radix',
     'shadcn-ui',
