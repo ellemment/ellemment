@@ -18,20 +18,20 @@ export const overviewContent = {
 export const overviewStats = {
   items: [
     {
-      num: 12,
-      text: "Years of experience",
+      num: 9,
+      text: "Technologies",
     },
     {
-      num: 26,
-      text: "Projects completed",
+      num: 9,
+      text: "Experience",
     },
     {
-      num: 8,
-      text: "Technologies mastered",
+      num: 99,
+      text: "Projects",
     },
     {
-      num: 500,
-      text: "Code commits",
+      num: 999,
+      text: "Commits",
     },
   ],
   config: {
@@ -46,71 +46,39 @@ export const overviewStats = {
   }
 } as const;
 
+export const skillsContent = {
+  title: "Skills",
+  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  skillList: [
+    { name: "TypeScript" },
+    { name: "Tailwind" },
+    { name: "Prisma" },
+    { name: "Remix" },
+    { name: "GitHub" },
+    { name: "Docker" },
+  ] as const,
+} as const;
 
-export const resumeContent = {
-  tabs: [
-    { value: "skills", label: "Skills" },
-    { value: "experience", label: "Experience" },
-    { value: "education", label: "Education" },
+export const experienceContent = {
+  title: "Experience",
+  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  items: [
+    {
+      company: "Tech Solutions Inc.",
+      position: "Full Stack Developer",
+      duration: "2022 - Present",
+    },
+    {
+      company: "Web Design Studio",
+      position: "Front-End Developer",
+      duration: "2020 - 2021",
+    },
+    {
+      company: "Digital Agency",
+      position: "UI/UX Designer",
+      duration: "2018 - 2020",
+    },
   ],
-  about: {
-    title: "About me",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-  skills: {
-    title: "Skills",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    skillList: [
-      { name: "TypeScript" },
-      { name: "Tailwind" },
-      { name: "Prisma" },
-      { name: "Remix" },
-      { name: "GitHub" },
-      { name: "Docker" },
-    ] as const,
-  },
-  experience: {
-    title: "Experience",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    items: [
-      {
-        company: "Tech Solutions Inc.",
-        position: "Full Stack Developer",
-        duration: "2022 - Present",
-      },
-      {
-        company: "Web Design Studio",
-        position: "Front-End Developer",
-        duration: "2020 - 2021",
-      },
-      {
-        company: "Digital Agency",
-        position: "UI/UX Designer",
-        duration: "2018 - 2020",
-      },
-    ],
-  },
-  education: {
-    title: "Education",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    items: [
-      {
-        institution: "Tech Institute",
-        degree: "Computer Science",
-        duration: "2018 - 2022",
-      },
-      {
-        institution: "Design School",
-        degree: "UI/UX Design",
-        duration: "2016 - 2018",
-      },
-      {
-        institution: "Online Academy",
-        degree: "Web Development",
-        duration: "2015 - 2016",
-      },
-    ],
-  },
 } as const;
 
 export const servicesContent = {
