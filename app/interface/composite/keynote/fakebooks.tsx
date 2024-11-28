@@ -162,7 +162,6 @@ export function InvoicesView({
   children?: React.ReactNode;
   overlay?: React.ReactNode;
 }) {
-  // Filter front-end related logos
   const frontEndLogos = [
     'typescript',
     'github',
@@ -192,7 +191,7 @@ export function InvoicesView({
             logo && (
               <div key={index} className="flex flex-col items-center gap-2">
                 <img 
-                  src={logo.src} 
+                  src={logo.src.toString()}
                   alt={logo.alt} 
                   className="w-12 h-12 md:w-16 md:h-16"
                 />
