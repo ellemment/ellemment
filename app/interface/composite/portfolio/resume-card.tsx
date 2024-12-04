@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+
 interface ResumeEntry {
   company: string
   role: string
@@ -12,35 +14,46 @@ interface ResumeStackProps {
 
 export const ResumeStack = ({ entries }: ResumeStackProps) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       {entries.map((entry, index) => (
-        <div
+        <motion.div
           key={index}
-          className="relative p-8 bg-background border border-border rounded-none min-h-[140px] hover:bg-secondary/80 transition-all duration-300 group"
+          initial={{ x: index * 40 }}
+          whileInView={{ x: 0 }}
+          exit={{ x: index * 40 }}
+          viewport={{ 
+            once: false,
+            margin: "-100px"
+          }}
+          transition={{ 
+            duration: 0.7,
+            ease: "easeInOut"
+          }}
+          className={`relative py-8 transition-colors duration-300 group
+            ${index !== entries.length - 1 ? 'border-b border-border' : ''}`}
         >
-          {/* Left Content */}
           <div className="flex flex-col gap-2">
-            {/* Company */}
-            <span className="text-base text-muted-foreground">
-              {entry.company}
-            </span>
-            
-            {/* Role and Period Row */}
+            {/* Company and Location Row */}
+            <div className="text-base text-muted-foreground">
+              {entry.company} • {entry.location}
+            </div>
+
+            {/* Role Row */}
             <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-bold tracking-tight group-hover:text-accent transition-colors">
+              <h3 className="text-2xl font-bold tracking-tight transition-colors">
                 {entry.role}
               </h3>
-              <span className="text-sm text-muted-foreground">
-                {entry.period}
-              </span>
             </div>
-            
-            {/* Location and Description Row */}
-            <p className="text-sm text-muted-foreground">
-              {entry.location} • {entry.description}
-            </p>
+
+            {/* Description and Period Row */}
+            <div 
+              className="flex justify-between items-center text-sm text-muted-foreground opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out"
+            >
+              <span>{entry.description}</span>
+              <span>{entry.period}</span>
+            </div>
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   )
@@ -52,35 +65,35 @@ export const ResumeSection = () => {
     {
       company: "Rakuten Group",
       role: "Product Development Manager",
-      period: "07.2024 - Present",
+      period: "Present",
       location: "Tokyo, Japan",
       description: "Built data intelligence handling millions of products of the marketplace.",
     },
     {
       company: "Gipocrat",
       role: "Senior Product Engineer & Founder",
-      period: "03.2024 - 07.2024",
+      period: "2024",
       location: "Tokyo, Japan",
       description: "Built e-commerce platform handling millions of products.",
     },
     {
       company: "Infinity LLC",
       role: "Full Stack Web Developer & Chief Technology Officer",
-      period: "03.2023 - 01.2024",
+      period: "2023",
       location: "Tokyo, Japan",
       description: "Delivered twenty custom websites and automation tools.",
     },
     {
       company: "NTT DATA Corporation",
       role: "Consultant, Data Scientist",
-      period: "04.2021 - 12.2022",
+      period: "2021/22",
       location: "Tokyo, Japan",
       description: "Led data analytics for major pharma companies.",
     },
     {
       company: "Ensulen LLC",
       role: "Full Stack Web Developer & Co-founder",
-      period: "03.2015 - 04.2021",
+      period: "2015/21",
       location: "Tokyo, Japan",
       description: "Developed WordPress solutions for thirty plus clients.",
     },
@@ -89,9 +102,11 @@ export const ResumeSection = () => {
   return (
     <section className="max-w-7xl mx-auto px-4">
       <div className="space-y-8">
+        {/* section title 
         <header className="space-y-4">
           <h2 className="text-4xl font-bold">Experience</h2>
         </header>
+        */}
         <ResumeStack entries={resumeEntries} />
       </div>
     </section>

@@ -1,3 +1,5 @@
+// #app/interface/shadcn/tabs.tsx
+
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import * as React from "react"
 

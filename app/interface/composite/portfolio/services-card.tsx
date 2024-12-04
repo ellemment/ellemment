@@ -60,7 +60,7 @@ export const ServicesSection = () => {
   return (
     <section className="max-w-7xl mx-auto px-4">
       <div className="space-y-8">
-        <header className="space-y-4">
+     <header className="space-y-4">
           <h2 className="text-4xl font-bold">Services</h2>
         </header>
         <ServicesStack entries={serviceEntries} />

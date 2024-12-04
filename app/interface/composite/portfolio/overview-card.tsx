@@ -1,104 +1,153 @@
-// #app/interface/composite/portfolio/overview-card.tsx
-
-import { Link } from "@remix-run/react"
-import { Icon } from "#app/interface/foundations/icons/icon"
-import { Button } from "#app/interface/shadcn/button"
-
-interface SocialLinksProps {
-  containerStyles: string
-  iconStyles: string
-}
-
-const SocialLinks = ({ containerStyles, iconStyles }: SocialLinksProps) => (
-  <div className={containerStyles}>
-    <Link to="" className={iconStyles}>
-      <Icon name="github-logo" className="text-xl" />
-    </Link>
-    <Link to="" className={iconStyles}>
-      <Icon name="linkedin-logo" className="text-xl" />
-    </Link>
-  </div>
-)
-
-interface StatsItemProps {
-  num: number
-  text: string
-}
-
-const StatsItem = ({ num, text }: StatsItemProps) => (
-  <div className="flex-1 flex gap-4 items-center justify-center xl:justify-start">
-    <span className="text-4xl xl:text-6xl font-extrabold">{num}</span>
-    <p className={`${
-      text.length < 15 ? "max-w-[100px]" : "max-w-[150px]"
-    } leading-snug text-inherit/80`}>
-      {text}
-    </p>
-  </div>
-)
+"use client"
+import React from "react"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "#app/interface/shadcn/tabs"
 
 const overviewData = {
-  role: "Product Engineer.",
-  name: "Dony Alior.",
+  role: "Product Engineer",
   description: "I excel at crafting elegant digital experiences and I am proficient in various programming languages and technologies.",
-  button: {
-    text: "Get CV",
-    href: "#" 
-  },
-  social: {
-    containerStyles: "flex gap-6",
-    iconStyles: "w-9 h-9 border border-accent rounded-full flex justify-center items-center text-accent text-base hover:bg-accent hover:text-primary hover:transition-all duration-500"
-  },
   stats: [
-    { num: 9, text: "Professional Years" },
-    { num: 9, text: "Core Tools" },
-    { num: 99, text: "Projects Delivered" },
-    { num: 999, text: "Code Commits" },
+    {
+      contents: "01",
+      headline: "Resume",
+      details: "View my professional experience and qualifications"
+    },
+    {
+      contents: 9,
+      headline: "Experience",
+      details: "Years of professional software development experience"
+    },
+    {
+      contents: 9,
+      headline: "Stack",
+      details: "Different technologies and frameworks I work with"
+    },
+    {
+      contents: 99,
+      headline: "Projects",
+      details: "Completed projects across various domains"
+    },
   ]
 } as const
 
+const tabsData = [
+  {
+    value: "everyone",
+    label: "For Everyone",
+    content: "Hello there, I'm a designer who cares about making beautiful things that help people."
+  },
+  {
+    value: "recruiters",
+    label: "Recruiters",
+    content: "I'm a product designer with 15 years of experience across brand and product, at companies large and small."
+  },
+  {
+    value: "managers",
+    label: "Managers",
+    content: "I bring end-to-end product acumen, from vision and strategy to discovery and delivery."
+  },
+  {
+    value: "engineers",
+    label: "Engineers",
+    content: "I'm {highly_technical} and while (I'm ≠ engineer) I know my way /around & can speak \"fluently\" with you."
+  }
+]
+
 export const OverviewSection = () => {
-  const { role, name, description, button, social, stats } = overviewData
+  const { role, stats } = overviewData
+  const [activeIndex, setActiveIndex] = React.useState<number>(0)
 
   return (
-    <section className="max-w-7xl mx-auto px-4">
-      <div className="flex flex-col xl:flex-row items-start justify-between py-12 xl:py-24">
-        <div className="text-left order-2 xl:order-none">
-          <h1 className="flex flex-col gap-2 pb-4">
-            <span className="text-4xl font-semibold text-zinc-500 dark:text-zinc-500">
-              {name}
-            </span>
-            <span className="text-4xl font-semibold">
+    <section className="min-h-[100dvh] max-w-7xl mx-auto px-4 py-12 xl:py-24 grid grid-rows-2 gap-12">
+      {/* Top Half - Split into two equal sections */}
+      <div className="grid grid-rows-2 gap-12">
+        {/* Name and Role Section */}
+        <div className="flex items-center">
+          <h1 className="text-left">
+            <span className="block text-2xl md:text-5xl font-semibold tracking-tight">
               {role}
             </span>
           </h1>
-          <div className="flex flex-row items-center gap-5">
-            <Button
-              variant="outline"
-              size="lg"
-              className="flex rounded-full items-center gap-2"
-            >
-              <span>{button.text}</span>
-              <Icon name="download" className="text-xl" />
-            </Button>
-            <div>
-              <SocialLinks
-                containerStyles={social.containerStyles}
-                iconStyles={social.iconStyles}
-              />
+        </div>
+
+        {/* Tabs Section with fixed height and aligned content */}
+        <div className="relative flex flex-col justify-between h-full">
+          <Tabs defaultValue="everyone" className="flex flex-col h-full">
+            <TabsList className="bg-transparent w-full justify-start gap-8 p-0 mb-12">
+              {tabsData.map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className="text-md font-normal pb-4 data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=inactive]:opacity-50 px-0 transition-opacity"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <div className="flex-grow flex items-center mb-12">
+              {tabsData.map((tab) => (
+                <TabsContent 
+                  key={tab.value} 
+                  value={tab.value}
+                  className="text-2xl md:text-5xl font-semibold tracking-tight leading-[5rem] mb-0"
+                >
+                  {tab.content}
+                </TabsContent>
+              ))}
             </div>
-          </div>
+          </Tabs>
         </div>
       </div>
-      <section className="pt-4 pb-12 xl:pt-0 xl:pb-0">
-        <div className="container max-w-7xl mx-auto">
-          <div className="flex flex-wrap gap-6 max-w-[80vw] mx-auto xl:max-w-none">
-            {stats.map((item, index) => (
-              <StatsItem key={index} {...item} />
-            ))}
-          </div>
+
+      {/* Bottom Half - Stats Cards */}
+      <div className="h-full">
+        <div className="flex w-full h-full -space-x-6">
+          {stats.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                zIndex: activeIndex === index
+                  ? 50
+                  : activeIndex > index
+                    ? index
+                    : stats.length - index
+              }}
+              className={`
+                relative border border-border rounded-lg p-4
+                transition-all duration-300 ease-in-out
+                h-full flex flex-col
+                bg-background/80 backdrop-blur-sm
+                shadow-[0_4px_10px_rgba(0,0,0,0.1)]
+                hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
+                ${activeIndex === index ? 'w-[37.5%]' : 'w-[20.833%]'}
+                ${index === 0 ? '' : '-ml-6'}
+              `}
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(0)}
+            >
+              <div className="flex flex-col items-center justify-between h-full">
+                <p className="text-md font-normal tracking-tight">{item.headline}</p>
+                <span className={`
+                  text-4xl xl:text-6xl font-extrabold tracking-tighter
+                  transition-all duration-500 ease-in-out
+                  ${activeIndex === index ? 'opacity-100 delay-200' : 'opacity-0'}
+                `}>
+                  {item.contents}
+                </span>
+                <div className={`
+                  overflow-hidden transition-all duration-500 ease-in-out
+                  ${activeIndex === index ? 'max-h-full opacity-100 delay-200' : 'max-h-0 opacity-0'}
+                `}>
+                  <p className="text-center text-gray-600 dark:text-gray-400 pt-4 tracking-tight">
+                    {item.details}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
     </section>
   )
 }
 
+export default OverviewSection;
