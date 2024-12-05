@@ -1,15 +1,13 @@
 // #app/utils/content/content.server.ts
 
+import { LRUCache } from "lru-cache"; 
 import { DateTime } from "luxon";
 import invariant from "tiny-invariant";
-import { LRUCache } from "lru-cache";
-import yaml from "yaml";
 import { processMarkdown } from "#app/utils/content/markdown-module/md.server";
-import authorsYamlFileContents from "/data/authors.yml?raw";
 
 const postContentsBySlug = Object.fromEntries(
   Object.entries(
-    import.meta.glob("/data/posts/*.md", {
+    import.meta.glob("/data/docs/*.md", {
       query: "?raw",
       import: "default",
       eager: true,
@@ -20,13 +18,17 @@ const postContentsBySlug = Object.fromEntries(
       `Expected ${filePath} to be a string, but got ${typeof contents}`,
     );
     return [
-      filePath.replace("/data/posts/", "").replace(/\.md$/, ""),
+      filePath.replace("/data/docs/", "").replace(/\.md$/, ""),
       contents,
     ];
   }),
 );
 
-const AUTHORS: BlogAuthor[] = yaml.parse(authorsYamlFileContents);
+const AUTHORS: BlogAuthor[] = [{
+  name: "Dony Alior",
+  avatar: "/authors/profile-dony-alior.png",
+  title: "SeniorProduct Engineer"
+}];
 const AUTHOR_NAMES = AUTHORS.map((a) => a.name);
 
 const postsCache = new LRUCache<string, BlogPost>({
