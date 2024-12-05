@@ -28,6 +28,7 @@ export type NavCategory = {
   items: Array<{
     slug: string;
     title: string;
+    order: number;
   }>;
 };
 
@@ -35,50 +36,72 @@ export type DocsNavigation = Record<string, NavCategory>;
 
 // Navigation Data
 export const docsCategories: DocsNavigation = {
-  "react-router": {
-    label: "React Router",
+  "getting-started": {
+    label: "Getting Started",
     order: 1,
     items: []
   },
-  "remix": {
-    label: "Remix",
+  "core-architecture": {
+    label: "Core Architecture",
     order: 2,
     items: []
   },
-  "server-components": {
-    label: "Server Components",
+  "performance-security": {
+    label: "Performance & Security",
     order: 3,
     items: []
   },
-  "migration": {
-    label: "Migration Guides",
+  "frontend-resources": {
+    label: "Frontend Resources",
     order: 4,
     items: []
   },
-  "deployment": {
-    label: "Deployment & Integration",
+  "operations": {
+    label: "Operations",
     order: 5,
     items: []
   }
 };
 
 // Manual mapping of posts to specific categories
-const postCategoryMap: Record<string, string> = {
-  // React Router related
-  "react-router-v6": "react-router",
-  "react-routering-remix": "react-router",
-  "remixing-react-router": "react-router",
+const postCategoryMap: Record<string, { category: string; order: number }> = {
+  // Getting Started
+  "getting-started": { category: "getting-started", order: 1 },
+  "guiding-principles": { category: "getting-started", order: 2 },
+  "examples": { category: "getting-started", order: 3 },
+  "features": { category: "getting-started", order: 4 },
   
-  // Remix related
-  "remix-vite-stable": "deployment",
-  "remix-i18n": "remix",
-  "fog-of-war": "remix",
-  "merging-remix-and-react-router": "migration",
+  // Core Architecture
+  "routing": { category: "core-architecture", order: 1 },
+  "authentication": { category: "core-architecture", order: 2 },
+  "database": { category: "core-architecture", order: 3 },
+  "caching": { category: "core-architecture", order: 4 },
+  "memory": { category: "core-architecture", order: 5 },
+  "apis": { category: "core-architecture", order: 6 },
   
-  // Server Components
-  "react-server-components": "server-components"
+  // Performance & Security
+  "security": { category: "performance-security", order: 1 },
+  "monitoring": { category: "performance-security", order: 2 },
+  "server-timing": { category: "performance-security", order: 3 },
+  "secrets": { category: "performance-security", order: 4 },
+  "permissions": { category: "performance-security", order: 5 },
+  "testing": { category: "performance-security", order: 6 },
+  
+  // Frontend Resources
+  "fonts": { category: "frontend-resources", order: 1 },
+  "icons": { category: "frontend-resources", order: 2 },
+  "client-hints": { category: "frontend-resources", order: 3 },
+  "seo": { category: "frontend-resources", order: 4 },
+  "redirects": { category: "frontend-resources", order: 5 },
+  
+  // Operations
+  "deployment": { category: "operations", order: 1 },
+  "managing-updates": { category: "operations", order: 2 },
+  "email": { category: "operations", order: 3 },
+  "community": { category: "operations", order: 4 }
 };
 
+// Update the organizePostsByCategory function
 function organizePostsByCategory(posts: MarkdownPostListing[]) {
   const navigation = { ...docsCategories };
   
@@ -88,26 +111,40 @@ function organizePostsByCategory(posts: MarkdownPostListing[]) {
     items: []
   };
 
-  posts.forEach(post => {
-    const categoryKey = postCategoryMap[post.slug] || "other";
-    const category = navigation[categoryKey];
-    
+  // First, group posts by category with their order
+  const categorizedPosts = posts.map(post => {
+    const mapping = postCategoryMap[post.slug] || { category: "other", order: 999 };
+    return {
+      ...post,
+      categoryKey: mapping.category,
+      order: mapping.order
+    };
+  });
+
+  // Group posts by category
+  for (const post of categorizedPosts) {
+    const category = navigation[post.categoryKey];
     if (category) {
       if (!category.items.some(item => item.slug === post.slug)) {
         category.items.push({
           slug: post.slug,
-          title: post.title
+          title: post.title,
+          order: post.order // Store the order
         });
       }
     }
-  });
+  }
 
-  // Sort items within each category
+  // Sort items within each category by their order
   Object.values(navigation).forEach(category => {
-    category.items.sort((a, b) => a.title.localeCompare(b.title));
+    category.items.sort((a, b) => {
+      const aOrder = (a as any).order || 999;
+      const bOrder = (b as any).order || 999;
+      return aOrder - bOrder;
+    });
   });
 
-  // Remove empty categories and sort by order
+  // Remove empty categories and sort by category order
   const filteredNavigation = Object.fromEntries(
     Object.entries(navigation)
       .filter(([, category]) => category.items.length > 0)
@@ -116,7 +153,6 @@ function organizePostsByCategory(posts: MarkdownPostListing[]) {
 
   return filteredNavigation;
 }
-
 export const loader: LoaderFunction = async ({ request: _ }) => {
   const posts = await getContentElemmentListings();
   return { posts };
