@@ -1,253 +1,110 @@
 ---
 title: Getting Started
-summary: A comprehensive guide to getting started with Creemson Engine, including setup, basic concepts, and first steps
-date: 2024-03-23
+summary: "Complete guide to setting up and running your first Epic Stack application"
+featured: false
+date: 2024-03-20
+image: /blog-images/headers/getting-started.png
+ogImage: /blog-images/headers/getting-started.png
+imageAlt: Getting Started
+imageDisableOverlay: true
+authors:
+  - Dony Alior
 ---
 
-# Getting Started with Creemson Engine
+# Getting Started with the Epic Stack
 
-## Overview
+The Epic Stack is a [Remix Stack](https://remix.run/stacks). To start your Epic
+Stack, run the following [`npx`](https://docs.npmjs.com/cli/v9/commands/npx)
+command:
 
-Creemson Engine is a high-performance data processing and classification system built with Python, leveraging FastAPI for API endpoints and WebSocket communication. The engine specializes in processing and analyzing data with a focus on attribute mapping and classification.
-
-## Prerequisites
-
-Before you begin, ensure you have:
-
-- Python 3.x installed
-- pip package manager
-- Basic understanding of Python and web APIs
-- Access to development environment (Mac or Windows)
-
-## System Requirements
-
-- Operating System: 
-  - macOS 10.x or later
-  - Windows 10 or later
-- Memory: Minimum 4GB RAM (8GB recommended)
-- Storage: At least 1GB free space
-- Python: Version 3.8 or higher
-
-## Quick Installation
-
-### For Mac Users
-
-```bash
-# Clone the repository
-cd /path/to/workspace
-git clone [repository-url]
-
-# Navigate to engine directory
-cd Creemson/engine
-
-# Make setup script executable
-chmod +x setup.sh
-
-# Run setup script
-./setup.sh mac
+```sh
+npx create-epic-app@latest
 ```
 
-### For Windows Users
+This will prompt you for a project name (the name of the directory to put your
+project). Once you've selected that, the CLI will start the setup process.
 
-```bash
-# Clone the repository
-cd C:\path\to\workspace
-git clone [repository-url]
+Once the setup is complete, go ahead and `cd` into the new project directory and
+run `npm run dev` to get the app started.
 
-# Navigate to engine directory
-cd Creemson\engine
+Check the project README.md for instructions on getting the app deployed. You'll
+want to get this done early in the process to make sure you're all set up
+properly.
 
-# Run setup script
-setup.bat windows
+If you'd like to skip some of the setup steps, you can set the following
+environment variables when you run the script:
+
+- `SKIP_SETUP` - skips running `npm run setup`
+- `SKIP_FORMAT` - skips running `npm run format`
+- `SKIP_DEPLOYMENT` - skips deployment setup
+
+So, if you enabled all of these it would be:
+
+```sh
+SKIP_SETUP=true SKIP_FORMAT=true SKIP_DEPLOYMENT=true npx create-epic-app@latest
 ```
 
-## Project Structure Overview
+Or, on windows:
 
 ```
-Creemson/
-├── creemson_venv/            # Virtual environment
-└── engine/
-    ├── config.py            # Configuration settings
-    ├── requirements.txt     # Dependencies
-    ├── README.md           # Project documentation
-    ├── engine.py           # Main application file
-    ├── setup.bat           # Windows setup script
-    ├── setup.sh            # Mac setup script
-    ├── start.bat           # Windows start script
-    ├── start.sh            # Mac start script
-    └── src/                # Source code
-        ├── common/         # Common utilities
-        └── engine/         # Core engine code
+set SKIP_SETUP=true && set SKIP_FORMAT=true && set SKIP_DEPLOYMENT=true && npx create-epic-app@latest
 ```
 
-## Basic Concepts
+## Development
 
-### 1. Data Processing Pipeline
+- Initial setup:
 
-The engine processes data through several stages:
+  ```sh
+  npm run setup
+  ```
 
-1. **File Upload**: Submit data files for processing
-2. **Column Selection**: Choose relevant columns for analysis
-3. **Classification**: Automatic data classification
-4. **Attribute Mapping**: Map data to predefined attributes
-5. **Result Generation**: Produce processed output
+- Start dev server:
 
-### 2. API Communication
+  ```sh
+  npm run dev
+  ```
 
-The engine provides two communication methods:
+This starts your app in development mode, rebuilding assets on file changes.
 
-1. **REST API Endpoints**:
-   - File upload/download
-   - Process control
-   - Status checks
+The database seed script creates a new user with some data you can use to get
+started:
 
-2. **WebSocket Communication**:
-   - Real-time progress updates
-   - Live data streaming
-   - Event notifications
+- Username: `kody`
+- Password: `kodylovesyou`
 
-## Getting Started Steps
 
-### 1. Start the Engine
+# Epic Stack Documentation
 
-After installation, start the engine:
+The goal of The Epic Stack is to provide solid opinions for teams to hit the
+ground running on their web applications.
 
-```bash
-# Mac
-./start.sh mac
+We recommend you watch Kent's introduction to the Epic Stack to get an
+understanding of the "why" behind the Stack:
 
-# Windows
-start.bat windows
-```
+[![Epic Stack Talk slide showing Flynn Rider with knives, the text "I've been around and I've got opinions" and Kent speaking in the corner](https://github-production-user-asset-6210df.s3.amazonaws.com/1500684/277818553-47158e68-4efc-43ae-a477-9d1670d4217d.png)](https://www.epicweb.dev/talks/the-epic-stack)
 
-The server will start on `http://localhost:8000`
+More of a reader? Read [the announcement post](https://epicweb.dev/epic-stack)
+or
+[an AI generated summary of the video](https://www.summarize.tech/www.youtube.com/watch?v=yMK5SVRASxM).
 
-### 2. Basic File Processing
+This stack is still under active development. Documentation will rapidly improve
+in the coming weeks. Stay tuned!
 
-Here's a simple example using Python requests:
+# Top Pages
 
-```python
-import requests
-
-# Upload a file
-with open('data.csv', 'rb') as f:
-    response = requests.post(
-        'http://localhost:8000/upload',
-        files={'file': f}
-    )
-filename = response.json()['filename']
-
-# Get column information
-columns = requests.get(
-    f'http://localhost:8000/columns/{filename}'
-).json()
-
-# Process file
-result = requests.post(
-    'http://localhost:8000/process',
-    json={
-        'filename': filename,
-        'selectedColumns': [0, 1, 2]
-    }
-).json()
-```
-
-### 3. WebSocket Communication
-
-Example of WebSocket usage:
-
-```python
-import websockets
-import json
-import asyncio
-
-async def process_file():
-    uri = "ws://localhost:8000/ws"
-    async with websockets.connect(uri) as websocket:
-        await websocket.send(json.dumps({
-            'filename': 'data.csv',
-            'selectedColumns': [0, 1, 2]
-        }))
-        
-        result = await websocket.recv()
-        print(json.loads(result))
-
-asyncio.get_event_loop().run_until_complete(process_file())
-```
-
-## Configuration
-
-Basic configuration is handled in `config.py`:
-
-```python
-# Data Processing
-LIMIT_ROWS = 20
-
-# API Configuration
-MOHE_API_RESULT_LIMIT = 3
-
-# File Paths
-UPLOADS_DIR = os.path.join(DATA_DIR, 'uploads')
-OUTPUTS_DIR = os.path.join(DATA_DIR, 'outputs')
-```
-
-## Next Steps
-
-After getting started, you might want to explore:
-
-1. [Installation Guide](installation.md) - Detailed installation instructions
-2. [Project Structure](project-structure.md) - In-depth project organization
-3. [FastAPI Integration](fastapi-integration.md) - API implementation details
-4. [Classification System](classification-system.md) - Understanding data classification
-5. [Data Processing Pipeline](data-processing-pipeline.md) - Detailed processing workflow
-
-## Common Initial Issues
-
-1. **Installation Problems**
-   - Ensure Python version compatibility
-   - Check virtual environment activation
-   - Verify all dependencies are installed
-
-2. **Connection Issues**
-   - Confirm server is running
-   - Check port availability
-   - Verify network settings
-
-3. **Processing Errors**
-   - Validate input file format
-   - Check column selections
-   - Monitor server logs
-
-## Getting Help
-
-If you encounter issues:
-
-1. Check the [Troubleshooting Guide](troubleshooting-guide.md)
-2. Review server logs in the console
-3. Refer to [API Documentation](api-reference.md)
-4. Contact the development team
-
-## Security Considerations
-
-When getting started, keep in mind:
-
-1. **File Upload Security**
-   - Limit file sizes
-   - Validate file types
-   - Sanitize filenames
-
-2. **API Security**
-   - Use secure connections
-   - Implement authentication
-   - Follow security best practices
-
-## Version Compatibility
-
-Current version supports:
-
-- Python 3.8+
-- FastAPI 0.115.0
-- All major OS platforms
-- Modern web browsers
-
-The getting started guide aims to provide a smooth onboarding experience. For more detailed information, refer to specific documentation sections or reach out to the development team.
+- [Getting Started](./getting-started.md) - Instructions for how to get started
+  with the Epic Stack.
+- [Features](./features.md) - List of features the Epic Stack provides out of
+  the box.
+- [Deployment](./deployment.md) - If you skip the deployment step when starting
+  your app, these are the manual steps you can follow to get things up and
+  running.
+- [Decisions](./decisions/README.md) - The reasoning behind various decisions
+  made for the Epic Stack. A good historical record.
+- [Guiding Principles](./guiding-principles.md) - The guiding principles behind
+  the Epic Stack.
+- [Examples](./examples.md) - Examples of the Epic Stack with various tools.
+  Most new feature requests people have for the Epic Stack start as examples
+  before being integrated into the framework.
+- [Managing Updates](./managing-updates.md) - How to manage updates to the Epic
+  Stack for both the generated stack code as well as npm dependencies.
