@@ -61,7 +61,7 @@ test('when a user is logged in, it creates the connection', async () => {
 		code: githubUser.code,
 	})
 	const response = await loader({ request, params: PARAMS, context: {} })
-	expect(response).toHaveRedirect('/account/settings/connections')
+	expect(response).toHaveRedirect('/user/settings/connections')
 	await expect(response).toSendToast(
 		expect.objectContaining({
 			title: 'Connected',
@@ -97,7 +97,7 @@ test(`when a user is logged in and has already connected, it doesn't do anything
 		code: githubUser.code,
 	})
 	const response = await loader({ request, params: PARAMS, context: {} })
-	expect(response).toHaveRedirect('/account/settings/connections')
+	expect(response).toHaveRedirect('/user/settings/connections')
 	await expect(response).toSendToast(
 		expect.objectContaining({
 			title: 'Already Connected',
@@ -156,7 +156,7 @@ test('gives an error if the account is already connected to another user', async
 		code: githubUser.code,
 	})
 	const response = await loader({ request, params: PARAMS, context: {} })
-	expect(response).toHaveRedirect('/account/settings/connections')
+	expect(response).toHaveRedirect('/user/settings/connections')
 	await expect(response).toSendToast(
 		expect.objectContaining({
 			title: 'Already Connected',

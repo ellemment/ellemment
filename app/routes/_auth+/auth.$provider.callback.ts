@@ -3,24 +3,24 @@ import {
 	authenticator,
 	getSessionExpirationDate,
 	getUserId,
-} from '#app/utils/auth.server.ts'
-import { ProviderNameSchema, providerLabels } from '#app/utils/connections.tsx'
-import { prisma } from '#app/utils/db.server.ts'
-import { ensurePrimary } from '#app/utils/litefs.server.ts'
-import { combineHeaders } from '#app/utils/misc.tsx'
+} from '#app/utils/auth.server.js'
+import { ProviderNameSchema, providerLabels } from '#app/utils/connections.js'
+import { prisma } from '#app/utils/db.server.js'
+import { ensurePrimary } from '#app/utils/litefs.server.js'
+import { combineHeaders } from '#app/utils/misc.js'
 import {
 	normalizeEmail,
 	normalizeUsername,
-} from '#app/utils/providers/provider.ts'
+} from '#app/utils/providers/provider.js'
 import {
 	destroyRedirectToHeader,
 	getRedirectCookieValue,
-} from '#app/utils/redirect-cookie.server.ts'
+} from '#app/utils/redirect-cookie.server.js'
 import {
 	createToastHeaders,
 	redirectWithToast,
-} from '#app/utils/toast.server.ts'
-import { verifySessionStorage } from '#app/utils/verification.server.ts'
+} from '#app/utils/toast.server.js'
+import { verifySessionStorage } from '#app/utils/verification.server.js'
 import { handleNewSession } from './login.server.ts'
 import { onboardingEmailSessionKey } from './onboarding.tsx'
 import { prefilledProfileKey, providerIdKey } from './onboarding_.$provider.tsx'
@@ -70,7 +70,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	if (existingConnection && userId) {
 		if (existingConnection.userId === userId) {
 			return redirectWithToast(
-				'/settings/profile/connections',
+				'/account/settings/connections',
 				{
 					title: 'Already Connected',
 					description: `Your "${profile.username}" ${label} account is already connected.`,
@@ -79,7 +79,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 			)
 		} else {
 			return redirectWithToast(
-				'/settings/profile/connections',
+				'/account/settings/connections',
 				{
 					title: 'Already Connected',
 					description: `The "${profile.username}" ${label} account is already connected to another account.`,
@@ -99,7 +99,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 			},
 		})
 		return redirectWithToast(
-			'/settings/profile/connections',
+			'/account/settings/connections',
 			{
 				title: 'Connected',
 				type: 'success',
