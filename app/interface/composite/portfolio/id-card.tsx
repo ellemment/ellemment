@@ -209,7 +209,7 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
               anchorX="center"
               anchorY="middle"
             >
-              Rakuten Group
+              Coming Soon
             </Text>
             <Text
               position={[0, 0.1, 0.1]}
@@ -218,7 +218,7 @@ export default function Band({ maxSpeed = 50, minSpeed = 10 }) {
               anchorX="center"
               anchorY="middle"
             >
-              Product Manager
+              Donny Alior
             </Text>
             <mesh
               // @ts-expect-error geometry/map are not declared?
