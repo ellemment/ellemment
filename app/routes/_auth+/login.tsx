@@ -11,16 +11,17 @@ import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
-import { CheckboxField, ErrorList, Field } from '#app/interface/shared/forms'
-import { StatusButton } from '#app/interface/shared/status-button'
-import { login, requireAnonymous } from '#app/utils/auth.server.js'
+import { CheckboxField, ErrorList, Field } from '#app/interface/shared/forms.tsx'
+import { Spacer } from '#app/interface/shared/spacer.tsx'
+import { StatusButton } from '#app/interface/shared/status-button.tsx'
+import { login, requireAnonymous } from '#app/utils/auth.server.ts'
 import {
 	ProviderConnectionForm,
 	providerNames,
-} from '#app/utils/connections.js'
-import { checkHoneypot } from '#app/utils/honeypot.server.js'
-import { useIsPending } from '#app/utils/misc.js'
-import { PasswordSchema, UsernameSchema } from '#app/utils/user-validation.js'
+} from '#app/utils/connections.tsx'
+import { checkHoneypot } from '#app/utils/honeypot.server.ts'
+import { useIsPending } from '#app/utils/misc.tsx'
+import { PasswordSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { handleNewSession } from './login.server.ts'
 
 export const handle: SEOHandle = {
@@ -99,6 +100,14 @@ export default function LoginPage() {
 	return (
 		<div className="flex min-h-full flex-col justify-center pb-32 pt-20">
 			<div className="mx-auto w-full max-w-md">
+				<div className="flex flex-col gap-3 text-center">
+					<h1 className="text-h1">Welcome back!</h1>
+					<p className="text-body-md text-muted-foreground">
+						Please enter your details.
+					</p>
+				</div>
+				<Spacer size="xs" />
+
 				<div>
 					<div className="mx-auto w-full max-w-md px-8">
 						<Form method="POST" {...getFormProps(form)}>
@@ -193,7 +202,7 @@ export default function LoginPage() {
 }
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Login to Ellemments' }]
+	return [{ title: 'Login to Epic Notes' }]
 }
 
 export function ErrorBoundary() {

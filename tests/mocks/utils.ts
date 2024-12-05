@@ -1,5 +1,3 @@
-// creemson/tests/mocks/utils.ts
-
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import fsExtra from 'fs-extra'

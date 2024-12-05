@@ -12,12 +12,12 @@ import { Link, useFetcher } from '@remix-run/react'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
-import { ErrorList, Field } from '#app/interface/shared/forms'
-import { StatusButton } from '#app/interface/shared/status-button'
-import { prisma } from '#app/utils/db.server.js'
-import { sendEmail } from '#app/utils/email.server.js'
-import { checkHoneypot } from '#app/utils/honeypot.server.js'
-import { EmailSchema, UsernameSchema } from '#app/utils/user-validation.js'
+import { ErrorList, Field } from '#app/interface/shared/forms.tsx'
+import { StatusButton } from '#app/interface/shared/status-button.tsx'
+import { prisma } from '#app/utils/db.server.ts'
+import { sendEmail } from '#app/utils/email.server.ts'
+import { checkHoneypot } from '#app/utils/honeypot.server.ts'
+import { EmailSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { prepareVerification } from './verify.server.ts'
 
 export const handle: SEOHandle = {
@@ -75,7 +75,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	const response = await sendEmail({
 		to: user.email,
-		subject: `Ellemments Password Reset`,
+		subject: `Epic Notes Password Reset`,
 		react: (
 			<ForgotPasswordEmail onboardingUrl={verifyUrl.toString()} otp={otp} />
 		),
@@ -102,7 +102,7 @@ function ForgotPasswordEmail({
 		<E.Html lang="en" dir="ltr">
 			<E.Container>
 				<h1>
-					<E.Text>Ellemments Password Reset</E.Text>
+					<E.Text>Epic Notes Password Reset</E.Text>
 				</h1>
 				<p>
 					<E.Text>
@@ -119,7 +119,7 @@ function ForgotPasswordEmail({
 }
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'Password Recovery for Ellemments' }]
+	return [{ title: 'Password Recovery for Epic Notes' }]
 }
 
 export default function ForgotPasswordRoute() {
@@ -139,7 +139,7 @@ export default function ForgotPasswordRoute() {
 		<div className="container pb-32 pt-20">
 			<div className="flex flex-col justify-center">
 				<div className="text-center">
-					<h1 className="text-sm">Forgot Password</h1>
+					<h1 className="text-h1">Forgot Password</h1>
 					<p className="mt-3 text-body-md text-muted-foreground">
 						No worries, we'll send you reset instructions.
 					</p>

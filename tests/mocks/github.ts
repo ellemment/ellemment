@@ -1,5 +1,3 @@
-// creemson/tests/mocks/github.ts
-
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { faker } from '@faker-js/faker'
