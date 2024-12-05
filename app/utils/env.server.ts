@@ -1,5 +1,3 @@
-// app/utils/env.server.ts
-
 import { z } from 'zod'
 
 const schema = z.object({
@@ -8,7 +6,6 @@ const schema = z.object({
 	DATABASE_URL: z.string(),
 	SESSION_SECRET: z.string(),
 	INTERNAL_COMMAND_TOKEN: z.string(),
-	HONEYPOT_SECRET: z.string(),
 	CACHE_DATABASE_PATH: z.string(),
 	// If you plan on using Sentry, uncomment this line
 	// SENTRY_DSN: z.string(),
@@ -21,12 +18,11 @@ const schema = z.object({
 	// If you plan to use Google auth, remove the default:
 	GOOGLE_CLIENT_ID: z.string().default('MOCK_GOOGLE_CLIENT_ID'),
 	GOOGLE_CLIENT_SECRET: z.string().default('MOCK_GOOGLE_CLIENT_SECRET'),
-	ALLOW_INDEXING: z.enum(['true', 'false']).optional(),
 })
 
 declare global {
 	namespace NodeJS {
-		interface ProcessEnv extends z.infer<typeof schema> { }
+		interface ProcessEnv extends z.infer<typeof schema> {}
 	}
 }
 
@@ -39,7 +35,7 @@ export function init() {
 			parsed.error.flatten().fieldErrors,
 		)
 
-		throw new Error('Invalid environment variables')
+		throw new Error('Invalid envirmonment variables')
 	}
 }
 
@@ -56,7 +52,6 @@ export function getEnv() {
 	return {
 		MODE: process.env.NODE_ENV,
 		SENTRY_DSN: process.env.SENTRY_DSN,
-		ALLOW_INDEXING: process.env.ALLOW_INDEXING,
 	}
 }
 

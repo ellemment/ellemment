@@ -1,13 +1,12 @@
 import { Form } from '@remix-run/react'
 import { z } from 'zod'
-import { Icon } from '#app/interface/foundations/icons/icon'
-import { StatusButton } from '#app/interface/shared/status-button'
+import { Icon } from '#app/interface/foundations/icons/icon.tsx'
+import { StatusButton } from '#app/interface/shared/status-button.tsx'
 import { useIsPending } from './misc.tsx'
 
 export const GOOGLE_PROVIDER_NAME = 'google'
 export const GITHUB_PROVIDER_NAME = 'github'
 // to add another provider, set their name here and add it to the providerNames below
-
 
 export const providerNames = [
 	GOOGLE_PROVIDER_NAME,
