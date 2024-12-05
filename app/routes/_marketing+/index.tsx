@@ -2,7 +2,7 @@
 
 import { OverviewSection } from '#app/interface/composite/portfolio/overview-card'
 import { ResumeSection } from '#app/interface/composite/portfolio/resume-card'
-import { ServicesSection } from '#app/interface/composite/portfolio/services-card'
+
 
 
 export default function IndexRoute() {

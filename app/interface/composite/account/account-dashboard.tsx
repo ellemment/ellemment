@@ -1,11 +1,10 @@
 // #app/interface/composite/account/account-dashboard.tsx
 
-import { Link , useLocation } from "@remix-run/react"
+import { Link  } from "@remix-run/react"
 import * as React from "react"
 import { Icon } from "#app/interface/foundations/icons/icon"
 import { Avatar, AvatarImage, AvatarFallback } from "#app/interface/shadcn/avatar"
 import { Card } from "#app/interface/shadcn/card"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "#app/interface/shadcn/collapsible"
 import {
     Sidebar,
     SidebarContent,
@@ -31,9 +30,7 @@ interface AccountDashboardProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AccountDashboard({ user, ...props }: AccountDashboardProps) {
     const loggedInUser = useOptionalUser()
-    const location = useLocation()
     const isOwner = loggedInUser?.id === user.id
-    const [isOpen, setIsOpen] = React.useState(!location.pathname.includes('/content'))
 
     const dashboardNavItems = [
         {
@@ -45,87 +42,37 @@ export function AccountDashboard({ user, ...props }: AccountDashboardProps) {
 
     return (
         <Sidebar
-            variant="inset"
+            variant="sidebar"
             {...props}
             className={cn("z-60", props.className)}
         >
             <SidebarHeader>
                 <SidebarMenu>
-                    {isOwner ? (
-                        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-                            <CollapsibleTrigger className="w-full">
-                                <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
-                                    <div className="flex items-center justify-between w-full">
-                                        <div className="flex items-center gap-3 w-full">
-                                            <Avatar className="h-10 w-10 flex-shrink-0">
-                                                <AvatarImage
-                                                    src={user ? getUserImgSrc(user.image?.id) : ''}
-                                                    alt={user?.name ?? user?.username}
-                                                    className="object-cover"
-                                                />
-                                                <AvatarFallback className="text-sm">
-                                                    {user?.name?.[0]?.toUpperCase() ??
-                                                        user?.username?.[0]?.toUpperCase()}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex flex-col items-start w-full">
-                                                <span className="text-md font-semibold text-left">
-                                                    {user.name || user.username}
-                                                </span>
-                                                <span className="text-sm text-muted-foreground text-left">
-                                                    Elements
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <Icon 
-                                            name={isOpen ? "chevron-down" : "chevron-right"} 
-                                            className="h-4 w-4 text-muted-foreground flex-shrink-0" 
-                                        />
-                                    </div>
-                                </Card>
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                                <SidebarMenu className="px-2 pt-2">
-                                    <SidebarMenuItem className="w-full">
-                                        <SidebarMenuButton asChild className="w-full justify-start">
-                                            <Link to={`/users/${user.username}/content`}>Elements</Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                    <SidebarMenuItem className="w-full">
-                                        <SidebarMenuButton asChild className="w-full justify-start">
-                                            <Link to="/user/settings">Settings</Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                </SidebarMenu>
-                            </CollapsibleContent>
-                        </Collapsible>
-                    ) : (
-                        <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
-                            <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-3 w-full">
-                                    <Avatar className="h-10 w-10 flex-shrink-0">
-                                        <AvatarImage
-                                            src={user ? getUserImgSrc(user.image?.id) : ''}
-                                            alt={user?.name ?? user?.username}
-                                            className="object-cover"
-                                        />
-                                        <AvatarFallback className="text-sm">
-                                            {user?.name?.[0]?.toUpperCase() ??
-                                                user?.username?.[0]?.toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex flex-col items-start w-full">
-                                        <span className="text-md font-semibold text-left">
-                                            {user.name || user.username}
-                                        </span>
-                                        <span className="text-sm text-muted-foreground text-left">
-                                            Elements
-                                        </span>
-                                    </div>
+                    <Card className="h-16 border-0 shadow-none bg-transparent p-4 px-2">
+                        <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-3 w-full">
+                                <Avatar className="h-10 w-10 flex-shrink-0">
+                                    <AvatarImage
+                                        src={user ? getUserImgSrc(user.image?.id) : ''}
+                                        alt={user?.name ?? user?.username}
+                                        className="object-cover"
+                                    />
+                                    <AvatarFallback className="text-sm">
+                                        {user?.name?.[0]?.toUpperCase() ??
+                                            user?.username?.[0]?.toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="flex flex-col items-start w-full">
+                                    <span className="text-md font-semibold text-left">
+                                        {user.name || user.username}
+                                    </span>
+                                    <span className="text-sm text-muted-foreground text-left">
+                                        @{user.username}
+                                    </span>
                                 </div>
                             </div>
-                        </Card>
-                    )}
+                        </div>
+                    </Card>
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent className="mt-4">

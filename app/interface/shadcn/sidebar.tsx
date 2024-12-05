@@ -21,8 +21,7 @@ import { cn } from "#app/utils/misc"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "18rem"
-const SIDEBAR_WIDTH_MOBILE = "18rem"
+const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
@@ -138,8 +137,7 @@ const SidebarProvider = React.forwardRef<
               } as React.CSSProperties
             }
             className={cn(
-              "group/sidebar-wrapper flex w-full has-[[data-variant=inset]]:bg-background",
-              "h-[calc(100vh-3rem)] md:h-[calc(100vh-3.5rem)]",
+              "group/sidebar-wrapper  w-full has-[[data-variant=inset]]:bg-background",
               className
             )}
             ref={ref}
@@ -158,7 +156,7 @@ const Sidebar = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     side?: "left" | "right"
-    variant?: "sidebar" | "floating" | "inset"
+    variant?: "sidebar"
     collapsible?: "offcanvas" | "icon" | "none"
   }
 >(
@@ -176,7 +174,7 @@ const Sidebar = React.forwardRef<
       return (
         <div
           className={cn(
-            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground sticky md:top-14",
             className
           )}
           ref={ref}
@@ -194,9 +192,9 @@ const Sidebar = React.forwardRef<
             data-sidebar="sidebar"
             data-mobile="true"
             className={cn(
-              "mt-12 w-full bg-sidebar p-2 text-sidebar-foreground [&>button]:hidden border-none",
-              // Add scrolling for mobile content
-              "h-[calc(100vh-3rem)] overflow-y-auto"
+              "max-w-none bg-sidebar max-md:pt-10 p-2 text-sidebar-foreground [&>button]:hidden border-none",
+              "h-[100dvh] w-screen",
+              "overflow-y-auto"
             )}
             side={side}
           >
@@ -208,7 +206,7 @@ const Sidebar = React.forwardRef<
     }
 
     return (
-      <div
+      <div 
         ref={ref}
         className={cn(
           "group peer hidden md:block text-sidebar-foreground",
@@ -219,26 +217,13 @@ const Sidebar = React.forwardRef<
         data-variant={variant}
         data-side={side}
       >
-        {/* This is what handles the sidebar gap on desktop */}
         <div
           className={cn(
-            "duration-200 relative w-[--sidebar-width] bg-transparent transition-[width] ease-linear",
-            "group-data-[collapsible=offcanvas]:w-0",
-            "group-data-[side=right]:rotate-180",
-            variant === "floating" || variant === "inset"
-              ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
-              : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]"
-          )}
-        />
-        <div
-          className={cn(
-            "duration-200 absolute z-10 hidden w-[--sidebar-width] transition-[transform,width,opacity] ease-linear md:flex",
+            "duration-200 sticky top-0 hidden w-[--sidebar-width] transition-[width] ease-linear md:flex",
             side === "left"
-              ? "left-0 group-data-[collapsible=offcanvas]:translate-x-[-100%] group-data-[collapsible=offcanvas]:opacity-0"
-              : "right-0 group-data-[collapsible=offcanvas]:translate-x-[100%] group-data-[collapsible=offcanvas]:opacity-0",
-            variant === "floating" || variant === "inset"
-              ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
-              : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l",
+              ? "left-0 group-data-[collapsible=offcanvas]:w-0"
+              : "right-0 group-data-[collapsible=offcanvas]:w-0",
+            "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-none group-data-[side=right]:border-l",
             className
           )}
           {...props}
@@ -247,9 +232,8 @@ const Sidebar = React.forwardRef<
             data-sidebar="sidebar"
             className={cn(
               "flex h-full w-full flex-col bg-sidebar",
-              // Make the inner content scrollable for desktop
-              "h-[calc(100vh-5rem)] overflow-y-auto",
-              "group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
+              "max-h-screen overflow-y-auto",
+              "group-data-[collapsible=offcanvas]:opacity-0 transition-opacity duration-200"
             )}
           >
             {children}
@@ -324,19 +308,13 @@ const SidebarInset = React.forwardRef<
     <main
       ref={ref}
       className={cn(
-        "relative flex flex-1 flex-col bg-background",
-        "peer-data-[variant=inset]:m-2",
-        "peer-data-[variant=inset]:rounded-xl",
-        "peer-data-[variant=inset]:shadow",
-        "md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2",
-        "md:peer-data-[variant=inset]:ml-0",
-        "peer-data-[variant=inset]:mb-4",
-        "overflow-y-auto",
+        "relative flex-1 bg-background transition-[margin] duration-200 ease-linear",
+        "min-h-screen min-w-0 flex flex-col",
+        // Only add margin for collapsed states
+        "peer-data-[collapsible=offcanvas]:ml-0",
+        "peer-data-[collapsible=icon]:ml-[--sidebar-width-icon]",
         className
       )}
-      style={{
-        height: 'h-svh'
-      }}
       {...props}
     />
   )
@@ -471,7 +449,7 @@ const SidebarGroupAction = React.forwardRef<
       ref={ref}
       data-sidebar="group-action"
       className={cn(
-        "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-ring transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-sidebar-foreground outline-none ring-sidebar-none transition-transform hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
         // Increases the hit area of the button on mobile.
         "after:absolute after:-inset-2 after:md:hidden",
         "group-data-[collapsible=icon]:hidden",
@@ -634,7 +612,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
@@ -755,6 +733,43 @@ const SidebarMenuSubButton = React.forwardRef<
 })
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 
+const SidebarGlobalHeader = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"header"> & {
+    title?: React.ReactNode
+    showTrigger?: boolean
+    showSeparator?: boolean
+  }
+>(({ className, title, showTrigger = true,  ...props }, ref) => {
+  return (
+    <header
+      ref={ref}
+      data-sidebar="global-header"
+      className={cn(
+        "flex py-2 md:py-3 shrink-0 items-center gap-2 w-full",
+        // Glassmorphism effect
+        "bg-background/80 backdrop-blur-[8px]",
+        // Sticky positioning with shadow instead of border
+        "sticky top-0 z-10 shadow-sm",
+        // Dark mode adjustments
+        "dark:bg-background/75 dark:backdrop-blur-[8px]",
+        className
+      )}
+      {...props}
+    >
+      <div className="flex items-center justify-between gap-2 px-2 w-full">
+        {title && (
+          <span className="text-lg font-semibold">
+            {title}
+          </span>
+        )}
+        {showTrigger && <SidebarTrigger className="-ml-1" />}
+      </div>
+    </header>
+  )
+})
+SidebarGlobalHeader.displayName = "SidebarGlobalHeader"
+
 export {
   Sidebar,
   SidebarContent,
@@ -780,4 +795,5 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  SidebarGlobalHeader,
 }

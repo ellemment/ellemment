@@ -53,7 +53,7 @@ export function GlobalHeader() {
     <>
       <AnimatePresence mode="wait">
         <motion.header 
-          className={`fixed top-0 left-0 right-0 z-[60] pointer-events-none ${
+          className={`${isIndexPage ? 'fixed' : 'bg-background'} top-0 left-0 right-0 z-[60] pointer-events-none ${
             isOpen ? 'bg-background pointer-events-auto' : ''
           }`}
           initial={{
