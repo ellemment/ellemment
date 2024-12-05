@@ -18,8 +18,8 @@ export const connectionSessionStorage = createCookieSessionStorage({
 })
 
 export const providers: Record<ProviderName, AuthProvider> = {
-	google: new GoogleProvider(),
 	github: new GitHubProvider(),
+	google: new GoogleProvider(),
 }
 
 export function handleMockAction(providerName: ProviderName, request: Request) {
