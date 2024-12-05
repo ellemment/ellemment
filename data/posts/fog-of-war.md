@@ -8,7 +8,7 @@ ogImage: /blog-images/headers/fog-of-war.png
 imageAlt: Fog of War
 imageDisableOverlay: true
 authors:
-  - Matt Brophy
+  - Dony Alior
 ---
 
 Remix is designed to make your application performant by default. Our latest feature, [Fog of War][remix-fog-of-war][^1] (a.k.a. "Lazy Route Discovery")[^2], helps your application stay performant no matter how large it grows.

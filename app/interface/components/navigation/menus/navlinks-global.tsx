@@ -11,9 +11,9 @@ export const navigationItems: NavItem[] = [
   ['Discover', '/#discover'],
   ['Develop', '/#develop'],
   ['Design', '/#design'],
-  ['Connect', '/about'],
-  ['Content', '/docs'],
-  ['Career', '/user/settings'],
+  ['Info', '/about'],
+  ['Docs', '/docs'],
+  ['Account', '/user/settings'],
 ] as const
 
 export function GlobalNavLinks() {
