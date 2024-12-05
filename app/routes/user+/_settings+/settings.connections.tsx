@@ -73,7 +73,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		const connectionData = await resolveConnectionData(
 			providerName,
 			connection.providerId,
-			{ timings },
 		)
 		connections.push({
 			...connectionData,
