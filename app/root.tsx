@@ -204,7 +204,7 @@ function App() {
 	const data = useLoaderData<typeof loader>();
 	const nonce = useNonce();
 	const theme = useTheme();
-	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false';
+	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast);
 	const location = useLocation();
 
