@@ -4,8 +4,8 @@ import { Link } from '@remix-run/react'
 import { clsx } from 'clsx'
 import { motion, useAnimation, useReducedMotion } from 'framer-motion'
 import * as React from 'react'
-import { useElementState } from '#app/interface/hooks/use-element-state'
 import { Avatar as RadixAvatar, AvatarImage, AvatarFallback } from '#app/interface/shadcn/avatar'
+import { useElementState } from '#app/interface/shadcn/hooks/use-element-state.js'
 import { useOptionalUser } from '#app/utils/use-root-data'
 
 const durations = {

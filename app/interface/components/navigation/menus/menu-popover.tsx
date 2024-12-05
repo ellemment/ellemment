@@ -164,7 +164,7 @@ export function PopoverContent({ children, className, onOpenChange }: PopoverCon
           {/* Background layer */}
           <motion.div
             ref={backgroundRef}
-            className="fixed inset-x-0 bg-background shadow-lg z-[55]"
+            className="fixed inset-x-0 bg-background z-[55]"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={
