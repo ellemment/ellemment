@@ -1,3 +1,5 @@
+// #app/interface/composite/portfolio/skills.tsx
+
 import { useScroll, useTransform, motion, useInView, type MotionValue, easeOut } from "framer-motion";
 import { useRef } from "react";
 
