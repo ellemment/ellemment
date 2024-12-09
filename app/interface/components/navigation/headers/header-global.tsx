@@ -19,11 +19,11 @@ export function GlobalHeader() {
   const isIndexPage = location.pathname === '/'
   
   const [isOpen, setIsOpen] = useState(false)
-  const [visible, setVisible] = useState(true)
-  const { scrollYProgress, scrollY } = useScroll()
-  const [isLogoExpanded, setIsLogoExpanded] = useState(true) // Start expanded
+  const [isLogoExpanded, setIsLogoExpanded] = useState(true)
   const [isLogoClicked, setIsLogoClicked] = useState(false)
   const [isAtTop, setIsAtTop] = useState(true)
+
+  const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Check if we're at the top of the page
@@ -37,18 +37,6 @@ export function GlobalHeader() {
     }
   })
 
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (isIndexPage && typeof current === "number") {
-      let direction = current - scrollYProgress.getPrevious()!
-
-      if (direction < 0) {
-        setVisible(true)
-      } else {
-        setVisible(false)
-      }
-    }
-  })
-
   return (
     <>
       <AnimatePresence mode="wait">
@@ -56,14 +44,8 @@ export function GlobalHeader() {
           className={`${isIndexPage ? 'fixed' : 'bg-background'} top-0 left-0 right-0 z-[60] pointer-events-none ${
             isOpen ? 'bg-background pointer-events-auto' : ''
           }`}
-          initial={{
-            opacity: 1,
-            y: 0,
-          }}
-          animate={{
-            y: isIndexPage && !visible ? -100 : 0,
-            opacity: isIndexPage && !visible ? 0 : 1,
-          }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
           transition={{
             duration: 0.2,
           }}
