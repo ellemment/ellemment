@@ -1,21 +1,19 @@
 // #app/routes/_marketing+/index.tsx
 
-import { IdSection } from '#app/interface/composite/portfolio/id-section'
-import { ParallaxSection } from '#app/interface/composite/portfolio/parallax-section'
-import { OverviewSection } from '#app/interface/composite/portfolio/overview-card'
-import { ResumeSection } from '#app/interface/composite/portfolio/resume-card'
+import { FeatureGrid } from '#app/interface/composite/playground/feature-grid'
+import { HoverReveal } from '#app/interface/composite/playground/hover-reveal'
+import { TrippyReveal } from '#app/interface/composite/playground/trippy-reveal'
+import { HeroSection } from '#app/interface/composite/portfolio/hero.js'
+
 
 export default function IndexRoute() {
   return (
     <>
-      <ParallaxSection />
-       {/*     <OverviewSection /> */}
-      {/* <SkillsSection /> */}
-
-        {/*      <ResumeSection /> */}
-
-      {/*      <ServicesSection /> */}
-      <div className="h-[25vh]" />
+      <HeroSection />
+      <FeatureGrid />
+      <FeatureGrid />
+      <HoverReveal />
+      <TrippyReveal />
     </>
   )
 }
