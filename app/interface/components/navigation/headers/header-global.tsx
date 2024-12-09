@@ -78,10 +78,10 @@ export function GlobalHeader() {
                     }}
                   >
                     <motion.div
-                      className="flex items-center overflow-hidden"
+                      className="flex items-center overflow-hidden p-2"
                       initial={false}
                       animate={{
-                        width: isLogoExpanded ? 'auto' : '1em',
+                        width: isLogoExpanded ? 'auto' : '1.5em',
                       }}
                       transition={{
                         duration: 0.3,
