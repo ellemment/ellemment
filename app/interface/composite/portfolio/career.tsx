@@ -3,7 +3,6 @@
 import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from "framer-motion";
 import React, { useRef } from "react";
-import { FiMapPin  } from "react-icons/fi";
 import { Icon } from "#app/interface/foundations/icons/icon";
 
 
@@ -33,7 +32,8 @@ export const CareerSection = () => {
         }}
       >
         <CareerVelocity />
-        <Career />
+
+        <ParallaxSection />
       </ReactLenis>
     </div>
   );
@@ -65,7 +65,7 @@ export const CareerVelocity = () => {
   return (
     <section
       ref={targetRef}
-      className="h-svh bg-background flex overflow-hidden"
+      className="h-svh bg-secondary flex overflow-hidden"
     >
       <div className="flex justify-center items-center w-full">
         <motion.p
@@ -118,7 +118,7 @@ const ScheduleItem = ({ title, date, location }: ScheduleItemProps) => {
 
 export const ParallaxSection = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary">
       <TextParallaxContent>
         <Career />
       </TextParallaxContent>
@@ -131,7 +131,7 @@ const IMG_PADDING = 12;
 const TextParallaxContent = ({ children }: TextParallaxContentProps) => {
   return (
     <div>
-      <div className="relative h-[150vh] bg-background">
+      <div className="relative h-[150vh] bg-secondary">
         <StickyContainer>{children}</StickyContainer>
       </div>
     </div>
@@ -183,7 +183,7 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
         position: 'sticky',
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-foreground"
+      className="z-0 overflow-hidden bg-background"
     >
       <motion.div
         style={{

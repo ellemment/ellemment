@@ -22,7 +22,7 @@ export const Skills = () => {
 
   return (
     <>
-      <section ref={targetRef} className="bg-background  h-[350vh]">
+      <section ref={targetRef} className="bg-secondary  h-[350vh]">
         <div className="h-screen sticky top-0 z-0 overflow-hidden">
           <SkillsContainer>
             <Copy scrollYProgress={scrollYProgress} />
@@ -53,7 +53,13 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
     [1, 1, 1, 0], 
     { ease: easeOut }
   );
-  
+
+  const copyZIndex = useTransform(
+    scrollYProgress,
+    [0.8, 1],
+    [15, 0] // Set z-index to 0 when grid is closed
+  );
+
   return (
     <motion.div
       ref={copyRef}
@@ -73,8 +79,9 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
       style={{
         scale: copyScale,
         opacity: copyOpacity,
+        zIndex: copyZIndex,
       }}
-      className="absolute inset-0 px-8 w-full z-15 flex items-center justify-center"
+      className="absolute inset-0 px-8 w-full flex items-center justify-center"
     >
       <motion.h1 
         initial={{ opacity: 0, y: -100 }}
@@ -351,7 +358,7 @@ const SkillsContainer = ({ children }: SkillsContainerProps) => {
         top: 0,
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-background flex items-center justify-center"
+      className="z-0 overflow-hidden bg-secondary flex items-center justify-center"
     >
       {children}
     </motion.div>
@@ -367,7 +374,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-secondary text-card-foreground shadow-sm",
+      "rounded-lg border bg-background text-card-foreground shadow-sm",
       className
     )}
     {...props}

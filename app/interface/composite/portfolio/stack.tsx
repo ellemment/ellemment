@@ -29,7 +29,7 @@ interface StackContainerProps {
 
 export const StackSection = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary">
       <ReactLenis
         root
         options={{
@@ -164,7 +164,7 @@ export const ParallaxContainer = () => {
   });
 
   return (
-    <div ref={containerRef} className="bg-background">
+    <div ref={containerRef} className="bg-secondary">
       <ParallaxContent>
         {/* First section: Sticky container with copy */}
         <StackContainer>
@@ -216,7 +216,7 @@ const CardsSection = () => {
 const ParallaxContent = ({ children }: ParallaxContentProps) => {
   return (
     <div>
-      <div className="relative h-[400vh] bg-background">
+      <div className="relative h-[400vh] bg-secondary">
         {children}
       </div>
     </div>
