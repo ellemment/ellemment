@@ -216,7 +216,6 @@ const SkillCardOne = ({ scrollYProgress }: ComponentProps) => {
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (latest) => {
-      // When progress is between 0.7-0.8, the scale reaches 1
       setRemoveRightBorder(latest > 0.7);
     });
 
@@ -226,7 +225,7 @@ const SkillCardOne = ({ scrollYProgress }: ComponentProps) => {
   return (
     <Card className={cn(
       "h-full",
-      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0"
+      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0 max-md:shadow-none"
     )}>
       <CardHeader>
         <CardTitle>Frontend Development</CardTitle>
@@ -253,7 +252,7 @@ const SkillCardTwo = ({ scrollYProgress }: ComponentProps) => {
   return (
     <Card className={cn(
       "h-full",
-      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0"
+      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0 max-md:shadow-none"
     )}>
       <CardHeader>
         <CardTitle>Backend Development</CardTitle>
@@ -280,7 +279,7 @@ const SkillCardThree = ({ scrollYProgress }: ComponentProps) => {
   return (
     <Card className={cn(
       "h-full",
-      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0"
+      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0 max-md:shadow-none"
     )}>
       <CardHeader>
         <CardTitle>UI/UX Design</CardTitle>
@@ -307,7 +306,7 @@ const SkillCardFour = ({ scrollYProgress }: ComponentProps) => {
   return (
     <Card className={cn(
       "h-full",
-      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0"
+      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0 max-md:shadow-none"
     )}>
       <CardHeader>
         <CardTitle>DevOps & Tools</CardTitle>

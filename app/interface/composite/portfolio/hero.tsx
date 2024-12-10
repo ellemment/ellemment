@@ -103,8 +103,8 @@ const CenterArea = () => {
         initial={false}
         layoutDependency={false}
       >
-        <h1 className="text-primary text-6xl md:text-7xl lg:text-9xl font-bold mb-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
-          Dony Alior
+        <h1 className="flex flex-col items-center justify-center text-primary text-5xl md:text-7xl lg:text-9xl font-bold mb-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
+          Building Software
         </h1>
         <div className="flex items-center gap-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
           <h2 className="text-primary/50 text-lg md:text-xl lg:text-2xl font-light">

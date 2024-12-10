@@ -64,9 +64,9 @@ export const CareerVelocity = () => {
   return (
     <section
       ref={targetRef}
-      className="h-svh bg-background flex"
+      className="h-svh bg-background flex overflow-hidden"
     >
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center w-full">
         <motion.p
           style={{ skewX, x }}
           className="origin-bottom-left whitespace-nowrap text-6xl md:text-[12rem] lg:text-[16rem] font-black leading-[0.85] md:text-9xl md:leading-[0.85]"
