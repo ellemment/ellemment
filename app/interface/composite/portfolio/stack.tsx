@@ -21,7 +21,7 @@ interface ParallaxContentProps {
   children: React.ReactNode;
 }
 
-interface StickyContainerProps {
+interface StackContainerProps {
   children: React.ReactNode;
 }
 
@@ -167,9 +167,9 @@ export const ParallaxContainer = () => {
     <div ref={containerRef} className="bg-background">
       <ParallaxContent>
         {/* First section: Sticky container with copy */}
-        <StickyContainer>
+        <StackContainer>
           <Copy scrollYProgress={containerProgress} />
-        </StickyContainer>
+        </StackContainer>
         
         {/* Second section: Cards reveal and horizontal scroll */}
         <CardsSection />
@@ -224,7 +224,7 @@ const ParallaxContent = ({ children }: ParallaxContentProps) => {
 };
 
 // StickyContainer now only handles the initial sticky state with copy
-const StickyContainer = ({ children }: StickyContainerProps) => {
+const StackContainer = ({ children }: StackContainerProps) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
