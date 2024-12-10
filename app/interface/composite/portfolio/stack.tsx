@@ -2,11 +2,12 @@
 
 
 import { ReactLenis } from '@studio-freight/react-lenis';
-import { motion, useScroll, useTransform, type MotionValue, easeOut, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue,  useInView } from "framer-motion";
 import React, { useRef } from "react";
+import { cn } from '#app/utils/misc.js'
 
 
-interface Card {
+interface CarouselCard {
   id: number;
   url: string;
   title: string;
@@ -29,7 +30,7 @@ interface StackContainerProps {
 
 export const StackSection = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary">
       <ReactLenis
         root
         options={{
@@ -43,32 +44,125 @@ export const StackSection = () => {
 };
 
 
-const Card = ({ card }: { card: Card }) => {
+const ScrollCardOne = ({ card }: { card: CarouselCard }) => {
   return (
-    <div
-      key={card.id}
-      className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200"
-    >
+    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-0">
       <div
         style={{
           backgroundImage: `url(${card.url})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
-      ></div>
-      <div className="absolute inset-0 z-10 grid place-content-center">
-        <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-6xl font-black uppercase text-inherit backdrop-blur-lg">
+        className="absolute inset-0 z-0 transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      <CardHeader className="absolute bottom-0 text-white z-10">
+        <CardTitle className="text-3xl">{card.title}</CardTitle>
+        <CardDescription className="text-gray-200">
+          Project Description Here
+        </CardDescription>
+      </CardHeader>
+    </Card>
+  );
+};
+
+const ScrollCardTwo = ({ card }: { card: CarouselCard }) => {
+  return (
+    <Card className="group relative aspect-[26/33] overflow-hidden bg-secondary/80 backdrop-blur-sm border-2">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
+      <CardHeader className="relative z-10 h-full flex flex-col justify-center items-center text-center p-8">
+        <CardTitle className="text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
           {card.title}
-        </p>
+        </CardTitle>
+        <CardDescription className="max-w-[80%] text-base">
+          Interactive Project Description
+        </CardDescription>
+      </CardHeader>
+    </Card>
+  );
+};
+
+const ScrollCardThree = ({ card }: { card: CarouselCard }) => {
+  return (
+    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-primary/50 border-2">
+      <div
+        style={{
+          backgroundImage: `url(${card.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+        className="absolute inset-0 z-0 opacity-10 transition-opacity duration-500 group-hover:opacity-20"
+      />
+      <div className="absolute inset-0 flex flex-col justify-between p-6">
+        <div className="flex justify-between items-start">
+          <CardTitle className="text-2xl">{card.title}</CardTitle>
+          <div className="h-8 w-8 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-colors duration-300" />
+        </div>
+        <CardDescription className="mt-auto">
+          Project Description Here
+        </CardDescription>
       </div>
-    </div>
+    </Card>
+  );
+};
+
+const ScrollCardFour = ({ card }: { card: CarouselCard }) => {
+  return (
+    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden bg-background">
+      <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
+        <div className="bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300" />
+        <div className="bg-primary/10 group-hover:bg-primary/15 transition-colors duration-300" />
+        <div className="bg-primary/15 group-hover:bg-primary/20 transition-colors duration-300" />
+        <div className="bg-primary/20 group-hover:bg-primary/25 transition-colors duration-300" />
+      </div>
+      <CardHeader className="relative z-10 h-full flex flex-col justify-center items-center">
+        <CardTitle className="text-3xl mb-2">{card.title}</CardTitle>
+        <CardDescription className="text-center max-w-[80%]">
+          Project Description Here
+        </CardDescription>
+      </CardHeader>
+    </Card>
+  );
+};
+
+const ScrollCardFive = ({ card }: { card: CarouselCard }) => {
+  return (
+    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-0 bg-gradient-to-br from-background to-secondary">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500" />
+      </div>
+      <div className="relative z-10 h-full flex flex-col justify-between p-8">
+        <CardTitle className="text-3xl">{card.title}</CardTitle>
+        <CardDescription className="text-lg">
+          Project Description Here
+        </CardDescription>
+      </div>
+    </Card>
+  );
+};
+
+const ScrollCardSix = ({ card }: { card: CarouselCard }) => {
+  return (
+    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-2 border-dashed border-primary/30">
+      <div className="absolute inset-0 bg-secondary/50" />
+      <div className="relative z-10 h-full p-6 flex flex-col">
+        <div className="flex-1 flex flex-col justify-center items-center text-center">
+          <CardTitle className="text-4xl mb-4">{card.title}</CardTitle>
+          <CardDescription className="max-w-[80%]">
+            Project Description Here
+          </CardDescription>
+        </div>
+        <div className="mt-auto flex justify-end">
+          <div className="h-12 w-12 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-all duration-300 group-hover:scale-110" />
+        </div>
+      </div>
+    </Card>
   );
 };
 
 
 
-const cards = [
+const carouselCards = [
   {
     url: "/imgs/abstract/1.jpg",
     title: "Title 1",
@@ -93,6 +187,11 @@ const cards = [
     url: "/imgs/abstract/5.jpg",
     title: "Title 5",
     id: 5,
+  },
+  {
+    url: "/imgs/abstract/5.jpg",
+    title: "Title 6",
+    id: 6,
   },
 ]; 
 
@@ -129,24 +228,34 @@ const HorizontalCardScroll = () => {
     target: targetRef,
   });
 
-  // Simplified to only handle horizontal scroll
-  const x = useTransform(
-    scrollYProgress, 
-    [0, 1],
-    ["1%", "-50%"]
-  );
+  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-50%"]);
 
-    
+  const getCardComponent = (index: number) => {
+    switch (index % 6) {
+      case 0:
+        return ScrollCardOne;
+      case 1:
+        return ScrollCardTwo;
+      case 2:
+        return ScrollCardThree;
+      case 3:
+        return ScrollCardFour;
+      case 4:
+        return ScrollCardFive;
+      case 5:
+        return ScrollCardSix;
+      default:
+        return ScrollCardOne;
+    }
+  };
 
   return (
     <section ref={targetRef} className="relative h-[300vh] transparent">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div 
-          style={{ x }} 
-          className="flex gap-4"
-        >
-          {cards.map((card) => {
-            return <Card card={card} key={card.id} />;
+        <motion.div style={{ x }} className="flex gap-8 px-4">
+          {carouselCards.map((card, index) => {
+            const CardComponent = getCardComponent(index);
+            return <CardComponent card={card} key={card.id} />;
           })}
         </motion.div>
       </div>
@@ -164,7 +273,7 @@ export const ParallaxContainer = () => {
   });
 
   return (
-    <div ref={containerRef} className="bg-background">
+    <div ref={containerRef} className="bg-secondary">
       <ParallaxContent>
         {/* First section: Sticky container with copy */}
         <StackContainer>
@@ -216,7 +325,7 @@ const CardsSection = () => {
 const ParallaxContent = ({ children }: ParallaxContentProps) => {
   return (
     <div>
-      <div className="relative h-[400vh] bg-background">
+      <div className="relative h-[400vh] bg-secondary">
         {children}
       </div>
     </div>
@@ -238,18 +347,11 @@ const StackContainer = ({ children }: StackContainerProps) => {
     [0.80, 1, 1, 1] // Scale back to 0.85 at exit
   );
 
-  // Adjust border radius to match scale animation
-  const borderRadius = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.4, 0.8, 1],
-    ["4rem", "2rem", "0rem", "0rem", "0rem"] 
-  );
 
   return (
     <motion.div
       style={{
         scale,
-        borderRadius,
         height: '100vh',
         position: 'sticky',
         top: 0,
@@ -261,4 +363,78 @@ const StackContainer = ({ children }: StackContainerProps) => {
     </motion.div>
   );
 };
-  
+
+
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-background text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"

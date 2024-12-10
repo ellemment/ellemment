@@ -22,7 +22,7 @@ export const Skills = () => {
 
   return (
     <>
-      <section ref={targetRef} className="bg-background  h-[350vh]">
+      <section ref={targetRef} className="bg-secondary  h-[350vh]">
         <div className="h-screen sticky top-0 z-0 overflow-hidden">
           <SkillsContainer>
             <Copy scrollYProgress={scrollYProgress} />
@@ -351,7 +351,7 @@ const SkillsContainer = ({ children }: SkillsContainerProps) => {
         top: 0,
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-background flex items-center justify-center"
+      className="z-0 overflow-hidden bg-secondary flex items-center justify-center"
     >
       {children}
     </motion.div>
@@ -367,7 +367,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-secondary text-card-foreground shadow-sm",
+      "rounded-lg border bg-background text-card-foreground shadow-sm",
       className
     )}
     {...props}

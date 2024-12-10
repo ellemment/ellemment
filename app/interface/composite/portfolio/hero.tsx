@@ -3,7 +3,6 @@
 import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
-import { FiMapPin  } from "react-icons/fi";
 import { Icon } from "#app/interface/foundations/icons/icon";
 
 
@@ -25,7 +24,7 @@ const SECTION_HEIGHT = 500;
 
 export const HeroSection = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary">
       <ReactLenis
         root
         options={{
@@ -80,7 +79,7 @@ const CenterArea = () => {
 
   return (
     <motion.div
-      className="sticky top-0 h-screen w-full bg-background flex flex-col items-center justify-center"
+      className="sticky top-0 h-screen w-full bg-secondary flex flex-col items-center justify-center"
       style={{ 
         opacity,
         WebkitBackfaceVisibility: "hidden",
@@ -161,7 +160,7 @@ const MessageItem = ({ title, date, location }: MessageItemProps) => {
 
 export const ParallaxSection = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary">
       <TextParallaxContent>
         <Message />
       </TextParallaxContent>
@@ -174,7 +173,7 @@ const IMG_PADDING = 12;
 const TextParallaxContent = ({ children }: TextParallaxContentProps) => {
   return (
     <div>
-      <div className="relative h-[150vh] bg-background">
+      <div className="relative h-[150vh] bg-secondary">
         <StickyContainer>{children}</StickyContainer>
       </div>
     </div>
@@ -226,7 +225,7 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
         position: 'sticky',
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-secondary flex items-center justify-center w-full"
+      className="z-0 overflow-hidden bg-background flex items-center justify-center w-full"
     >
       <motion.div
         style={{
