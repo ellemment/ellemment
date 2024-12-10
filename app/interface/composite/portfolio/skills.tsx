@@ -86,7 +86,7 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
         }}
         className="text-inherit text-5xl md:text-7xl font-bold text-center max-w-xl"
       >
-        Photo gallery for artists
+        Skills and Expertise
       </motion.h1>
     </motion.div>
   );

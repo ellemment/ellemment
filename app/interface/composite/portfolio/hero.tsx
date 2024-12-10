@@ -4,6 +4,7 @@ import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import { FiMapPin  } from "react-icons/fi";
+import { Icon } from "#app/interface/foundations/icons/icon";
 
 
 interface MessageItemProps {
@@ -103,7 +104,7 @@ const CenterArea = () => {
         initial={false}
         layoutDependency={false}
       >
-        <h1 className="flex flex-col items-center justify-center text-primary text-5xl md:text-7xl lg:text-9xl font-bold mb-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
+        <h1 className="flex flex-col items-center justify-center text-primary text-3xl md:text-7xl lg:text-9xl font-bold mb-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
           Building Software
         </h1>
         <div className="flex items-center gap-4 [transform-style:preserve-3d] [backface-visibility:hidden] [perspective:1000px]">
@@ -129,13 +130,11 @@ const Message = () => {
       id="message-section"
       className="mx-auto w-full max-w-7xl px-4 py-8 text-foreground"
     >
-      <MessageItem title="NG-21" date="Dec 9th" location="Florida" />
-      <MessageItem title="Starlink" date="Dec 20th" location="Texas" />
-      <MessageItem title="Starlink" date="Jan 13th" location="Florida" />
-      <MessageItem title="Turksat 6A" date="Feb 22nd" location="Florida" />
-      <MessageItem title="NROL-186" date="Mar 1st" location="California" />
-      <MessageItem title="GOES-U" date="Mar 8th" location="California" />
-      <MessageItem title="ASTRA 1P" date="Apr 8th" location="Texas" />
+      <MessageItem title="For Anyone" date="Contact" location="Read More" />
+      <MessageItem title="Recruiters" date="Contact" location="Read More" />
+      <MessageItem title="Companies" date="Contact" location="Read More" />
+      <MessageItem title="Founders" date="Contact" location="Read More" />
+      <MessageItem title="Agencies" date="Contact" location="Read More" />
     </section>
   );
 };
@@ -154,7 +153,7 @@ const MessageItem = ({ title, date, location }: MessageItemProps) => {
       </div>
       <div className="flex items-center gap-1.5 text-end text-sm uppercase text-inherit/50">
         <p>{location}</p>
-        <FiMapPin />
+        <Icon name="chevron-right" />
       </div>
     </motion.div>
   );
