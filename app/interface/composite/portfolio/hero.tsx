@@ -126,8 +126,8 @@ const CenterArea = () => {
 const Message = () => {
   return (
     <section
-      id="launch-schedule"
-      className="mx-auto max-w-7xl px-4 py-48 text-foreground"
+      id="message-section"
+      className="mx-auto w-full max-w-7xl px-4 py-8 text-foreground"
     >
       <MessageItem title="NG-21" date="Dec 9th" location="Florida" />
       <MessageItem title="Starlink" date="Dec 20th" location="Texas" />
@@ -146,13 +146,13 @@ const MessageItem = ({ title, date, location }: MessageItemProps) => {
       initial={{ y: 48, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.75 }}
-      className="mb-9 flex items-center justify-between border-b border-zinc-800 px-3 pb-9"
+      className="mb-9 flex items-center justify-between border-b border-border px-3 pb-9"
     >
       <div>
-        <p className="mb-1.5 text-xl text-zinc-50">{title}</p>
-        <p className="text-sm uppercase text-zinc-500">{date}</p>
+        <p className="mb-1.5 text-xl text-inherit">{title}</p>
+        <p className="text-sm uppercase text-inherit/50">{date}</p>
       </div>
-      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-zinc-500">
+      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-inherit/50">
         <p>{location}</p>
         <FiMapPin />
       </div>
@@ -227,11 +227,12 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
         position: 'sticky',
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-foreground"
+      className="z-0 overflow-hidden bg-secondary flex items-center justify-center w-full"
     >
       <motion.div
         style={{
           opacity,
+          width: '100%',
         }}
       >
         {children}

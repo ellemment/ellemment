@@ -84,7 +84,7 @@ const Career = () => {
   return (
     <section
       id="launch-schedule"
-      className="mx-auto max-w-7xl px-4 py-48 text-foreground"
+      className="mx-auto max-w-7xl px-4 py-48 text-inherit"
     >
       <ScheduleItem title="NG-21" date="Dec 9th" location="Florida" />
       <ScheduleItem title="Starlink" date="Dec 20th" location="Texas" />
@@ -103,13 +103,13 @@ const ScheduleItem = ({ title, date, location }: ScheduleItemProps) => {
       initial={{ y: 48, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.75 }}
-      className="mb-9 flex items-center justify-between border-b border-zinc-800 px-3 pb-9"
+      className="mb-9 flex items-center justify-between border-b border-border px-3 pb-9"
     >
       <div>
-        <p className="mb-1.5 text-xl text-zinc-50">{title}</p>
-        <p className="text-sm uppercase text-zinc-500">{date}</p>
+        <p className="mb-1.5 text-xl inherit">{title}</p>
+        <p className="text-sm uppercase text-inherit/50">{date}</p>
       </div>
-      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-zinc-500">
+      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-inherit/50">
         <p>{location}</p>
         <FiMapPin />
       </div>

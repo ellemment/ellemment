@@ -1,21 +1,20 @@
 // #app/routes/_marketing+/index.tsx
 
-import { FeatureGrid } from '#app/interface/composite/playground/feature-grid'
-import { CareerSection } from '#app/interface/composite/portfolio/career.js'
-import { HeroSection } from '#app/interface/composite/portfolio/hero.js'
-import { StackSection } from '#app/interface/composite/portfolio/stack.js'
 
+import { CareerSection } from '#app/interface/composite/portfolio/career.js'
+import { CTA } from '#app/interface/composite/portfolio/cta.js'
+import { HeroSection } from '#app/interface/composite/portfolio/hero.js'
+import { Skills } from '#app/interface/composite/portfolio/skills'
+import { StackSection } from '#app/interface/composite/portfolio/stack.js'
 
 export default function IndexRoute() {
   return (
     <>
       <HeroSection />
-      <FeatureGrid />
+      <Skills />
       <CareerSection />
       <StackSection />
-      <div className="h-[100vh] bg-background">
-   
-      </div>
+      <CTA/>
     </>
   )
 }

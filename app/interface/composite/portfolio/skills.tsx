@@ -7,7 +7,7 @@ interface ComponentProps {
   scrollYProgress: MotionValue<number>;
 }
 
-export const FeatureGrid = () => {
+export const Skills = () => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
