@@ -4,6 +4,7 @@ import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from "framer-motion";
 import React, { useRef } from "react";
 import { FiMapPin  } from "react-icons/fi";
+import { Icon } from "#app/interface/foundations/icons/icon";
 
 
 interface ScheduleItemProps {
@@ -86,13 +87,11 @@ const Career = () => {
       id="launch-schedule"
       className="mx-auto max-w-7xl px-4 py-48 text-inherit"
     >
-      <ScheduleItem title="NG-21" date="Dec 9th" location="Florida" />
-      <ScheduleItem title="Starlink" date="Dec 20th" location="Texas" />
-      <ScheduleItem title="Starlink" date="Jan 13th" location="Florida" />
-      <ScheduleItem title="Turksat 6A" date="Feb 22nd" location="Florida" />
-      <ScheduleItem title="NROL-186" date="Mar 1st" location="California" />
-      <ScheduleItem title="GOES-U" date="Mar 8th" location="California" />
-      <ScheduleItem title="ASTRA 1P" date="Apr 8th" location="Texas" />
+      <ScheduleItem title="Experience 1" date="Date" location="Company" />
+      <ScheduleItem title="Experience 2" date="Date" location="Company" />
+      <ScheduleItem title="Experience 3" date="Date" location="Company" />
+      <ScheduleItem title="Experience 4" date="Date" location="Company" />
+      <ScheduleItem title="Experience 5" date="Date" location="Company" />
     </section>
   );
 };
@@ -111,7 +110,7 @@ const ScheduleItem = ({ title, date, location }: ScheduleItemProps) => {
       </div>
       <div className="flex items-center gap-1.5 text-end text-sm uppercase text-inherit/50">
         <p>{location}</p>
-        <FiMapPin />
+        <Icon name="arrow-top-right" />
       </div>
     </motion.div>
   );
