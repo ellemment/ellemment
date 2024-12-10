@@ -1,13 +1,19 @@
 // #app/interface/composite/portfolio/skills.tsx
 
 import { useScroll, useTransform, motion, useInView, type MotionValue, easeOut } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import * as React from "react"
+import { cn } from '#app/utils/misc.js'
 
 interface ComponentProps {
   scrollYProgress: MotionValue<number>;
 }
 
-export const FeatureGrid = () => {
+interface SkillsContainerProps {
+  children: React.ReactNode;
+}
+
+export const Skills = () => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -16,12 +22,14 @@ export const FeatureGrid = () => {
 
   return (
     <>
-      <section ref={targetRef} className="bg-background max-w-7xl mx-auto h-[350vh] px-2">
-        <div className="h-screen sticky top-0 z-0 px-1 py-2 md:px-4 md:py-4 overflow-hidden">
-          <Copy scrollYProgress={scrollYProgress} />
-          <div className="h-full grid grid-rows-[2fr_2fr] gap-2">
-            <Images scrollYProgress={scrollYProgress} />
-          </div>
+      <section ref={targetRef} className="bg-background  h-[350vh]">
+        <div className="h-screen sticky top-0 z-0 overflow-hidden">
+          <SkillsContainer>
+            <Copy scrollYProgress={scrollYProgress} />
+            <div className="h-full w-full max-w-7xl mx-auto grid grid-rows-[2fr_2fr] gap-2">
+              <Images scrollYProgress={scrollYProgress} />
+            </div>
+          </SkillsContainer>
         </div>
       </section>
     </>
@@ -90,28 +98,10 @@ const Images = ({ scrollYProgress }: ComponentProps) => {
   const bottomLeft = useRef(null);
   const bottomRight = useRef(null);
 
-  const bottomRightOpacity = useTransform(
+  const commonOpacity = useTransform(
     scrollYProgress,
-    [0, 0.05, 0.2],
-    [0, 1, 1]
-  );
-  
-  const bottomLeftOpacity = useTransform(
-    scrollYProgress,
-    [0.05, 0.1, 0.2],
-    [0, 1, 1]
-  );
-  
-  const topRightOpacity = useTransform(
-    scrollYProgress,
-    [0.1, 0.15, 0.2],
-    [0, 1, 1]
-  );
-  
-  const topLeftOpacity = useTransform(
-    scrollYProgress,
-    [0.15, 0.2, 0.2],
-    [0, 1, 1]
+    [0.05, 0.2],
+    [0, 1]
   );
 
   const scale = useTransform(scrollYProgress, [0.2, 0.8], [0.5, 1]);
@@ -126,60 +116,322 @@ const Images = ({ scrollYProgress }: ComponentProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-5 gap-2 h-svh">
-        <motion.div
-          ref={topLeft}
-          className="col-span-3 bg-gray-200 rounded-lg overflow-hidden"
-          style={{
-            backgroundImage: "url(/texture-grid.jpg)",
-            backgroundPosition: "center",
-            zIndex: 20,
-            scale,
-            x: topLeftX,
-            y: topLeftY,
-            opacity: topLeftOpacity
-          }}
-        />
+      <div className="h-svh grid grid-cols-5 gap-2 px-2 md:px-4 py-4 md:py-10">
+        {/* Top Row */}
+        <div className="col-span-5 md:col-span-3 h-full md:block flex">
+          <motion.div
+            ref={topLeft}
+            className="flex-1 h-full"
+            style={{
+              zIndex: 20,
+              scale,
+              x: topLeftX,
+              y: topLeftY,
+              opacity: commonOpacity
+            }}
+          >
+            <SkillCardOne scrollYProgress={scrollYProgress} />
+          </motion.div>
+          
+          <motion.div
+            ref={topRight}
+            className="flex-1 h-full md:hidden"
+            style={{
+              zIndex: 20,
+              scale,
+              x: topRightX,
+              y: topRightY,
+              opacity: commonOpacity
+            }}
+          >
+            <SkillCardTwo scrollYProgress={scrollYProgress} />
+          </motion.div>
+        </div>
+
         <motion.div
           ref={topRight}
-          className="col-span-2 bg-gray-200 rounded-lg overflow-hidden"
+          className="hidden md:block col-span-2 h-full"
           style={{
-            backgroundImage: "url(/texture-grid.jpg)",
-            backgroundPosition: "center",
             zIndex: 20,
             scale,
             x: topRightX,
             y: topRightY,
-            opacity: topRightOpacity
+            opacity: commonOpacity
           }}
-        />
-        <motion.div
-          ref={bottomLeft}
-          className="col-span-2 bg-gray-200 rounded-lg overflow-hidden"
-          style={{
-            backgroundImage: "url(/texture-grid.jpg)",
-            backgroundPosition: "center",
-            zIndex: 20,
-            scale,
-            x: bottomLeftX,
-            y: bottomLeftY,
-            opacity: bottomLeftOpacity
-          }}
-        />
+        >
+          <SkillCardTwo scrollYProgress={scrollYProgress} />
+        </motion.div>
+        
+        {/* Bottom Row */}
+        <div className="col-span-5 md:col-span-2 h-full md:block flex">
+          <motion.div
+            ref={bottomLeft}
+            className="flex-1 h-full"
+            style={{
+              zIndex: 20,
+              scale,
+              x: bottomLeftX,
+              y: bottomLeftY,
+              opacity: commonOpacity
+            }}
+          >
+            <SkillCardThree scrollYProgress={scrollYProgress} />
+          </motion.div>
+          
+          <motion.div
+            ref={bottomRight}
+            className="flex-1 h-full md:hidden"
+            style={{
+              zIndex: 20,
+              scale,
+              x: bottomRightX,
+              y: bottomRightY,
+              opacity: commonOpacity
+            }}
+          >
+            <SkillCardFour scrollYProgress={scrollYProgress} />
+          </motion.div>
+        </div>
+
         <motion.div
           ref={bottomRight}
-          className="col-span-3 bg-gray-200 rounded-lg overflow-hidden"
+          className="hidden md:block col-span-3 h-full"
           style={{
-            backgroundImage: "url(/texture-grid.jpg)",
-            backgroundPosition: "center",
             zIndex: 20,
             scale,
             x: bottomRightX,
             y: bottomRightY,
-            opacity: bottomRightOpacity
+            opacity: commonOpacity
           }}
-        />
+        >
+          <SkillCardFour scrollYProgress={scrollYProgress} />
+        </motion.div>
       </div>
     </>
   );
 };
+
+const SkillCardOne = ({ scrollYProgress }: ComponentProps) => {
+  const [removeRightBorder, setRemoveRightBorder] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      // When progress is between 0.7-0.8, the scale reaches 1
+      setRemoveRightBorder(latest > 0.7);
+    });
+
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
+  return (
+    <Card className={cn(
+      "h-full",
+      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0"
+    )}>
+      <CardHeader>
+        <CardTitle>Frontend Development</CardTitle>
+        <CardDescription>Modern web technologies and frameworks</CardDescription>
+      </CardHeader>
+      <CardContent>
+        React, Next.js, TypeScript, Tailwind CSS
+      </CardContent>
+    </Card>
+  );
+};
+
+const SkillCardTwo = ({ scrollYProgress }: ComponentProps) => {
+  const [removeLeftBorder, setRemoveLeftBorder] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      setRemoveLeftBorder(latest > 0.7);
+    });
+
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
+  return (
+    <Card className={cn(
+      "h-full",
+      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0"
+    )}>
+      <CardHeader>
+        <CardTitle>Backend Development</CardTitle>
+        <CardDescription>Server-side technologies</CardDescription>
+      </CardHeader>
+      <CardContent>
+        Node.js, Express, PostgreSQL, REST APIs
+      </CardContent>
+    </Card>
+  );
+};
+
+const SkillCardThree = ({ scrollYProgress }: ComponentProps) => {
+  const [removeRightBorder, setRemoveRightBorder] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      setRemoveRightBorder(latest > 0.7);
+    });
+
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
+  return (
+    <Card className={cn(
+      "h-full",
+      removeRightBorder && "max-md:rounded-r-none max-md:border-r-0"
+    )}>
+      <CardHeader>
+        <CardTitle>UI/UX Design</CardTitle>
+        <CardDescription>Design and user experience</CardDescription>
+      </CardHeader>
+      <CardContent>
+        Figma, Adobe XD, Responsive Design
+      </CardContent>
+    </Card>
+  );
+};
+
+const SkillCardFour = ({ scrollYProgress }: ComponentProps) => {
+  const [removeLeftBorder, setRemoveLeftBorder] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      setRemoveLeftBorder(latest > 0.7);
+    });
+
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
+  return (
+    <Card className={cn(
+      "h-full",
+      removeLeftBorder && "max-md:rounded-l-none max-md:border-l-0"
+    )}>
+      <CardHeader>
+        <CardTitle>DevOps & Tools</CardTitle>
+        <CardDescription>Development operations and tooling</CardDescription>
+      </CardHeader>
+      <CardContent>
+        Git, Docker, CI/CD, AWS
+      </CardContent>
+    </Card>
+  );
+};
+
+// StickyContainer now only handles the initial sticky state with copy
+const SkillsContainer = ({ children }: SkillsContainerProps) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Adjust scale to include exit animation
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.6, 1],
+    [0.85, 1, 1, 0.85]
+  );
+
+  const borderRadius = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.6, 1],
+    ["3rem", "0rem", "0rem", "3rem"]
+  );
+
+
+  return (
+    <motion.div
+      style={{
+        scale,
+        borderRadius,
+        height: '100vh',
+        position: 'sticky',
+        top: 0,
+      }}
+      ref={targetRef}
+      className="z-0 overflow-hidden bg-background flex items-center justify-center"
+    >
+      {children}
+    </motion.div>
+  );
+};
+  
+
+
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-secondary text-card-foreground shadow-sm",
+      className
+    )}
+    {...props}
+  />
+))
+Card.displayName = "Card"
+
+const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+))
+CardHeader.displayName = "CardHeader"
+
+const CardTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-2xl font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+CardTitle.displayName = "CardTitle"
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+))
+CardFooter.displayName = "CardFooter"
+
