@@ -53,13 +53,7 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
     [1, 1, 1, 0], 
     { ease: easeOut }
   );
-
-  const copyZIndex = useTransform(
-    scrollYProgress,
-    [0.8, 1],
-    [15, 0] // Set z-index to 0 when grid is closed
-  );
-
+  
   return (
     <motion.div
       ref={copyRef}
@@ -79,9 +73,8 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
       style={{
         scale: copyScale,
         opacity: copyOpacity,
-        zIndex: copyZIndex,
       }}
-      className="absolute inset-0 px-8 w-full flex items-center justify-center"
+      className="absolute inset-0 px-8 w-full z-15 flex items-center justify-center"
     >
       <motion.h1 
         initial={{ opacity: 0, y: -100 }}
