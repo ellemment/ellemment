@@ -1,22 +1,15 @@
-// #app/interface/composite/portfolio/stack.tsx
-
-
 import { ReactLenis } from '@studio-freight/react-lenis';
-import { motion, useScroll, useTransform, type MotionValue,  useInView } from "framer-motion";
+import { motion, useInView, type MotionValue, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
-import { cn } from '#app/utils/misc.js'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '#app/interface/shadcn/card';
 
-
-interface CarouselCard {
-  id: number;
-  url: string;
-  title: string;
+interface ScrollCardProps {
+  variant: 'one' | 'two' | 'three' | 'four' | 'five' | 'six';
 }
 
 interface ComponentProps {
   scrollYProgress: MotionValue<number>;
 }
-
 
 interface ParallaxContentProps {
   children: React.ReactNode;
@@ -26,174 +19,6 @@ interface StackContainerProps {
   children: React.ReactNode;
 }
 
-
-
-export const StackSection = () => {
-  return (
-    <div className="bg-secondary">
-      <ReactLenis
-        root
-        options={{
-          lerp: 0.05,
-        }}
-      >
-        <ParallaxContainer />
-      </ReactLenis>
-    </div>
-  );
-};
-
-
-const ScrollCardOne = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-0">
-      <div
-        style={{
-          backgroundImage: `url(${card.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className="absolute inset-0 z-0 transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-      <CardHeader className="absolute bottom-0 text-white z-10">
-        <CardTitle className="text-3xl">{card.title}</CardTitle>
-        <CardDescription className="text-gray-200">
-          Project Description Here
-        </CardDescription>
-      </CardHeader>
-    </Card>
-  );
-};
-
-const ScrollCardTwo = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative aspect-[26/33] overflow-hidden bg-secondary/80 backdrop-blur-sm border-2">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
-      <CardHeader className="relative z-10 h-full flex flex-col justify-center items-center text-center p-8">
-        <CardTitle className="text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-          {card.title}
-        </CardTitle>
-        <CardDescription className="max-w-[80%] text-base">
-          Interactive Project Description
-        </CardDescription>
-      </CardHeader>
-    </Card>
-  );
-};
-
-const ScrollCardThree = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-primary/50 border-2">
-      <div
-        style={{
-          backgroundImage: `url(${card.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className="absolute inset-0 z-0 opacity-10 transition-opacity duration-500 group-hover:opacity-20"
-      />
-      <div className="absolute inset-0 flex flex-col justify-between p-6">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-2xl">{card.title}</CardTitle>
-          <div className="h-8 w-8 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-colors duration-300" />
-        </div>
-        <CardDescription className="mt-auto">
-          Project Description Here
-        </CardDescription>
-      </div>
-    </Card>
-  );
-};
-
-const ScrollCardFour = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden bg-background">
-      <div className="absolute inset-0 grid grid-cols-2 grid-rows-2">
-        <div className="bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300" />
-        <div className="bg-primary/10 group-hover:bg-primary/15 transition-colors duration-300" />
-        <div className="bg-primary/15 group-hover:bg-primary/20 transition-colors duration-300" />
-        <div className="bg-primary/20 group-hover:bg-primary/25 transition-colors duration-300" />
-      </div>
-      <CardHeader className="relative z-10 h-full flex flex-col justify-center items-center">
-        <CardTitle className="text-3xl mb-2">{card.title}</CardTitle>
-        <CardDescription className="text-center max-w-[80%]">
-          Project Description Here
-        </CardDescription>
-      </CardHeader>
-    </Card>
-  );
-};
-
-const ScrollCardFive = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-0 bg-gradient-to-br from-background to-secondary">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="absolute w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500" />
-      </div>
-      <div className="relative z-10 h-full flex flex-col justify-between p-8">
-        <CardTitle className="text-3xl">{card.title}</CardTitle>
-        <CardDescription className="text-lg">
-          Project Description Here
-        </CardDescription>
-      </div>
-    </Card>
-  );
-};
-
-const ScrollCardSix = ({ card }: { card: CarouselCard }) => {
-  return (
-    <Card className="group relative w-[450px] aspect-[26/33] overflow-hidden border-2 border-dashed border-primary/30">
-      <div className="absolute inset-0 bg-secondary/50" />
-      <div className="relative z-10 h-full p-6 flex flex-col">
-        <div className="flex-1 flex flex-col justify-center items-center text-center">
-          <CardTitle className="text-4xl mb-4">{card.title}</CardTitle>
-          <CardDescription className="max-w-[80%]">
-            Project Description Here
-          </CardDescription>
-        </div>
-        <div className="mt-auto flex justify-end">
-          <div className="h-12 w-12 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-all duration-300 group-hover:scale-110" />
-        </div>
-      </div>
-    </Card>
-  );
-};
-
-
-
-const carouselCards = [
-  {
-    url: "/imgs/abstract/1.jpg",
-    title: "Title 1",
-    id: 1,
-  },
-  {
-    url: "/imgs/abstract/2.jpg",
-    title: "Title 2",
-    id: 2,
-  },
-  {
-    url: "/imgs/abstract/3.jpg",
-    title: "Title 3",
-    id: 3,
-  },
-  {
-    url: "/imgs/abstract/4.jpg",
-    title: "Title 4",
-    id: 4,
-  },
-  {
-    url: "/imgs/abstract/5.jpg",
-    title: "Title 5",
-    id: 5,
-  },
-  {
-    url: "/imgs/abstract/5.jpg",
-    title: "Title 6",
-    id: 6,
-  },
-]; 
 
 
 const Copy = ({ scrollYProgress }: ComponentProps) => {
@@ -221,49 +46,285 @@ const Copy = ({ scrollYProgress }: ComponentProps) => {
   );
 };
 
+// Individual Card Components
+const ScrollCardOne = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Modern Architecture
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
 
-const HorizontalCardScroll = () => {
-  const targetRef = useRef(null);
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Exploring contemporary design principles
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+
+    {/* Gradient overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+  </>
+);
+
+const ScrollCardTwo = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Card Two
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
+
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Contents
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+  </>
+);
+
+const ScrollCardThree = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Card Three
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
+
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Contents
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+  </>
+);
+
+const ScrollCardFour = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Card Four
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
+
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Contents
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+  </>
+);
+
+const ScrollCardFive = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Card Five
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
+
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Contents
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+  </>
+);
+
+const ScrollCardSix = () => (
+  <>
+    <CardHeader className="relative z-10 pt-6">
+      <div className="flex items-center justify-between">
+        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Card Six
+        </CardTitle>
+        <div className="h-8 w-8 rounded-full bg-primary/20" />
+      </div>
+    </CardHeader>
+    
+    <CardContent className="relative z-10 flex-grow">
+      <div className="h-full flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-secondary/20 blur-lg" />
+      </div>
+    </CardContent>
+
+    <CardFooter className="relative z-10 mt-auto">
+      <div className="w-full">
+        <CardDescription className="text-base font-medium text-primary/80">
+          Contents
+        </CardDescription>
+        <div className="mt-2 h-1 w-1/3 bg-gradient-to-r from-primary to-secondary rounded-full" />
+      </div>
+    </CardFooter>
+  </>
+);
+
+// Card Variants Configuration
+const CARD_VARIANTS = {
+  one: {
+    id: 'scroll-card-1',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardOne />
+  },
+  two: {
+    id: 'scroll-card-2',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardTwo />
+  },
+  three: {
+    id: 'scroll-card-3',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardThree />
+  },
+  four: {
+    id: 'scroll-card-4',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardFour />
+  },
+  five: {
+    id: 'scroll-card-5',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardFive />
+  },
+  six: {
+    id: 'scroll-card-6',
+    containerClasses: "border-0",
+    innerContent: () => <ScrollCardSix />
+  }
+};
+
+// Base ScrollCard Component
+const ScrollCard: React.FC<ScrollCardProps> = ({ variant }) => {
+  const variantConfig = CARD_VARIANTS[variant];
+  
+  return (
+    <Card className={`
+      group relative overflow-hidden
+      w-[85vw] sm:w-[45vw] lg:w-[30vw] 
+      aspect-[26/33]
+      ${variantConfig.containerClasses}
+    `}>
+      {variantConfig.innerContent()}
+    </Card>
+  );
+};
+
+const cardOrder = ['one', 'two', 'three', 'four', 'five', 'six'] as const;
+
+export const HorizontalCardScroll: React.FC = () => {
+  const targetRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-50%"]);
-
-  const getCardComponent = (index: number) => {
-    switch (index % 6) {
-      case 0:
-        return ScrollCardOne;
-      case 1:
-        return ScrollCardTwo;
-      case 2:
-        return ScrollCardThree;
-      case 3:
-        return ScrollCardFour;
-      case 4:
-        return ScrollCardFive;
-      case 5:
-        return ScrollCardSix;
-      default:
-        return ScrollCardOne;
-    }
-  };
+  const x = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["1%", "-95%"]
+  );
 
   return (
-    <section ref={targetRef} className="relative h-[300vh] transparent">
+    <section ref={targetRef} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-8 px-4">
-          {carouselCards.map((card, index) => {
-            const CardComponent = getCardComponent(index);
-            return <CardComponent card={card} key={card.id} />;
-          })}
+        <motion.div 
+          style={{ x }} 
+          className="flex gap-4 md:gap-4 px-4 md:px-6 lg:px-8"
+        >
+          {cardOrder.map((variant) => (
+            <ScrollCard
+              key={CARD_VARIANTS[variant].id}
+              variant={variant}
+            />
+          ))}
         </motion.div>
       </div>
     </section>
   );
 };
 
+export default HorizontalCardScroll;
 
+export const StackSection = () => {
+  return (
+    <div className="bg-secondary">
+      <ReactLenis
+        root
+        options={{
+          lerp: 0.05,
+        }}
+      >
+        <ParallaxContainer />
+      </ReactLenis>
+    </div>
+  );
+};
 
 
 export const ParallaxContainer = () => {
@@ -364,77 +425,3 @@ const StackContainer = ({ children }: StackContainerProps) => {
   );
 };
 
-
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-background text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
-Card.displayName = "Card"
-
-const CardHeader = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
-    {...props}
-  />
-))
-CardHeader.displayName = "CardHeader"
-
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
-    ref={ref}
-    className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
-      className
-    )}
-    {...props}
-  />
-))
-CardTitle.displayName = "CardTitle"
-
-const CardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-))
-CardDescription.displayName = "CardDescription"
-
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-))
-CardContent.displayName = "CardContent"
-
-const CardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
-    {...props}
-  />
-))
-CardFooter.displayName = "CardFooter"

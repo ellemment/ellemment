@@ -196,7 +196,7 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
   const scale = useTransform(
     scrollYProgress,
     [0, 0.4, 0.6, 1],
-    [0.85, 1, 1, 0.85]
+    [0.75, 1, 1, 0.75]
   );
 
   const inset = useTransform(
