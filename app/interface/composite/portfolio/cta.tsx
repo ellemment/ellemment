@@ -129,7 +129,7 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
   const borderRadius = useTransform(
     scrollYProgress,
     [0, 0.2, 0.4, 0.8, 1],
-    ["5rem 5rem 0 0", "4rem 4rem 0 0", "3rem 3rem 0 0", "3rem 3rem 0 0", "2rem 2rem 0 0"] 
+    ["5rem 5rem 0 0", "4rem 4rem 0 0", "2rem 2rem 0 0", "2rem 2rem 0 0", "1rem 1rem 0 0"] 
   );
 
   return (

@@ -1,6 +1,6 @@
 import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useInView, type MotionValue, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '#app/interface/shadcn/card';
 
 interface ScrollCardProps {
@@ -280,22 +280,51 @@ const cardOrder = ['one', 'two', 'three', 'four', 'five', 'six'] as const;
 
 export const HorizontalCardScroll: React.FC = () => {
   const targetRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
 
+  const [finalPosition, setFinalPosition] = useState(0);
+
+  useEffect(() => {
+    const calculateScrollDistance = () => {
+      if (!containerRef.current) return;
+      
+      const containerWidth = containerRef.current.scrollWidth;
+      const viewportWidth = window.innerWidth;
+      
+      // Only scroll enough to bring the last card to the right edge
+      const scrollDistance = Math.max(0, containerWidth - viewportWidth);
+      
+      // Convert to a percentage of the viewport width
+      const position = Math.min(100, (scrollDistance / containerWidth) * 100);
+      setFinalPosition(position);
+    };
+
+    calculateScrollDistance();
+
+    const resizeObserver = new ResizeObserver(calculateScrollDistance);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const x = useTransform(
     scrollYProgress,
-    [0, 1],
-    ["1%", "-95%"]
+    [0, 0.95], // Stop slightly before the end of the scroll to ensure last card stays visible
+    ["0%", `-${finalPosition}%`]
   );
 
   return (
     <section ref={targetRef} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <motion.div 
+          ref={containerRef}
           style={{ x }} 
-          className="flex gap-4 md:gap-4 px-4 md:px-6 lg:px-8"
+          className="flex gap-4 md:gap-4 px-4"
         >
           {cardOrder.map((variant) => (
             <ScrollCard
