@@ -1,18 +1,7 @@
 // #app/interface/composite/portfolio/cta.tsx
-
-
-
-
 import { ReactLenis } from '@studio-freight/react-lenis';
-import { motion, useScroll, useTransform, type MotionValue, easeOut, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue, useInView } from "framer-motion";
 import React, { useRef } from "react";
-
-
-interface Card {
-  id: number;
-  url: string;
-  title: string;
-}
 
 interface ComponentProps {
   scrollYProgress: MotionValue<number>;
@@ -43,12 +32,6 @@ export const CTA = () => {
     </div>
   );
 };
-
-
-
-
-
-
 
 
 const Copy = ({ scrollYProgress }: ComponentProps) => {

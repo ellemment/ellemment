@@ -51,7 +51,7 @@ export function GlobalHeader() {
           }}
         >
           <nav className="z-[61]">
-            <div className="mx-auto max-w-7xl flex justify-between py-2 px-4">
+            <div className="mx-auto max-w-7xl flex px-2 justify-between">
               {/* Left side - Logo */}
               <div className="flex items-center pointer-events-auto">
                 <Link 
@@ -72,13 +72,13 @@ export function GlobalHeader() {
                   }}
                 >
                   <motion.div 
-                    className="flex items-center h-8 rounded-md"
+                    className=" h-8"
                     animate={{
                       backgroundColor: isLogoClicked ? 'rgba(0, 0, 0, 0.05)' : 'transparent'
                     }}
                   >
                     <motion.div
-                      className="flex items-center overflow-hidden p-2"
+                      className="flex items-center overflow-hidden pl-1 p-2"
                       initial={false}
                       animate={{
                         width: isLogoExpanded ? 'auto' : '1.5em',
@@ -158,7 +158,7 @@ export function GlobalHeader() {
                       className=""
                       onOpenChange={setIsOpen}
                     >
-                      <PopoverBody className="max-w-7xl mx-auto pt-2 px-4">
+                      <PopoverBody className="max-w-7xl mx-auto pt-2 px-2">
                         <div className="space-y-4">
                           {navigationItems.map(([label, to]) => (
                             <PopoverButton
