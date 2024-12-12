@@ -127,7 +127,7 @@ const Message = () => {
   return (
     <section
       id="message-section"
-      className="mx-auto w-full max-w-7xl px-4 py-8 text-foreground"
+      className="mx-auto w-full max-w-7xl  py-8 text-foreground"
     >
       <MessageItem title="For Anyone" date="Contact" location="Read More" />
       <MessageItem title="Recruiters" date="Contact" location="Read More" />

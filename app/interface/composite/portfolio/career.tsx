@@ -67,7 +67,7 @@ export const CareerVelocity = () => {
       ref={targetRef}
       className="h-svh bg-secondary flex overflow-hidden"
     >
-      <div className="flex justify-center items-center max-w-7xl">
+      <div className="flex justify-center items-center w-full">
         <motion.p
           style={{ skewX, x }}
           className="origin-bottom-left whitespace-nowrap text-6xl md:text-[12rem] lg:text-[16rem] font-black leading-[0.85] md:text-9xl md:leading-[0.85]"
@@ -85,7 +85,7 @@ const Career = () => {
   return (
     <section
       id="launch-schedule"
-      className="mx-auto max-w-7xl px-4 py-48 text-inherit"
+      className="mx-auto max-w-7xl px-2 py-48 text-inherit"
     >
       <ScheduleItem title="Experience 1" date="Date" location="Company" />
       <ScheduleItem title="Experience 2" date="Date" location="Company" />
