@@ -11,8 +11,8 @@ export default function IndexRoute() {
   return (
     <>
       <HeroSection />
-      <Skills />
       <CareerSection />
+      <Skills />
       <StackSection />
       <CTA/>
     </>
