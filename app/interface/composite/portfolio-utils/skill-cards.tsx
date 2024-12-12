@@ -37,7 +37,7 @@ const BentoItem = ({ item }: BentoItemProps) => {
 export const SkillCardsGrid = () => {
     return (
         <div className="w-full max-w-7xl mx-auto px-4 py-12 md:py-24">
-            <BentoGrid className="md:auto-rows-[20rem] max-md:h-svh">
+            <BentoGrid className="md:auto-rows-[20rem]">
                 {items.map((item, index) => (
                     <BentoItem
                         key={`skill-item-${index}`}
