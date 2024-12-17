@@ -1,4 +1,4 @@
-// #app 
+// #app/interface/portfolio/stack.tsx
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -27,10 +27,7 @@ export const Stack = () => {
                 <div className="h-svh w-full max-w-5xl container px-2 md:px-6 flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
                         <div className="container mx-auto px-0">
-                            <p className="mb-2 text-start text-xl md:mb-4 md:text-3xl">
-                                Get to know
-                            </p>
-                            <h2 className="text-start text-4xl font-bold md:text-7xl">ellemments Stack</h2>
+                            
                         </div>
                     </div>
  

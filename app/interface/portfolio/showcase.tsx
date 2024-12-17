@@ -1,18 +1,15 @@
-// #app 
+// #app/interface/portfolio/showcase.tsx
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-// Add interfaces for component props
+import Skills from "#app/interface/portfolio/utils/skills";
+
 
 interface ShowcaseProps {
-  imgUrl: string;
   subheading?: string;
   heading?: string;
   variant?: 'default' | 'overlay';
-}
-
-interface StickyImageProps {
-  imgUrl: string;
+  children?: React.ReactNode;
 }
 
 interface OverlayCopyProps {
@@ -24,26 +21,33 @@ export const Showcase = () => {
   return (
     <div className="bg-background">
       <ShowcaseParallax
-        imgUrl="https://plus.unsplash.com/premium_photo-1664443577580-dd2674e9d359?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D"
         subheading="Engineering"
         heading="Product Development"
         variant="overlay"
-      />
+      >
+        {/* Add your custom content here */}
+        <Skills />
+      </ShowcaseParallax>
+      
       <ShowcaseParallax
-        imgUrl="https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=2187&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading="Design"
         heading="Product Design"
         variant="overlay"
-      />
+      >
+        {/* Add your custom content here */}
+        <Skills />
+      </ShowcaseParallax>
     </div>
   );
 };
 
-const ShowcaseParallax = ({ imgUrl, subheading, heading, variant = 'default' }: ShowcaseProps) => {
+const ShowcaseParallax = ({ children, subheading, heading, variant = 'default' }: ShowcaseProps) => {
   return (
     <div>
       <div className="relative h-[200vh]">
-        <StickyContent imgUrl={imgUrl} />
+        <StickyContent>
+          {children}
+        </StickyContent>
         {variant === 'overlay' && subheading && heading && (
           <ShowcaseOverlay heading={heading} subheading={subheading} />
         )}
@@ -54,7 +58,7 @@ const ShowcaseParallax = ({ imgUrl, subheading, heading, variant = 'default' }: 
 
 
 
-const StickyContent = ({ imgUrl }: StickyImageProps) => {
+const StickyContent = ({ children }: { children?: React.ReactNode }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -67,16 +71,13 @@ const StickyContent = ({ imgUrl }: StickyImageProps) => {
   return (
     <motion.div
       style={{
-        backgroundImage: `url(${imgUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
         scale,
         borderRadius,
       }}
       ref={targetRef}
-      className="sticky top-0 z-0 overflow-hidden"
+      className="sticky top-0 z-0 overflow-hidden h-screen bg-[#AEAEB2]"
     >
+      {children}
       <motion.div
         className="absolute inset-0"
         style={{

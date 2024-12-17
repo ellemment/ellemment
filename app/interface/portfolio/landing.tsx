@@ -1,8 +1,6 @@
-// #app
-
+// #app/interface/portfolio/landing.tsx
 import { motion, useScroll, useTransform} from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from '#app/interface/shadcn/avatar'
-
 
 
 interface CenterCardProps {
@@ -45,7 +43,7 @@ const GreetingPill = () => {
       <div className="relative flex flex-col items-start">
         {/* Replace expanding background with static background */}
         <div 
-          className="absolute bg-black/5 backdrop-blur-sm min-w-[200px] min-h-[48px] rounded-full z-10"
+          className="absolute bg-[#0A84FF] backdrop-blur-sm min-w-[200px] min-h-[48px] rounded-full z-10"
         />
         
         {/* Static content - highest z-index */}
@@ -58,7 +56,7 @@ const GreetingPill = () => {
             />
             <AvatarFallback>TD</AvatarFallback>
           </Avatar>
-          <span className="text-black text-md font-medium">
+          <span className="text-white text-md font-medium">
             Hi! I'm Dony Alior
           </span>
         </div>
@@ -68,10 +66,10 @@ const GreetingPill = () => {
           className="relative z-[5] text-left mt-6"
           style={{ opacity: contentOpacity }}
         >
-          <h1 className="text-4xl md:text-7xl font-semibold text-zinc-900 mb-8">
+          <h1 className="text-4xl md:text-7xl font-semibold text-zinc-700 dark:text-zinc-100 mb-8">
             Product Engineer
           </h1>
-          <p className="text-sm font-normal md:text-md text-zinc-600">
+          <p className="text-md md:text-xl font-normal text-zinc-900 dark:text-zinc-100">
             Building Amazing Products.
           </p>
         </motion.div>
