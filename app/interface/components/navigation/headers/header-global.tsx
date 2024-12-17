@@ -54,7 +54,7 @@ export function GlobalHeader() {
                   <motion.div className="h-8">
                     <div className="flex items-center p-2 pl-0">
                       <span className="font-normal text-base sm:text-sm">
-                        Dony Alior
+                        Dony
                       </span>
                     </div>
                   </motion.div>

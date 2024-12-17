@@ -24,7 +24,7 @@ export const Stack = () => {
                 subheading="Quality"
                 heading="Never compromise."
             >
-                <div className="h-svh w-full max-w-5xl container flex flex-col items-end">
+                <div className="h-svh w-full max-w-5xl container px-2 md:px-6 flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
                         <div className="container mx-auto px-0">
                             <p className="mb-2 text-start text-xl md:mb-4 md:text-3xl">
@@ -33,8 +33,8 @@ export const Stack = () => {
                             <h2 className="text-start text-4xl font-bold md:text-7xl">ellemments</h2>
                         </div>
                     </div>
-
-                    <div className="container mx-auto bg-black rounded-2xl min-h-[50vh] px-0 mb-6">
+ 
+                    <div className="container mx-auto bg-black rounded-2xl min-h-[50vh] px-0 mb-2 md:mb-4">
                         <div className="flex flex-col gap-8">
                             <h3 className="text-2xl font-semibold">Built with</h3>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
