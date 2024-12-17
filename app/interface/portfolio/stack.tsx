@@ -21,37 +21,22 @@ export const Stack = () => {
         <div>
             <StackParallax
                 variant="overlay"
-                subheading="Quality"
-                heading="Never compromise."
+                subheading="Built with"
+                heading="ellemments Stack by Dony"
             >
                 <div className="h-svh w-full max-w-5xl container px-2 md:px-6 flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
                         <div className="container mx-auto px-0">
                             <p className="mb-2 text-start text-xl md:mb-4 md:text-3xl">
-                                Built with
+                                Get to know
                             </p>
-                            <h2 className="text-start text-4xl font-bold md:text-7xl">ellemments</h2>
+                            <h2 className="text-start text-4xl font-bold md:text-7xl">ellemments Stack</h2>
                         </div>
                     </div>
  
-                    <div className="container mx-auto bg-black rounded-2xl min-h-[50vh] px-0 mb-2 md:mb-4">
-                        <div className="flex flex-col gap-8">
-                            <h3 className="text-2xl font-semibold">Built with</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                                {/* Example elements - replace with your actual tech stack */}
-                                <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                                    Element 1
-                                </div>
-                                <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                                    Element 2
-                                </div>
-                                <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                                    Element 3
-                                </div>
-                                <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-                                    Element 4
-                                </div>
-                            </div>
+                    <div className="container flex items-center justify-center mx-auto bg-[#CDFD02] rounded-2xl min-h-[50vh] px-0 mb-2 md:mb-4">
+                        <div className="flex flex-col items-center justify-center gap-8">
+                            <h3 className="text-3xl md:text-5xl text-center text-black font-semibold">ellemments</h3>
                         </div>
                     </div>
                 </div>
