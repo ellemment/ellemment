@@ -24,14 +24,14 @@ export const Stack = () => {
                 subheading="Built with"
                 heading="ellemments Stack by Dony"
             >
-                <div className="h-svh w-full max-w-5xl container px-2 md:px-6 flex flex-col items-end">
+                <div className="h-svh w-full px-2 flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
                         <div className="container mx-auto px-0">
                             
                         </div>
                     </div>
  
-                    <div className="container flex items-center justify-center mx-auto bg-[#CDFD02] rounded-2xl min-h-[50vh] px-0 mb-2 md:mb-4">
+                    <div className="w-full flex items-center justify-center  bg-secondary rounded-none min-h-[50vh] px-0 mb-2 md:mb-4">
                         <div className="flex flex-col items-center justify-center gap-8">
                             <h3 className="text-3xl md:text-5xl text-center text-black font-semibold">ellemments</h3>
                         </div>

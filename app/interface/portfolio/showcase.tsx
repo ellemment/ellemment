@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Skills from "#app/interface/portfolio/utils/skills";
+import Skills from "#app/interface/portfolio/skills";
 
 
 interface ShowcaseProps {
