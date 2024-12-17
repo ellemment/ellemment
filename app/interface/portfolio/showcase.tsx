@@ -65,8 +65,12 @@ const StickyContent = ({ children }: { children?: React.ReactNode }) => {
     offset: ["start start", "center start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.85]);
-  const borderRadius = useTransform(scrollYProgress, [0.5, 1], [0, 48]);
+  const isLargeScreen = typeof window !== 'undefined' 
+    ? window.matchMedia('(min-width: 768px)').matches 
+    : false;
+
+  const scale = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [1, 0.85] : [1, 1]);
+  const borderRadius = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [0, 48] : [0, 0]);
 
   return (
     <motion.div

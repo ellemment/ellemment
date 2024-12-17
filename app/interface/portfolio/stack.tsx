@@ -24,7 +24,7 @@ export const Stack = () => {
                 subheading="Built with"
                 heading="ellemments Stack by Dony"
             >
-                <div className="h-svh w-full px-2 flex flex-col items-end">
+                <div className="h-svh w-full flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
                         <div className="container mx-auto px-0">
                             
