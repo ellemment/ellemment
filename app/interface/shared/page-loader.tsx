@@ -26,7 +26,7 @@ const slideUp = {
     }
 }
 
-const words = ["Hello", "Bonjour", "Ciao", "Olà", "مرحبًا", "Привет", "Salom", "こんにちは"]
+const words = ["Hello", "Bonjour", "Ciao", "Olà", "Salom", "Привет", "こんにちは"]
 
 export default function PageLoader() {
     const [index, setIndex] = useState(0);
@@ -69,7 +69,7 @@ export default function PageLoader() {
                     variants={opacity} 
                     initial="initial" 
                     animate="enter"
-                    className="flex text-black dark:text-white text-[42px] items-center absolute z-[1]"
+                    className="flex text-black dark:text-white text-[42px] font-medium items-center absolute z-[1] antialiased font-sans"
                 >
                     {words[index]}
                 </motion.p>

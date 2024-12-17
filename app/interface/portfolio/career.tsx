@@ -1,6 +1,8 @@
+// #app/interface/portfolio/career.tsx
+
 import { Lenis as ReactLenis } from '@studio-freight/react-lenis'
 import { motion } from "framer-motion";
-import { Icon } from '#app/interface/foundations/icons/icon'
+
 
 interface CompanyProps {
   title: string;
@@ -17,10 +19,10 @@ const Company = ({ title, date, location }: CompanyProps) => {
       className="mb-9 flex items-center justify-between border-b border-border pb-9"
     >
       <div>
-        <p className="mb-1.5 text-xl text-inherit">{title}</p>
-        <p className="text-sm text-inherit/50">{date}</p>
+        <p className="mb-1.5 text-xl font-semibold text-inherit">{title}</p>
+        <p className="text-sm font-normal text-inherit/50">{date}</p>
       </div>
-      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-inherit/50">
+      <div className="flex items-center gap-1.5 text-end text-sm  text-inherit/50">
         <p>{location}</p>
       </div>
     </motion.div>
