@@ -11,17 +11,7 @@ export const StackSection = () => {
     offset: ["start end", "end start"]
   });
 
-  const titleY = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    ["50px", "0px"]
-  );
 
-  const titleOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    [0, 1]
-  );
 
   return (
     <section ref={containerRef} className="bg-secondary">

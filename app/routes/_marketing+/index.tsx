@@ -1,21 +1,18 @@
 // #app/routes/_marketing+/index.tsx
 
+import { SmoothScrollHero } from '#app/interface/portfolio/landing';
+import { Showcase } from '#app/interface/portfolio/showcase';
+import { Stack } from '#app/interface/portfolio/stack';
 
-import { CareerSection } from '#app/interface/composite/portfolio/career.js'
-import { CTA } from '#app/interface/composite/portfolio/cta.js'
-import { HeroSection } from '#app/interface/composite/portfolio/hero.js'
-import { Skills } from '#app/interface/composite/portfolio/skills'
-import { StackSection } from '#app/interface/composite/portfolio/stack.js'
 
 export default function IndexRoute() {
+
   return (
     <>
-      <HeroSection />
-      <Skills />
-      <CareerSection />
-      <StackSection />
-      <CTA/>
-    </>
-  )
-}
+      <SmoothScrollHero />
+      <Showcase />
+      <Stack />
 
+    </>
+  );
+}

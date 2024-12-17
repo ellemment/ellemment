@@ -1,7 +1,7 @@
 // #app/interface/composite/portfolio/cta.tsx
 import { ReactLenis } from '@studio-freight/react-lenis';
 import { motion, useScroll, useTransform, type MotionValue, useInView } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 interface ComponentProps {
   scrollYProgress: MotionValue<number>;
@@ -20,14 +20,15 @@ interface StickyContainerProps {
 
 export const CTA = () => {
   return (
-    <div className="bg-background">
+    <div className="bg-secondary mx-auto">
       <ReactLenis
         root
         options={{
-          lerp: 0.05,
+          lerp: 0.1,
         }}
       >
         <ParallaxContainer />
+        <div className="h-[1rem]"></div>
       </ReactLenis>
     </div>
   );
@@ -69,7 +70,7 @@ export const ParallaxContainer = () => {
   });
 
   return (
-    <div ref={containerRef} className="bg-background">
+    <div ref={containerRef} className="bg-secondary">
       <ParallaxContent>
         {/* First section: Sticky container with copy */}
         <StickyContainer>
@@ -96,24 +97,42 @@ const ParallaxContent = ({ children }: ParallaxContentProps) => {
 // StickyContainer now only handles the initial sticky state with copy
 const StickyContainer = ({ children }: StickyContainerProps) => {
   const targetRef = useRef(null);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    // Handle the initial check
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 1024);
+    };
+    
+    // Check on mount
+    checkScreenSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start end", "end start"],
   });
 
-  // Adjust scale to include exit animation
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.3, 0.7, 1], // Added midpoint and exit point
-    [0.80, 1, 1, 1] // Scale back to 0.85 at exit
+    [0, 0.15, 0.3, 0.5],
+    [0.80, 1, 1, 1]
   );
 
-  // Adjust border radius to match scale animation, affecting only top borders
   const borderRadius = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.4, 0.8, 1],
-    ["5rem 5rem 0 0", "4rem 4rem 0 0", "2rem 2rem 0 0", "2rem 2rem 0 0", "1rem 1rem 0 0"] 
+    [0, 0.15, 0.3, 0.5],
+    ["5rem 5rem 5rem 5rem",  "1.5rem 1.5rem 1.5rem 1.5rem", "1rem 1rem 1rem 1rem", "0.5rem 0.5rem 0.5rem 0.5rem"]
   );
+
+  const marginStyle = isSmallScreen ? '0rem' : 'auto';
 
   return (
     <motion.div
@@ -123,9 +142,12 @@ const StickyContainer = ({ children }: StickyContainerProps) => {
         height: '50vh',
         position: 'sticky',
         top: 0,
+        margin: marginStyle,
+        marginRight: isSmallScreen ? '1rem' : undefined,
+        marginLeft: isSmallScreen ? '1rem' : undefined,
       }}
       ref={targetRef}
-      className="z-0 overflow-hidden bg-background flex items-center justify-center"
+      className="z-0 overflow-hidden bg-background max-w-7xl mx-auto flex items-center justify-center"
     >
       {children}
     </motion.div>

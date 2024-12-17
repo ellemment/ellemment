@@ -227,7 +227,7 @@ export const ScrollCard: React.FC<ScrollCardProps> = ({ variant }) => {
     <Card className={`
       group relative overflow-hidden
       w-[85vw] sm:w-[45vw] lg:w-[40vw]
-      min-w-[280px] max-w-[600px]
+      min-w-[280px] max-w-[500px]
       aspect-[26/33]
       ${variantConfig.containerClasses}
     `}>

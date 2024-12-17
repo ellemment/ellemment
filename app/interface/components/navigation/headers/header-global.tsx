@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from '@remix-run/react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useState } from 'react'
+import { MenuButton } from '#app/interface/components/navigation/menus/menu-button'
 import {
   PopoverRoot,
   PopoverTrigger,
@@ -19,8 +20,6 @@ export function GlobalHeader() {
   const isIndexPage = location.pathname === '/'
   
   const [isOpen, setIsOpen] = useState(false)
-  const [isLogoExpanded, setIsLogoExpanded] = useState(true)
-  const [isLogoClicked, setIsLogoClicked] = useState(false)
   const [isAtTop, setIsAtTop] = useState(true)
 
   const { scrollY } = useScroll()
@@ -28,13 +27,6 @@ export function GlobalHeader() {
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Check if we're at the top of the page
     setIsAtTop(latest <= 0)
-    
-    // Update logo expansion based on scroll position
-    if (latest <= 0) {
-      setIsLogoExpanded(true)
-    } else if (!isLogoClicked) {
-      setIsLogoExpanded(false)
-    }
   })
 
   return (
@@ -49,116 +41,39 @@ export function GlobalHeader() {
           transition={{
             duration: 0.2,
           }}
-        >
+        >  
           <nav className="z-[61]">
-            <div className="mx-auto max-w-7xl flex px-2 justify-between">
+            <div className="mx-auto max-w-5xl flex px-2 md:px-6 py-2 md:py-3 justify-between">
               {/* Left side - Logo */}
               <div className="flex items-center pointer-events-auto">
                 <Link 
                   to="/" 
                   aria-label="Home"
                   className="relative"
-                  onMouseEnter={() => !isLogoClicked && !isAtTop && setIsLogoExpanded(true)}
-                  onMouseLeave={() => !isLogoClicked && !isAtTop && setIsLogoExpanded(false)}
-                  onClick={() => {
-                    setIsLogoClicked(true)
-                    setIsLogoExpanded(true)
-                    setTimeout(() => {
-                      setIsLogoClicked(false)
-                      if (!isAtTop) {
-                        setIsLogoExpanded(false)
-                      }
-                    }, 800)
-                  }}
                 >
-                  <motion.div 
-                    className=" h-8"
-                    animate={{
-                      backgroundColor: isLogoClicked ? 'rgba(0, 0, 0, 0.05)' : 'transparent'
-                    }}
-                  >
-                    <motion.div
-                      className="flex items-center overflow-hidden pl-1 p-2"
-                      initial={false}
-                      animate={{
-                        width: isLogoExpanded ? 'auto' : '1.5em',
-                      }}
-                      transition={{
-                        duration: 0.3,
-                        ease: [0.4, 0.0, 0.2, 1],
-                      }}
-                    >
-                      <motion.span
-                        className="inline-block font-medium text-base"
-                        animate={{
-                          scale: isLogoExpanded ? 1 : 1.1,
-                        }}
-                        transition={{
-                          duration: 0.3,
-                          ease: [0.4, 0.0, 0.2, 1],
-                        }}
-                      >
-                        D
-                      </motion.span>
-                      <motion.span
-                        className="inline-block origin-left whitespace-nowrap font-medium text-base"
-                        animate={{
-                          opacity: isLogoExpanded ? 1 : 0,
-                          x: isLogoExpanded ? 0 : -10,
-                        }}
-                        transition={{
-                          duration: 0.3,
-                          ease: [0.4, 0.0, 0.2, 1],
-                          opacity: { duration: 0.15 }
-                        }}
-                      >
-                        ony Alior
-                      </motion.span>
-                    </motion.div>
+                  <motion.div className="h-8">
+                    <div className="flex items-center p-2 pl-0">
+                      <span className="font-normal text-base sm:text-sm">
+                        Dony Alior
+                      </span>
+                    </div>
                   </motion.div>
                 </Link>
               </div>
 
               {/* Right side - Theme switch & User */}
               <div className="flex items-center gap-2 pointer-events-auto">
-                {/* User account button */}
-                <Link 
-                  to={user ? '/user' : '/login'}
-                  className="text-sm font-normal hover:text-primary inline-flex items-center h-8 pb-0.5"
-                >
-                  {user ? 'Account' : 'Get Started'}
-                </Link>
-
                 {/* Mobile menu button */}
                 <div className="inline-flex items-center">
                   <PopoverRoot>
                     <PopoverTrigger className="h-8 w-8 inline-flex items-center justify-center hover:text-primary">
-                      {({ isOpen }) => (
-                        <div className="w-4 h-4 flex flex-col justify-center items-center">
-                          <motion.span
-                            className="absolute w-4 h-[2px] bg-current"
-                            animate={{
-                              rotate: isOpen ? 45 : 0,
-                              y: isOpen ? 0 : -3
-                            }}
-                            transition={{ duration: 0.2 }}
-                          />
-                          <motion.span
-                            className="absolute w-4 h-[2px] bg-current"
-                            animate={{
-                              rotate: isOpen ? -45 : 0,
-                              y: isOpen ? 0 : 3
-                            }}
-                            transition={{ duration: 0.2 }}
-                          />
-                        </div>
-                      )}
+                      {({ isOpen }) => <MenuButton isOpen={isOpen} variant="icon" />}
                     </PopoverTrigger>
                     <PopoverContent
                       className=""
                       onOpenChange={setIsOpen}
                     >
-                      <PopoverBody className="max-w-7xl mx-auto pt-2 px-2">
+                      <PopoverBody className="max-w-5xl px-2 md:px-6 mx-auto pt-2">
                         <div className="space-y-4">
                           {navigationItems.map(([label, to]) => (
                             <PopoverButton
