@@ -18,10 +18,13 @@ import {
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
 import clsx from 'clsx'
+import { AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { GlobalHeader } from '#app/interface/components/navigation/headers/header-global'
 import { href as iconsHref } from '#app/interface/foundations/icons/icon'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
+import PageLoader from '#app/interface/shared/page-loader';
 import { useToast } from '#app/interface/shared/toaster'
 import { type DonHandle } from '#app/types.ts'
 import { EpicToaster } from './interface/shadcn/sonner.tsx'
@@ -207,8 +210,19 @@ function App() {
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast);
 	const location = useLocation();
+	const [isLoading, setIsLoading] = useState(true);
 
 	const showHeader = !location.pathname.startsWith('/login');
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setIsLoading(false);
+			document.body.style.cursor = 'default';
+			window.scrollTo(0, 0);
+		}, 2000);
+
+		return () => clearTimeout(timer);
+	}, []);
 
 	return (
 		<Document
@@ -217,13 +231,16 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
+			<AnimatePresence mode="wait">
+				{location.pathname === '/' && isLoading && <PageLoader />}
+			</AnimatePresence>
 			<div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-background">
-				{showHeader && (
+				{showHeader && !isLoading && (
 					<GlobalHeader />
 				)}
 
 				<div className="flex-1 bg-background dark:bg-background">
-					<Outlet />
+					{!isLoading && <Outlet />}
 				</div>
 
 				<footer className="bg-neutral-100 dark:bg-background">
