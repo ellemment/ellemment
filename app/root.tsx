@@ -210,19 +210,11 @@ function App() {
 	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
 	useToast(data.toast);
 	const location = useLocation();
-	const [isLoading, setIsLoading] = useState(true);
+
 
 	const showHeader = !location.pathname.startsWith('/login');
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setIsLoading(false);
-			document.body.style.cursor = 'default';
-			window.scrollTo(0, 0);
-		}, 2000);
 
-		return () => clearTimeout(timer);
-	}, []);
 
 	return (
 		<Document
@@ -231,16 +223,16 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
-			<AnimatePresence mode="wait">
+			{/* <AnimatePresence mode="wait">
 				{location.pathname === '/' && isLoading && <PageLoader />}
-			</AnimatePresence>
+			</AnimatePresence> */}
 			<div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-background">
-				{showHeader && !isLoading && (
+				{showHeader  && (
 					<GlobalHeader />
 				)}
 
-				<div className="flex-1 bg-background dark:bg-background">
-					{!isLoading && <Outlet />}
+				<div className="flex-1">
+					{ <Outlet />}
 				</div>
 
 				<footer className="bg-neutral-100 dark:bg-background">

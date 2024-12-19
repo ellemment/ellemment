@@ -3,18 +3,21 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Skills from "#app/interface/portfolio/skills";
+import Career from "#app/interface/portfolio/career";
 
 
 interface ShowcaseProps {
   subheading?: string;
   heading?: string;
-  variant?: 'default' | 'overlay';
+  variant?: 'default' | 'overlay-headline' | 'overlay-content';
   children?: React.ReactNode;
+  overlayContent?: React.ReactNode;
 }
 
 interface OverlayCopyProps {
-  subheading: string;
-  heading: string;
+  subheading?: string;
+  heading?: string;
+  children?: React.ReactNode;
 }
 
 export const Showcase = () => {
@@ -23,33 +26,43 @@ export const Showcase = () => {
       <ShowcaseParallax
         subheading="Engineering"
         heading="Product Development"
-        variant="overlay"
+        variant="overlay-content"
+        overlayContent={<Career />}
       >
-        {/* Add your custom content here */}
         <Skills />
       </ShowcaseParallax>
       
       <ShowcaseParallax
         subheading="Design"
         heading="Product Design"
-        variant="overlay"
+        variant="overlay-headline"
       >
-        {/* Add your custom content here */}
         <Skills />
       </ShowcaseParallax>
     </div>
   );
 };
 
-const ShowcaseParallax = ({ children, subheading, heading, variant = 'default' }: ShowcaseProps) => {
+const ShowcaseParallax = ({ 
+  children, 
+  subheading, 
+  heading, 
+  variant = 'default',
+  overlayContent 
+}: ShowcaseProps) => {
   return (
     <div>
       <div className="relative h-[200vh]">
         <StickyContent>
           {children}
         </StickyContent>
-        {variant === 'overlay' && subheading && heading && (
+        {variant === 'overlay-headline' && subheading && heading && (
           <ShowcaseOverlay heading={heading} subheading={subheading} />
+        )}
+        {variant === 'overlay-content' && overlayContent && (
+          <ShowcaseOverlay>
+            {overlayContent}
+          </ShowcaseOverlay>
         )}
       </div>
     </div>
@@ -69,7 +82,7 @@ const StickyContent = ({ children }: { children?: React.ReactNode }) => {
     ? window.matchMedia('(min-width: 768px)').matches 
     : false;
 
-  const scale = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [1, 0.85] : [1, 1]);
+  const scale = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [1, 0.80] : [1, 1]);
   const borderRadius = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [0, 48] : [0, 0]);
 
   return (
@@ -93,7 +106,7 @@ const StickyContent = ({ children }: { children?: React.ReactNode }) => {
 };
 
 
-const ShowcaseOverlay = ({ subheading, heading }: OverlayCopyProps) => {
+const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -110,12 +123,12 @@ const ShowcaseOverlay = ({ subheading, heading }: OverlayCopyProps) => {
       ref={targetRef}
       className="absolute bg-background left-0 top-0 flex h-screen w-full flex-col items-start justify-center text-inherit"
     >
-      <div className="max-w-5xl container px-2 md:px-6">
-      <p className="mb-2 text-start text-xl md:mb-4 md:text-3xl">
-        {subheading}
-      </p>
-      <p className="text-start text-4xl font-bold md:text-7xl">{heading}</p>
-      </div>
+      {children || (
+        <div className="w-full max-w-5xl mx-auto">
+          <h2 className="text-5xl font-medium mb-12">{heading}</h2>
+          <p className="text-2xl">{subheading}</p>
+        </div>
+      )}
     </motion.div>
   );
 };

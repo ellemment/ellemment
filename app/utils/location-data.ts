@@ -88,6 +88,19 @@ export function locationData(): LocationData[] {
       description: "Tropical beaches, volcano hikes, ancient temples, and friendly people",
       location: "C#",
       id: "skill-5"
+    },
+    {
+      gradient: {
+        angle: 45,
+        stops: [
+          { color: "#8EC5FC", position: 0 },
+          { color: "#E0C3FC", position: 100 }
+        ]
+      },
+      title: "Skill Six",
+      description: "Tropical beaches, volcano hikes, ancient temples, and friendly people",
+      location: "C++",
+      id: "skill-6"
     }
   ];
 }
