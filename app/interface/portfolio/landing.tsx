@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
-import Line from './message';
+
 
 // Animation variants remain the same
 const fadeUpVariants = {
@@ -77,12 +77,12 @@ const IntroOverlay = () => (
 );
 
 const Banner = () => (
-  <section className="h-[50vh] relative">
+  <section className="h-[50vh] max-md:h-[calc(var(--vh,1vh)*50)] relative">
     <motion.div 
       className="w-full h-full bg-white"
       initial={{ backgroundColor: "#ffffff" }}
     >
-      <div className="flex flex-col justify-center max-w-5xl mx-auto h-full px-2 md:px-6">
+      <div className="flex flex-col justify-center max-w-5xl mx-auto h-full px-2 md:px-6 border-b border-black">
         <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">
           <div className="h-14 mb-6">
             <span className="block antialiased">Product Engineer</span>
@@ -106,14 +106,14 @@ const Banner = () => (
 );
 
 const Content = () => (
-  <div className="h-[50vh] max-w-5xl mx-auto md:pt-6 px-2 md:px-0">
+  <div className="h-[50vh] max-md:h-[calc(var(--vh,1vh)*50)] max-w-5xl mx-auto md:pt-6 px-2 md:px-0">
     <div className="grid grid-cols-12 gap-y-8 md:gap-y-0">
       {/* Empty space - adjusted to ~35% */}
       <div className="hidden md:block col-span-4 lg:col-span-4" />
       
       {/* Content area - expanded to maintain golden ratio */}
       <div className="col-span-12 md:col-span-8 lg:col-span-8">
-        <div className="flex flex-col space-y-16 md:space-y-18">
+        <div className="flex flex-col space-y-16 md:space-y-18 max-md:pt-6">
           {/* For Everyone section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
@@ -168,21 +168,22 @@ interface LandingProps {
 const Landing = ({ dimensions }: LandingProps) => {
   useEffect(() => {
     const updateVh = () => {
-      const vh = dimensions.height * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
+      // Only update vh if we're on a mobile screen
+      if (window.innerWidth < 768) { // 768px is Tailwind's md breakpoint
+        const vh = dimensions.height * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      }
     };
 
     updateVh();
     window.addEventListener('resize', updateVh);
-    
     return () => window.removeEventListener('resize', updateVh);
   }, [dimensions.height]);
 
   return (
-    <div className="relative min-h-screen bg-white">
+    <div className="relative h-screen max-md:h-[calc(var(--vh,1vh)*100)] bg-white">
       <IntroOverlay />
       <Banner />
-      <Line />
       <Content />
     </div>
   );
