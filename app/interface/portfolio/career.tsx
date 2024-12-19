@@ -22,21 +22,21 @@ const projects: Project[] = [
     title2: "Product Engineer",
     src: "/logos.png",
     location: "Tokyo, Japan",
-    date: "2024"
+    date: "2023"
   },
   {
-    title1: "Senior",
-    title2: "Data Scientist",
+    title1: "Data Science",
+    title2: "Consultant",
     src: "/logos.png",
     location: "Tokyo, Japan",
-    date: "2024"
+    date: "2021"
   },
   {
-    title1: "Web",
-    title2: "Developer",
+    title1: "Software",
+    title2: "Engineer",
     src: "/logos.png",
     location: "Tokyo, Japan",
-    date: "2024"
+    date: "2016-21"
   },
 ];
 
@@ -143,7 +143,7 @@ export default function Career() {
   };
 
   return (
-    <div className="w-full bg-white" ref={containerRef}>
+    <div className="w-full bg-white overflow-x-hidden" ref={containerRef}>
       <div className="max-w-5xl mx-auto px-2 md:px-6 py-24 md:py-32 relative">
         {/* Background Title */}
         <motion.h2 
