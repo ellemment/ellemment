@@ -106,14 +106,14 @@ const Banner = () => (
 );
 
 const Content = () => (
-  <div className="max-w-5xl mx-auto md:pt-6 px-2 md:px-0">
+  <div className="h-[50vh] max-w-5xl mx-auto md:pt-6 px-2 md:px-0">
     <div className="grid grid-cols-12 gap-y-8 md:gap-y-0">
       {/* Empty space - adjusted to ~35% */}
       <div className="hidden md:block col-span-4 lg:col-span-4" />
       
       {/* Content area - expanded to maintain golden ratio */}
       <div className="col-span-12 md:col-span-8 lg:col-span-8">
-        <div className="flex flex-col space-y-16 md:space-y-24">
+        <div className="flex flex-col space-y-16 md:space-y-18">
           {/* For Everyone section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
@@ -131,7 +131,7 @@ const Content = () => (
           </div>
 
           {/* I help with section */}
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-6">
             <div className="md:w-24">
               <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb- md:mb-0 md:pt-1.5">
                 I Help With
