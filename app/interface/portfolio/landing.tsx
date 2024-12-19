@@ -46,7 +46,7 @@ const IntroOverlay = () => (
           initial="visible"
           animate="hidden"
         >
-          <h2 className="text-4xl md:text-5xl font-semibold leading-tight text-white">
+          <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight antialiased text-white">
             <div className="h-14 mb-6 overflow-hidden">
               <motion.span 
                 className="block"
@@ -58,7 +58,7 @@ const IntroOverlay = () => (
                 Product Engineer
               </motion.span>
             </div>
-            <div className="h-14 mb-2 overflow-hidden">
+            <div className="h-14 mb-1 overflow-hidden">
               <motion.span 
                 className="block"
                 variants={fadeUpVariants}
@@ -88,10 +88,17 @@ const Banner = () => (
             <span className="block antialiased">Product Engineer</span>
           </div>
         </h2>
-        <div className="w-64">
-          <a href="/" className="flex items-center text-sm font-normal group hover:opacity-80 transition-opacity">
-            Get in touch 
+        <div className="flex flex-row gap-4">
+        <div className="">
+          <a href="/" className="flex opacity-50 items-center text-sm font-normal group hover:opacity-80 transition-opacity">
+          Explore
           </a>
+        </div>
+        <div className="">
+          <a href="/" className="flex items-center text-sm font-normal group hover:opacity-80 transition-opacity">
+          Get in touch
+          </a>
+        </div>
         </div>
       </div>
     </motion.div>
@@ -110,7 +117,7 @@ const Content = () => (
           {/* For Everyone section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
-              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-2 md:mb-0 md:pt-1.5">
+              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-1 md:mb-0 md:pt-1.5">
                 For Everyone
               </p>
             </div>
@@ -126,7 +133,7 @@ const Content = () => (
           {/* I help with section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
-              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-4 md:mb-0 md:pt-1.5">
+              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb- md:mb-0 md:pt-1.5">
                 I Help With
               </p>
             </div>

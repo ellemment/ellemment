@@ -1,9 +1,9 @@
 // #app/interface/portfolio/showcase.tsx
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
-import Skills from "#app/interface/portfolio/skills";
 import Career from "#app/interface/portfolio/career";
+import Skills from "#app/interface/portfolio/skills";
 
 
 interface ShowcaseProps {
@@ -33,8 +33,8 @@ export const Showcase = () => {
       </ShowcaseParallax>
       
       <ShowcaseParallax
-        subheading="Design"
-        heading="Product Design"
+        subheading=" "
+        heading="Products Developed"
         variant="overlay-headline"
       >
         <Skills />
@@ -56,14 +56,16 @@ const ShowcaseParallax = ({
         <StickyContent>
           {children}
         </StickyContent>
-        {variant === 'overlay-headline' && subheading && heading && (
-          <ShowcaseOverlay heading={heading} subheading={subheading} />
-        )}
-        {variant === 'overlay-content' && overlayContent && (
-          <ShowcaseOverlay>
-            {overlayContent}
-          </ShowcaseOverlay>
-        )}
+        <AnimatePresence mode="sync">
+          {variant === 'overlay-headline' && subheading && heading && (
+            <ShowcaseOverlay heading={heading} subheading={subheading} />
+          )}
+          {variant === 'overlay-content' && overlayContent && (
+            <ShowcaseOverlay>
+              {overlayContent}
+            </ShowcaseOverlay>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -124,7 +126,7 @@ const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) =>
       className="absolute bg-background left-0 top-0 flex h-screen w-full flex-col items-start justify-center text-inherit"
     >
       {children || (
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto px-2 md:px-6">
           <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">{heading}</h2>
           <p className="text-2xl">{subheading}</p>
         </div>
