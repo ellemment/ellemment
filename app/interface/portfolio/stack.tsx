@@ -31,7 +31,7 @@ export const Stack = () => {
                         </div>
                     </div>
  
-                    <div className="w-full flex items-center justify-center  bg-secondary rounded-none min-h-[50vh] px-0 mb-2 md:mb-4">
+                    <div className="w-full flex items-center justify-center  bg-secondary rounded-none min-h-[50vh] px-0">
                         <div className="flex flex-col items-center justify-center gap-8">
                             <h3 className="text-3xl md:text-5xl text-center text-black font-semibold">ellemments</h3>
                         </div>
@@ -68,7 +68,7 @@ const StickyContent = ({ children }: { children: React.ReactNode }) => {
     return (
         <motion.div
             ref={targetRef}
-            className="sticky top-0 z-0 h-[100vh] overflow-hidden w-full max-w-7xl mx-auto px-4 py-4"
+            className="sticky top-0 z-0 h-[100vh] overflow-hidden w-full  px-4 py-4"
         >
             <motion.div
                 className="absolute inset-0"

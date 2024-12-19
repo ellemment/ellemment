@@ -1,115 +1,143 @@
-// #app/interface/portfolio/landing.tsx
-import { motion, useScroll, useTransform} from "framer-motion";
-import { Avatar, AvatarImage, AvatarFallback } from '#app/interface/shadcn/avatar'
+import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import Line from './message';
 
 
-interface CenterCardProps {
-  children: React.ReactNode;
-}
+const caseStudies = [
+  {
+    id: 1,
+    subtitle: "Curology",
+    title: "A custom formula for your skin's unique needs",
+    img: "curology-min"
+  },
+  {
+    id: 2,
+    subtitle: "Yourspace",
+    title: "Open space floor plans for you next venture",
+    img: "yourspace-min"
+  },
+  {
+    id: 3,
+    subtitle: "Lumin",
+    title: "For your best look ever",
+    img: "lumin-min"
+  }
+];
 
-
-export const SmoothScrollHero = () => {
-  return (
-    <div className="bg-background">
-      <Hero />
-    </div>
-  );
-};
-
-
-const GreetingPill = () => {
-  const { scrollY } = useScroll();
-
-  const contentOpacity = useTransform(
-    scrollY,
-    [0, window.innerHeight / 2],
-    [1, 0]
-  );
-
-  return (
-    <div className="w-full h-full max-w-5xl  container px-2 md:px-6 flex flex-col items-start justify-center">
-      {/* Available Now indicator */}
-      <motion.div 
-        className="flex items-center gap-2 mb-4 text-sm text-zinc-600"
-        style={{ opacity: contentOpacity }}
-      >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-        Available Now
-      </motion.div>
-
-      <div className="relative flex flex-col items-start">
-        {/* Replace expanding background with static background */}
-        <div 
-          className="absolute bg-[#0A84FF] backdrop-blur-sm min-w-[200px] min-h-[48px] rounded-full z-10"
-        />
-        
-        {/* Static content - highest z-index */}
-        <div className="relative z-20 flex items-center gap-2 px-2 py-2">
-          <Avatar className="!w-8 !h-8">
-            <AvatarImage
-              src="/marketing/avatar-dony.png"
-              alt="Dony Alior"
-              className="h-full w-full object-cover"
-            />
-            <AvatarFallback>TD</AvatarFallback>
-          </Avatar>
-          <span className="text-white text-md font-medium">
-            Hi! I'm Dony Alior
-          </span>
-        </div>
-
-        {/* Headline and Description - lowest z-index */}
+const IntroOverlay = () => (
+  <div className="fixed inset-0 z-50 pointer-events-none">
+    <motion.div 
+      className="h-full relative"
+      initial={false}
+    >
+      <motion.div
+        className="absolute h-full w-full bg-black"
+        initial={{ height: "100%" }}
+        animate={{ height: 0 }}
+        transition={{ 
+          duration: 2.4, 
+          ease: [0.87, 0, 0.13, 1],
+          delay: 2.0
+        }}
+      />
+      <div className="absolute top-0 w-full h-1/2">
         <motion.div 
-          className="relative z-[5] text-left mt-6"
-          style={{ opacity: contentOpacity }}
+          className="flex flex-col justify-center max-w-5xl px-2 md:px-6 mx-auto h-full"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ 
+            duration: 2.4, 
+            ease: [0.87, 0, 0.13, 1],
+            delay: 2.0
+          }}
         >
-          <h1 className="text-4xl md:text-7xl font-semibold text-zinc-700 dark:text-zinc-100 mb-8">
-            Product Engineer
-          </h1>
-          <p className="text-md md:text-xl font-normal text-zinc-900 dark:text-zinc-100">
-            Building Amazing Products.
-          </p>
+          <h2 className="text-5xl font-semibold leading-tight relative z-25 text-white overflow-hidden">
+            <div className="h-14 mb-4 relative overflow-hidden">
+              <motion.span 
+                className="block"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{
+                  duration: 1.2,
+                  ease: [0.87, 0, 0.13, 1],
+                  delay: 0.4
+                }}
+              >
+                Product Engineer
+              </motion.span>
+            </div>
+            <div className="h-14 mb-2 leading-tight relative z-25 text-white overflow-hidden">
+              <motion.span 
+                className="block"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{
+                  duration: 1.2,
+                  ease: [0.87, 0, 0.13, 1],
+                  delay: 0.6
+                }}
+              >
+                - Dony Alior
+              </motion.span>
+            </div>
+          </h2>
         </motion.div>
       </div>
-    </div>
-  );
-};
-
-const CenterCard = ({ children }: CenterCardProps) => {
-  const { scrollY } = useScroll();
-  
-  const opacity = useTransform(
-    scrollY,
-    [0, window.innerHeight / 2],
-    [1, 0]
-  );
-
-  return (
-    <motion.div
-      className="h-screen w-full flex items-center justify-center overflow-hidden"
-      style={{
-        opacity,
-      }}
-    >
-      {children}
     </motion.div>
+  </div>
+);
+
+const Banner = () => {
+  return (
+    <section className="h-[50vh] relative">
+      <motion.div 
+        className="w-full mx-auto h-full bg-white"
+        initial={{ backgroundColor: "#ffffff" }}
+      >
+        <div className="flex flex-col justify-center max-w-5xl px-2 md:px-6 mx-auto h-full">
+          <h2 className="text-5xl font-semibold leading-tight relative z-25">
+            <div className="h-14 mb-4 relative">
+              <span className="block">
+                Product Engineer
+              </span>
+            </div>
+        
+          </h2>
+          <div className="relative z-10 w-64">
+            <a href="/" className="flex items-center text-md font-medium group">
+              Get in touch 
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    </section>
   );
 };
 
-const Hero = () => {
+
+
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+interface LandingProps {
+  dimensions: Dimensions;
+}
+
+const Landing = ({ dimensions }: LandingProps) => {
+  useEffect(() => {
+    let vh = dimensions.height * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }, [dimensions.height]);
+
   return (
-    <div
-      className="relative w-full h-screen"
-    >
-      <CenterCard>
-        <GreetingPill />
-      </CenterCard>
-      <div className="absolute bottom-0 left-0 right-0 h-96 rounded-t-3xl to-zinc-950" />
+    <div className="relative h-screen bg-white">
+      <IntroOverlay />
+      <Banner />
+      <Line />
     </div>
   );
 };
 
-
+export default Landing;
