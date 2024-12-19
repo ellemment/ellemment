@@ -58,7 +58,7 @@ const IntroOverlay = () => (
                 Product Engineer
               </motion.span>
             </div>
-            <div className="h-14 mb-2 overflow-hidden">
+            <div className="h-14 mb-1 overflow-hidden">
               <motion.span 
                 className="block"
                 variants={fadeUpVariants}
@@ -110,7 +110,7 @@ const Content = () => (
           {/* For Everyone section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
-              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-2 md:mb-0 md:pt-1.5">
+              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-1 md:mb-0 md:pt-1.5">
                 For Everyone
               </p>
             </div>
@@ -126,7 +126,7 @@ const Content = () => (
           {/* I help with section */}
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             <div className="md:w-24">
-              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb-4 md:mb-0 md:pt-1.5">
+              <p className="text-sm font-medium text-gray-600 antialiased tracking-tight leading-relaxed mb- md:mb-0 md:pt-1.5">
                 I Help With
               </p>
             </div>

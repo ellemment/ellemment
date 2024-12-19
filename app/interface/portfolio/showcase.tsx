@@ -124,7 +124,7 @@ const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) =>
       className="absolute bg-background left-0 top-0 flex h-screen w-full flex-col items-start justify-center text-inherit"
     >
       {children || (
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto px-2 md:px-6">
           <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">{heading}</h2>
           <p className="text-2xl">{subheading}</p>
         </div>
