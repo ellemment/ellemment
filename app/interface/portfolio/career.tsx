@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface Project {
   title1: string;
@@ -58,6 +58,7 @@ const imageAnimation = {
 
 export default function Career() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -66,6 +67,27 @@ export default function Career() {
 
   const headerScale = useTransform(scrollYProgress, [0, 0.1], [1.2, 0.8]);
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [0.15, 0.08]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Header text based on screen size
+  const [interactionText, setInteractionText] = useState('Hover to explore');
+
+  useEffect(() => {
+    const updateInteractionText = () => {
+      setInteractionText(window.innerWidth <= 768 ? 'Click to reveal' : 'Hover to explore');
+    };
+
+    updateInteractionText();
+    window.addEventListener('resize', updateInteractionText);
+    return () => window.removeEventListener('resize', updateInteractionText);
+  }, []);
+
+  if (!isMounted) {
+    return null; // or a loading state
+  }
 
   const ProjectItem = ({ project, index }: { project: Project; index: number }) => {
     const isActive = activeIndex === index;
@@ -142,7 +164,7 @@ export default function Career() {
               Background
             </h2>
             <p className="text-sm text-gray-500">
-              {window.innerWidth <= 768 ? 'Click to reveal' : 'Hover to explore'}
+              {interactionText}
             </p>
           </div>
 

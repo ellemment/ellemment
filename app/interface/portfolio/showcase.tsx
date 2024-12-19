@@ -1,9 +1,9 @@
 // #app/interface/portfolio/showcase.tsx
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
-import Skills from "#app/interface/portfolio/skills";
 import Career from "#app/interface/portfolio/career";
+import Skills from "#app/interface/portfolio/skills";
 
 
 interface ShowcaseProps {
@@ -33,8 +33,8 @@ export const Showcase = () => {
       </ShowcaseParallax>
       
       <ShowcaseParallax
-        subheading="Design"
-        heading="Product Design"
+        subheading=" "
+        heading="Products Developed"
         variant="overlay-headline"
       >
         <Skills />
@@ -56,14 +56,16 @@ const ShowcaseParallax = ({
         <StickyContent>
           {children}
         </StickyContent>
-        {variant === 'overlay-headline' && subheading && heading && (
-          <ShowcaseOverlay heading={heading} subheading={subheading} />
-        )}
-        {variant === 'overlay-content' && overlayContent && (
-          <ShowcaseOverlay>
-            {overlayContent}
-          </ShowcaseOverlay>
-        )}
+        <AnimatePresence mode="sync">
+          {variant === 'overlay-headline' && subheading && heading && (
+            <ShowcaseOverlay heading={heading} subheading={subheading} />
+          )}
+          {variant === 'overlay-content' && overlayContent && (
+            <ShowcaseOverlay>
+              {overlayContent}
+            </ShowcaseOverlay>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

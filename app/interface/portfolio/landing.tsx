@@ -46,7 +46,7 @@ const IntroOverlay = () => (
           initial="visible"
           animate="hidden"
         >
-          <h2 className="text-4xl md:text-5xl font-semibold leading-tight text-white">
+          <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight antialiased text-white">
             <div className="h-14 mb-6 overflow-hidden">
               <motion.span 
                 className="block"
@@ -88,10 +88,17 @@ const Banner = () => (
             <span className="block antialiased">Product Engineer</span>
           </div>
         </h2>
-        <div className="w-64">
-          <a href="/" className="flex items-center text-sm font-normal group hover:opacity-80 transition-opacity">
-            Get in touch 
+        <div className="flex flex-row gap-4">
+        <div className="">
+          <a href="/" className="flex opacity-50 items-center text-sm font-normal group hover:opacity-80 transition-opacity">
+          Explore
           </a>
+        </div>
+        <div className="">
+          <a href="/" className="flex items-center text-sm font-normal group hover:opacity-80 transition-opacity">
+          Get in touch
+          </a>
+        </div>
         </div>
       </div>
     </motion.div>

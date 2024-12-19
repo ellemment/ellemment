@@ -23,11 +23,16 @@ const debounce = <F extends (...args: any[]) => any>(
 
 export default function IndexRoute() {
   const [dimensions, setDimensions] = useState({
-    height: typeof window !== 'undefined' ? window.innerHeight : 800,
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200
+    height: 800,
+    width: 1200
   });
 
   useEffect(() => {
+    setDimensions({
+      height: window.innerHeight,
+      width: window.innerWidth
+    });
+
     const debouncedHandleResize = debounce(() => {
       setDimensions({
         height: window.innerHeight,

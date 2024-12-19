@@ -87,7 +87,7 @@ export const useAnimation = (
     return () => {
       timeline.kill();
     };
-  }, [completeCallback, ...dependencies]);
+  }, [completeCallback, dependencies]);
 
   return isAnimating;
 };

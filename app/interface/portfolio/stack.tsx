@@ -21,8 +21,8 @@ export const Stack = () => {
         <div>
             <StackParallax
                 variant="overlay"
-                subheading="Built with"
-                heading="ellemments Stack by Dony"
+                subheading=" "
+                heading="Built with ellemments"
             >
                 <div className="h-svh w-full flex flex-col items-end">
                     <div className="h-full w-full flex flex-col justify-center">
