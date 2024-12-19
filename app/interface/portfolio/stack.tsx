@@ -104,7 +104,7 @@ const StackOverlay = ({ subheading, heading }: OverlayCopyProps) => {
                 <p className="mb-2 text-start text-xl md:mb-4 md:text-3xl">
                     {subheading}
                 </p>
-                <p className="text-start text-4xl font-bold md:text-7xl">{heading}</p>
+                <p className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">{heading}</p>
             </div>
         </motion.div>
     );

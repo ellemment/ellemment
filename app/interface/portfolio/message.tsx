@@ -1,7 +1,7 @@
 // #app/interface/portfolio/message.tsx
 
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 interface MouseEvent {
   movementY: number;
@@ -9,32 +9,26 @@ interface MouseEvent {
 }
 
 export default function Line() {
-  // Define a reference to an SVGPathElement
   const path = useRef<SVGPathElement>(null);
-
-  // Initialize progress, x, time, and reqId variables
-  let progress = 0;
-  let x = 0.5;
+  const progressRef = useRef(0);
+  const xRef = useRef(0.5);
   let time = Math.PI / 2;
   let reqId: number | null = null;
 
-  // Use the useEffect hook to set the path on component mount
-  useEffect(() => {
-    setPath(progress);
-  }, []);
-
-  // Define a function to set the path of the SVG element
-  const setPath = (progress: number) => {
-    // Get the width of the window
+  // Define setPath at component level using useCallback
+  const setPath = useCallback((progress: number) => {
     const width = window.innerWidth * 1;
-
-    // Set the "d" attribute of the SVG path element using a quadratic Bézier curve
     path.current?.setAttributeNS(
       null,
       "d",
-      `M0 250 Q${width * x} ${250 + progress}, ${width} 250`
+      `M0 250 Q${width * xRef.current} ${250 + progress}, ${width} 250`
     );
-  };
+  }, []);
+
+  // Initial setup
+  useEffect(() => {
+    setPath(progressRef.current);
+  }, [setPath]);
 
   // Define a linear interpolation function
   const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
@@ -58,9 +52,9 @@ export default function Line() {
 
     // If the bounding rectangle exists, update x and progress and set the path
     if (pathBound) {
-      x = (clientX - pathBound.left) / pathBound.width;
-      progress += movementY;
-      setPath(progress);
+      xRef.current = (clientX - pathBound.left) / pathBound.width;
+      progressRef.current += movementY;
+      setPath(progressRef.current);
     }
   };
 
@@ -73,10 +67,10 @@ export default function Line() {
   // Define a function to animate out
   const animateOut = () => {
     // Calculate newProgress using sine of time
-    const newProgress = progress * Math.sin(time);
+    const newProgress = progressRef.current * Math.sin(time);
 
     // Update progress using linear interpolation towards zero
-    progress = lerp(progress, 0, 0.025);
+    progressRef.current = lerp(progressRef.current, 0, 0.025);
 
     // Increment time by 0.2
     time += 0.2;
@@ -86,7 +80,7 @@ export default function Line() {
 
     // If progress is greater than a threshold, request another animation frame,
     // otherwise reset the animation.
-    if (Math.abs(progress) > 0.75) {
+    if (Math.abs(progressRef.current) > 0.75) {
       reqId = requestAnimationFrame(animateOut);
     } else {
       resetAnimation();
@@ -96,14 +90,13 @@ export default function Line() {
   // Define a function to reset the animation variables
   const resetAnimation = () => {
     time = Math.PI / 2;
-    progress = 0;
+    progressRef.current = 0;
   };
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="flex flex-col items-end  w-fit">
-        <div className="relative w-full h-px mb-5">
-          <div
+      <div className="relative w-full h-px mb-5">
+        <div
           onMouseEnter={() => {
             manageMouseEnter();
           }}
@@ -122,40 +115,6 @@ export default function Line() {
           ></path>
         </svg>
       </div>
-      <div className="flex flex-col items-end w-5/6">
-        <div className="flex justify-end">
-          <p className="text-sm mr-10">Hi Everyone,</p>
-          <p className="text-4xl w-4/6">
-            Combining unique design and rich technology, we build digital
-            products exactly as they were designed, without shortcuts or
-            simplifications.
-          </p> 
-        </div>
-        <div className="flex mt-12 md:mt-24">
-          <p className="text-sm mr-12">I can help with </p>
-          <div className="flex flex-wrap gap-2.5 w-4/6">
-            <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              E-commerce
-            </p>
-            <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              Finance
-            </p>
-                <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              Education
-            </p>
-            <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              Social
-            </p>
-            <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              Entertainment
-            </p>
-            <p className="border border-black rounded-full text-sm py-2.5 px-3">
-              Medicine
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
     </div>
   );
 }

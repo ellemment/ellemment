@@ -125,7 +125,7 @@ const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) =>
     >
       {children || (
         <div className="w-full max-w-5xl mx-auto">
-          <h2 className="text-5xl font-medium mb-12">{heading}</h2>
+          <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">{heading}</h2>
           <p className="text-2xl">{subheading}</p>
         </div>
       )}
