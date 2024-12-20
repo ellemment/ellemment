@@ -56,7 +56,7 @@ const SliderButton: FC<{
 }> = React.memo(({ children, handleClick, ariaLabel }) => (
   <button
     aria-label={ariaLabel}
-    className="flex h-14 w-14 items-center justify-center rounded-full border-[1px] border-gray-300 text-gray-900 transition-all duration-300 ease-in-out hover:bg-white hover:text-black active:bg-white active:text-black focus:bg-white focus:text-black focus-visible:outline-none"
+    className="flex h-14 w-14 items-center justify-center rounded-full border-[1px] border-gray-300 text-white transition-all duration-300 ease-in-out hover:bg-white hover:text-black active:bg-white active:text-black focus:bg-white focus:text-black focus-visible:outline-none group"
     onClick={handleClick}
   >
     {children}
@@ -157,10 +157,10 @@ const Controls: FC<ControlsProps> = React.memo(({
   return (
     <div className="flex items-center gap-3 py-10 md:py-5 px-0 md:px-1 max-md:pr-2 md:pr-6">
       <SliderButton handleClick={handlePrev} ariaLabel="Previous slide">
-        <IoIosArrowBack className="text-xl text-white transition-all duration-300 ease-in-out hover:text-black active:text-black focus:text-black focus-visible:outline-none" />
+        <IoIosArrowBack className="text-xl" />
       </SliderButton>
       <SliderButton handleClick={handleNext} ariaLabel="Next slide">
-        <IoIosArrowForward className="text-xl text-white transition-all duration-300 ease-in-out hover:text-black active:text-black focus:text-black focus-visible:outline-none" />
+        <IoIosArrowForward className="text-xl" />
       </SliderButton>
       <Progress curIndex={currentSlideData.index} length={sliderData.length} />
     </div>
@@ -330,7 +330,7 @@ const DraggableSlides: FC<{
             key="content"
             className="absolute z-20 h-full w-full"
           >
-            <div className="flex h-full w-full grid-cols-10 flex-col md:grid">
+            <div className="flex h-full w-full grid-cols-10 xl:pl-28 2xl:pl-32 flex-col md:grid">
               <div className="col-span-4 mb-3 flex h-full flex-1 flex-col justify-end px-5 md:mb-0 md:justify-center md:px-10 max-md:py-10">
                 <OtherInfo data={transitionData || currentSlideData.data} />
               </div>
