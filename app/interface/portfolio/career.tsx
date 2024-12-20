@@ -1,8 +1,9 @@
-// #app/interface/portfolio/showcase.tsx
+// #app/interface/portfolio/career.tsx
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import  CareerCompany  from "#app/interface/portfolio/career-section";
+import { NoiseFilter } from "#app/interface/shared/noise-filter";
 
 
 interface ShowcaseProps {
@@ -79,22 +80,34 @@ const CareerContent = ({ children }: { children?: React.ReactNode }) => {
   const borderRadius = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [0, 48] : [0, 0]);
 
   return (
-    <motion.div
-      style={{
-        scale,
-        borderRadius,
-      }}
-      ref={targetRef}
-      className="sticky top-0 z-0 overflow-hidden h-screen bg-[#AEAEB2]"
-    >
-      {children}
+    <>
+      <NoiseFilter />
       <motion.div
-        className="absolute inset-0"
         style={{
-          clipPath: `inset(${Math.min(scrollYProgress.get() * 2 * 100, 100)}% 0 0 0)`,
+          scale,
+          borderRadius,
         }}
-      />
-    </motion.div>
+        ref={targetRef}
+        className="sticky top-0 z-0 overflow-hidden h-screen"
+      >
+        <div 
+          className="absolute inset-0" 
+          style={{ 
+            backgroundColor: '#AEAEB2',
+            filter: 'url(#noise)',
+            opacity: 0.8,
+            mixBlendMode: 'multiply'
+          }}
+        />
+        {children}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            clipPath: `inset(${Math.min(scrollYProgress.get() * 2 * 100, 100)}% 0 0 0)`,
+          }}
+        />
+      </motion.div>
+    </>
   );
 };
 
