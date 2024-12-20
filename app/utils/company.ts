@@ -19,7 +19,7 @@ export interface LocationData {
 const defaultLocation: LocationData = {
   background: {
     type: 'solid',
-    colors: '#30D158',
+    colors: ['rgba(0,0,255,1)', 'rgba(12,226,239,1)'],
     noiseOptions: {
       baseFrequency: 0.6,
       numOctaves: 3,
