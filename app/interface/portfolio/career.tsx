@@ -2,8 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
-import  CareerCompany  from "#app/interface/portfolio/company";
-import Skills from "#app/interface/portfolio/skills";
+import  CareerCompany  from "#app/interface/portfolio/career-section";
 
 
 interface ShowcaseProps {
@@ -23,19 +22,19 @@ interface OverlayCopyProps {
 export const Career = () => {
   return (
     <div className="bg-background">
-      <ShowcaseParallax
+      <CareerParallax
         subheading=" "
         heading="Background"
         variant="overlay-headline"
     
       >
         <CareerCompany />
-      </ShowcaseParallax>
+      </CareerParallax>
     </div>
   );
 };
 
-const ShowcaseParallax = ({ 
+const CareerParallax = ({ 
   children, 
   subheading, 
   heading, 
@@ -45,17 +44,17 @@ const ShowcaseParallax = ({
   return (
     <div>
       <div className="relative h-[200vh]">
-        <StickyContent>
+        <CareerContent>
           {children}
-        </StickyContent>
+        </CareerContent>
         <AnimatePresence mode="sync">
           {variant === 'overlay-headline' && subheading && heading && (
-            <ShowcaseOverlay heading={heading} subheading={subheading} />
+            <CareerOverlay heading={heading} subheading={subheading} />
           )}
           {variant === 'overlay-content' && overlayContent && (
-            <ShowcaseOverlay>
+            <CareerOverlay>
               {overlayContent}
-            </ShowcaseOverlay>
+            </CareerOverlay>
           )}
         </AnimatePresence>
       </div>
@@ -65,7 +64,7 @@ const ShowcaseParallax = ({
 
 
 
-const StickyContent = ({ children }: { children?: React.ReactNode }) => {
+const CareerContent = ({ children }: { children?: React.ReactNode }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -100,7 +99,7 @@ const StickyContent = ({ children }: { children?: React.ReactNode }) => {
 };
 
 
-const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
+const CareerOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,

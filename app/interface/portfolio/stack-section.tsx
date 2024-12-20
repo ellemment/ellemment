@@ -1,8 +1,10 @@
-import { AnimatePresence, motion, type Variants, useMotionValue, useTransform, type PanInfo , useDragControls } from "framer-motion";
-import React, { useCallback, useMemo, useRef, useState, type FC } from "react";
+// #app/interface/portfolio/stack-section.tsx
+
+import { AnimatePresence, motion, type Variants, useMotionValue,  type PanInfo  } from "framer-motion";
+import React, { useCallback, useMemo, useRef,  type FC } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { type LocationData, locationData, initialData } from "#app/utils/company";
-import { CompanyCard } from "./company-card";
+import CareerCard from "./career-card";
 
 // Constants
 const TRANSITION_DELAY = 500;
@@ -255,7 +257,7 @@ const DraggableSlides: FC<{
               key={item.id} 
               className="flex-shrink-0 transform-gpu"
             >
-              <CompanyCard
+              <CareerCard
                 id={item.id}
                 title={item.title}
                 description={item.description}
@@ -271,7 +273,7 @@ const DraggableSlides: FC<{
   });
   DraggableSlides.displayName = "DraggableSlides";
   
-  const CareerCompany: FC = () => {
+  const StackSection: FC = () => {
     const [data, setData] = React.useState<LocationData[]>(() => locationData().slice(1));
     const [transitionData, setTransitionData] = React.useState<LocationData>(initialData);
     const [currentSlideData, setCurrentSlideData] = React.useState<CurrentSlideData>({
@@ -359,4 +361,4 @@ const DraggableSlides: FC<{
     );
   };
   
-  export default CareerCompany;
+  export default StackSection;

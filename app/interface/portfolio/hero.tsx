@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
-import Line from './message';
+import Line from '#app/interface/shared/line';
 
 // Animation variants remain the same
 const fadeUpVariants = {
@@ -161,11 +161,11 @@ interface Dimensions {
   height: number;
 }
 
-interface LandingProps {
+interface HeroProps {
   dimensions: Dimensions;
 }
 
-const Landing = ({ dimensions }: LandingProps) => {
+const Hero = ({ dimensions }: HeroProps) => {
   useEffect(() => {
     const updateVh = () => {
       const vh = dimensions.height * 0.01;
@@ -188,4 +188,4 @@ const Landing = ({ dimensions }: LandingProps) => {
   );
 };
 
-export default Landing;
+export default Hero;
