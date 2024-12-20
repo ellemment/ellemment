@@ -61,7 +61,7 @@ export default function PageLoader() {
             variants={slideUp} 
             initial="initial" 
             exit="exit" 
-            className="h-screen w-screen flex items-center justify-center fixed z-[99] bg-background"
+            className="h-screen w-screen flex items-center justify-center fixed z-[99] bg-white"
         >
             {dimension.width > 0 && 
             <>
@@ -69,7 +69,7 @@ export default function PageLoader() {
                     variants={opacity} 
                     initial="initial" 
                     animate="enter"
-                    className="flex text-white text-[42px] font-medium items-center absolute z-[1] antialiased font-sans"
+                    className="flex text-black text-[30px] font-medium items-center absolute z-[1] suantialiased"
                 >
                     {words[index]}
                 </motion.p>
@@ -78,7 +78,7 @@ export default function PageLoader() {
                         variants={curve}
                         initial="initial"
                         exit="exit"
-                        className="fill-black"
+                        className="fill-white"
                     ></motion.path>
                 </svg>
             </>
