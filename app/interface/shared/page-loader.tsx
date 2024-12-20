@@ -69,7 +69,7 @@ export default function PageLoader() {
                     variants={opacity} 
                     initial="initial" 
                     animate="enter"
-                    className="flex text-black dark:text-white text-[42px] font-medium items-center absolute z-[1] antialiased font-sans"
+                    className="flex text-white text-[42px] font-medium items-center absolute z-[1] antialiased font-sans"
                 >
                     {words[index]}
                 </motion.p>
@@ -78,7 +78,7 @@ export default function PageLoader() {
                         variants={curve}
                         initial="initial"
                         exit="exit"
-                        className="fill-white dark:fill-black"
+                        className="fill-black"
                     ></motion.path>
                 </svg>
             </>
