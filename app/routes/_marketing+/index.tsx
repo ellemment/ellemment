@@ -48,11 +48,12 @@ export default function IndexRoute() {
   }, []);
 
   return (
-    <div className='min-h-screen bg-black'>
+    <>
       <Hero dimensions={dimensions} />
       <Career />
       <Skills />
       <Stack />
-    </div>
+      <div className='h-25vh'></div>
+    </>
   );
 }
