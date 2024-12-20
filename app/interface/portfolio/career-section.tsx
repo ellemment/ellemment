@@ -4,6 +4,7 @@ import { AnimatePresence, motion, type Variants, useMotionValue,  type PanInfo  
 import React, { useCallback, useMemo, useRef,  type FC } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { NoiseFilter } from "#app/interface/shared/noise-filter";
+import { NoiseOverlay } from "#app/utils/grainy";
 import { type LocationData, locationData, initialData } from "#app/utils/company";
 import CareerCard from "./career-card";
 
@@ -86,8 +87,15 @@ const Background: FC<{
               : type === 'gradient'
               ? `linear-gradient(45deg, ${(colors as [string, string])[0]}, ${(colors as [string, string])[1]})`
               : colors as string,
+          }}
+        />
+        <div 
+          className="absolute inset-0"
+          style={{
             filter: 'url(#noise)',
-            opacity: 0.95,
+            opacity: 0.25,
+            mixBlendMode: 'overlay',
+            backgroundColor: '#000000',
           }}
         />
       </div>

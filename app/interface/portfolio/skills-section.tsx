@@ -3,9 +3,9 @@
 import { AnimatePresence, motion, type Variants, useMotionValue,  type PanInfo  } from "framer-motion";
 import React, { useCallback, useMemo, useRef,  type FC } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { NoiseFilter } from "#app/interface/shared/noise-filter";
 import { type LocationData, locationData, initialData } from "#app/utils/company";
 import CareerCard from "./career-card";
-import { NoiseFilter } from "#app/interface/shared/noise-filter";
 
 
 // Constants

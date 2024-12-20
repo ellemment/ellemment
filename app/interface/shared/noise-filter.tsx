@@ -8,8 +8,8 @@ export const NoiseFilter = () => (
       <filter id="noise">
         <feTurbulence 
           type="fractalNoise" 
-          baseFrequency="3.2 1.2"
-          numOctaves="5"
+          baseFrequency="0.8"
+          numOctaves="4"
           seed="1"
           stitchTiles="stitch"
           result="noise"
@@ -20,13 +20,13 @@ export const NoiseFilter = () => (
           values="1 0 0 0 0
                  1 0 0 0 0
                  1 0 0 0 0
-                 0 0 0 0.18 0"
+                 0 0 0 0.25 0"
           result="monoNoise"
         />
         <feDisplacementMap
           in="SourceGraphic"
           in2="noise"
-          scale="5"
+          scale="8"
           result="displaced"
         />
         <feBlend
