@@ -2,7 +2,6 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
-import Career from "#app/interface/portfolio/career";
 import Skills from "#app/interface/portfolio/skills";
 
 
@@ -24,17 +23,17 @@ export const Showcase = () => {
   return (
     <div className="bg-background">
       <ShowcaseParallax
-        subheading="Engineering"
-        heading="Product Development"
-        variant="overlay-content"
-        overlayContent={<Career />}
+        subheading=" "
+        heading="Stack"
+        variant="overlay-headline"
+    
       >
         <Skills />
       </ShowcaseParallax>
       
       <ShowcaseParallax
         subheading=" "
-        heading="Products Developed"
+        heading="Projects"
         variant="overlay-headline"
       >
         <Skills />

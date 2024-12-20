@@ -1,9 +1,9 @@
 // #app/routes/_marketing+/index.tsx
 
 import { useState, useEffect } from 'react';
+import { Career } from '#app/interface/portfolio/career';
 import Landing from '#app/interface/portfolio/landing';
 import { Showcase } from '#app/interface/portfolio/showcase';
-import { Stack } from '#app/interface/portfolio/stack';
 
 // Utility function for debounce with proper TypeScript types
 const debounce = <F extends (...args: any[]) => any>(
@@ -49,8 +49,9 @@ export default function IndexRoute() {
   return (
     <div className='min-h-screen bg-black'>
       <Landing dimensions={dimensions} />
+      <Career />
       <Showcase />
-      <Stack />
+  
     </div>
   );
 }
