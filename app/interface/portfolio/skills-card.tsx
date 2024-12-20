@@ -2,10 +2,8 @@ import { AnimatePresence, motion, type Variants, type HTMLMotionProps } from "fr
 import React, { useState, type FC } from "react";
 import { Icon } from '#app/interface/foundations/icons/icon';
 
-const ANIMATION_DELAY = 0.5;
-const ANIMATION_EASE = [0.455, 0.03, 0.515, 0.955];
 
-interface CompanyCardProps {
+interface SkillsCardProps {
   id: string;
   color: string;
   title: string;
@@ -14,11 +12,10 @@ interface CompanyCardProps {
   location?: string;
 }
 
-export const CompanyCard: FC<CompanyCardProps & HTMLMotionProps<"div">> = ({
+export const SkillsCard: FC<SkillsCardProps & HTMLMotionProps<"div">> = ({
   id,
   color,
   title,
-  description = "",
   detailContent = "",
   location,
   ...props
@@ -147,7 +144,6 @@ interface ToggleButtonProps {
 }
 
 const ToggleButton: FC<ToggleButtonProps> = ({
-  color,
   showDetail,
   onClick,
 }) => {
@@ -183,4 +179,4 @@ const ToggleButton: FC<ToggleButtonProps> = ({
   );
 };
 
-export default CompanyCard;
+export default SkillsCard;

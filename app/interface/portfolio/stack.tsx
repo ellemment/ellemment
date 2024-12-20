@@ -2,8 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
-import Skills from "#app/interface/portfolio/skills";
-
+import StackSection from "#app/interface/portfolio/stack-section";
 
 interface ShowcaseProps {
   subheading?: string;
@@ -22,21 +21,19 @@ interface OverlayCopyProps {
 export const Stack = () => {
   return (
     <div className="bg-background">
-      <ShowcaseParallax
+    <StackParallax
         subheading=" "
-        heading="built with"
+        heading="Background"
         variant="overlay-headline"
     
       >
-        <Skills />
-      </ShowcaseParallax>
-      
-
+        <StackSection />
+      </StackParallax>
     </div>
   );
 };
 
-const ShowcaseParallax = ({ 
+const StackParallax = ({ 
   children, 
   subheading, 
   heading, 
@@ -46,17 +43,17 @@ const ShowcaseParallax = ({
   return (
     <div>
       <div className="relative h-[200vh]">
-        <StickyContent>
+        <StackContent>
           {children}
-        </StickyContent>
+        </StackContent>
         <AnimatePresence mode="sync">
           {variant === 'overlay-headline' && subheading && heading && (
-            <ShowcaseOverlay heading={heading} subheading={subheading} />
+            <StackOverlay heading={heading} subheading={subheading} />
           )}
           {variant === 'overlay-content' && overlayContent && (
-            <ShowcaseOverlay>
+            <StackOverlay>
               {overlayContent}
-            </ShowcaseOverlay>
+            </StackOverlay>
           )}
         </AnimatePresence>
       </div>
@@ -66,7 +63,7 @@ const ShowcaseParallax = ({
 
 
 
-const StickyContent = ({ children }: { children?: React.ReactNode }) => {
+const StackContent = ({ children }: { children?: React.ReactNode }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -101,7 +98,7 @@ const StickyContent = ({ children }: { children?: React.ReactNode }) => {
 };
 
 
-const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
+const StackOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,

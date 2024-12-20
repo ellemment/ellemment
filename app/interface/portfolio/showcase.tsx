@@ -1,136 +1,228 @@
-// #app/interface/portfolio/showcase.tsx
+// #app/interface/sections/showcase.tsx
 
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useRef } from "react";
-import Skills from "#app/interface/portfolio/skills";
+import { type ReactNode } from "react";
+import { ElementCard } from "#app/interface/components/composite/element-card";
+import { ElementCarousel } from "#app/interface/components/composite/element-carousel";
+import { ElementSection } from "#app/interface/components/composite/element-section";
+import {
+  skillData,
+  careerData,
+  stackData,
+  type SkillData,
+  type CareerData,
+  type StackData,
+} from "#app/utils/element-data";
 
+// Generic type for showcase data
+type ShowcaseDataType = SkillData | CareerData | StackData;
+type ShowcaseVariant = 'skills' | 'career' | 'stack';
 
-interface ShowcaseProps {
-  subheading?: string;
-  heading?: string;
-  variant?: 'default' | 'overlay-headline' | 'overlay-content';
-  children?: React.ReactNode;
-  overlayContent?: React.ReactNode;
+interface ShowcaseSectionProps {
+  variant?: ShowcaseVariant;
+  backgroundColor?: string;
+  className?: string;
 }
 
-interface OverlayCopyProps {
-  subheading?: string;
-  heading?: string;
-  children?: React.ReactNode;
+interface ShowcaseConfig<T extends ShowcaseDataType> {
+  items: T[];
+  renderItem: (item: T) => ReactNode;
+  renderInfo?: (item: T) => ReactNode;
+  title: string;
+  subtitle: string;
 }
 
-export const Showcase = () => {
-  return (
-    <div className="bg-background">
-      <ShowcaseParallax
-        subheading=" "
-        heading="Stack"
-        variant="overlay-headline"
-    
-      >
-        <Skills />
-      </ShowcaseParallax>
-      
-      <ShowcaseParallax
-        subheading=" "
-        heading="Projects"
-        variant="overlay-headline"
-      >
-        <Skills />
-      </ShowcaseParallax>
-    </div>
-  );
+// Create type-safe render functions
+const renderSkillCard = (item: ShowcaseDataType): ReactNode => {
+  if ('skill' in item) {
+    return (
+      <ElementCard
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        metadata={item.skill}
+        color={item.color}
+        size="medium"
+      />
+    );
+  }
+  return null;
 };
 
-const ShowcaseParallax = ({ 
-  children, 
-  subheading, 
-  heading, 
-  variant = 'default',
-  overlayContent 
-}: ShowcaseProps) => {
-  return (
-    <div>
-      <div className="relative h-[200vh]">
-        <StickyContent>
-          {children}
-        </StickyContent>
-        <AnimatePresence mode="sync">
-          {variant === 'overlay-headline' && subheading && heading && (
-            <ShowcaseOverlay heading={heading} subheading={subheading} />
-          )}
-          {variant === 'overlay-content' && overlayContent && (
-            <ShowcaseOverlay>
-              {overlayContent}
-            </ShowcaseOverlay>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-};  
+const renderCareerCard = (item: ShowcaseDataType): ReactNode => {
+  if ('company' in item) {
+    return (
+      <ElementCard
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        metadata={`${item.company} • ${item.location}`}
+        detailContent={item.responsibilities.join("\n")}
+        color={item.color}
+        size="large"
+      />
+    );
+  }
+  return null;
+};
 
-
-
-const StickyContent = ({ children }: { children?: React.ReactNode }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "center start"],
-  });
-
-  const isLargeScreen = typeof window !== 'undefined' 
-    ? window.matchMedia('(min-width: 768px)').matches 
-    : false;
-
-  const scale = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [1, 0.80] : [1, 1]);
-  const borderRadius = useTransform(scrollYProgress, [0.5, 1], isLargeScreen ? [0, 48] : [0, 0]);
-
-  return (
-    <motion.div
-      style={{
-        scale,
-        borderRadius,
-      }}
-      ref={targetRef}
-      className="sticky top-0 z-0 overflow-hidden h-screen bg-[#AEAEB2]"
-    >
-      {children}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          clipPath: `inset(${Math.min(scrollYProgress.get() * 2 * 100, 100)}% 0 0 0)`,
+const renderStackCard = (item: ShowcaseDataType): ReactNode => {
+  if ('technologies' in item) {
+    return (
+      <ElementCard
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        metadata={item.category}
+        color={item.color}
+        size="medium"
+        renderContent={{
+          expanded: () => (
+            <div className="space-y-4 text-white">
+              <h3 className="text-lg font-medium">Technologies</h3>
+              <div className="flex flex-wrap gap-2">
+                {item.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-white bg-opacity-20 px-3 py-1 text-sm"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4">
+                <div className="flex justify-between text-sm">
+                  <span>Proficiency</span>
+                  <span>{item.proficiency}%</span>
+                </div>
+                <div className="mt-2 h-2 rounded-full bg-white bg-opacity-20">
+                  <div
+                    className="h-full rounded-full bg-white transition-all duration-300"
+                    style={{ width: `${item.proficiency}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          ),
         }}
       />
-    </motion.div>
-  );
+    );
+  }
+  return null;
 };
 
+// Update info panel render functions
+const renderCareerInfo = (item: ShowcaseDataType): ReactNode => {
+  if ('company' in item) {
+    return (
+      <div className="space-y-2">
+        <span className="text-sm uppercase tracking-wider opacity-80">
+          {item.period}
+        </span>
+        <h2 className="text-4xl font-bold">{item.title}</h2>
+        <p className="text-lg opacity-90">{item.company}</p>
+        <p className="text-sm opacity-80">{item.location}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
-const ShowcaseOverlay = ({ subheading, heading, children }: OverlayCopyProps) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"],
-  });
+const renderStackInfo = (item: ShowcaseDataType): ReactNode => {
+  if ('technologies' in item) {
+    return (
+      <div className="space-y-2">
+        <span className="text-sm uppercase tracking-wider opacity-80">
+          {item.category}
+        </span>
+        <h2 className="text-4xl font-bold">{item.title}</h2>
+        <p className="text-lg opacity-90">{item.description}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0, -250]);
+export const ShowcaseSection: React.FC<ShowcaseSectionProps> = ({
+  variant = 'career',
+  backgroundColor = "#000000",
+  className = "",
+}) => {
+  // Get the appropriate data and render functions based on variant
+  const getConfig = (): ShowcaseConfig<ShowcaseDataType> => {
+    switch (variant) {
+      case 'skills':
+        return {
+          items: skillData(),
+          renderItem: renderSkillCard,
+          title: "Skills & Expertise",
+          subtitle: "Core competencies and technical expertise",
+        };
+      case 'stack':
+        return {
+          items: stackData(),
+          renderItem: renderStackCard,
+          renderInfo: renderStackInfo,
+          title: "Tech Stack",
+          subtitle: "Technologies and tools I work with",
+        };
+      case 'career':
+      default:
+        return {
+          items: careerData(),
+          renderItem: renderCareerCard,
+          renderInfo: renderCareerInfo,
+          title: "Career Journey",
+          subtitle: "Professional experience and growth",
+        };
+    }
+  };
+
+  const config = getConfig();
 
   return (
-    <motion.div
-      style={{
-        y,
-      }}
-      ref={targetRef}
-      className="absolute bg-background left-0 top-0 flex h-screen w-full flex-col items-start justify-center text-inherit"
+    <ElementSection
+      heading={config.title}
+      subheading={config.subtitle}
+      variant="overlay-headline"
+      containerHeight={200}
+      backgroundColor={backgroundColor}
+      className={className}
+      scaleRange={[1, 0.85]}
+      borderRadiusRange={[0, 32]}
     >
-      {children || (
-        <div className="w-full max-w-5xl mx-auto px-2 md:px-6">
-          <h2 className="text-4xl md:text-5xl font-semibold leading-relaxed tracking-tight">{heading}</h2>
-          <p className="text-2xl">{subheading}</p>
-        </div>
-      )}
-    </motion.div>
+      <ElementCarousel
+        items={config.items}
+        renderItem={config.renderItem}
+        renderInfo={config.renderInfo}
+        infinite
+        autoPlay={{
+          enabled: true,
+          interval: 5000,
+          pauseOnHover: true
+        }}
+      />
+    </ElementSection>
   );
 };
 
+// Main showcase component that includes all sections
+export const Showcase: React.FC = () => {
+  return (
+    <div className="space-y-24">
+      <ShowcaseSection
+        variant="career"
+        backgroundColor="#1c1c1e"
+      />
+      <ShowcaseSection
+        variant="skills"
+        backgroundColor="#2c2c2e"
+      />
+      <ShowcaseSection
+        variant="stack"
+        backgroundColor="#3c3c3e"
+      />
+    </div>
+  );
+};
+
+export default Showcase;
