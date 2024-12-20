@@ -13,6 +13,7 @@ import { navigationItems } from '#app/interface/components/navigation/menus/navl
 import { useOptionalUser } from '#app/utils/use-root-data'
 import { ThemeSwitch } from '../../controls/theme-switch'
 
+
 export function GlobalHeader() {
   const user = useOptionalUser()
   const navigate = useNavigate()
@@ -49,15 +50,11 @@ export function GlobalHeader() {
                 <Link 
                   to="/" 
                   aria-label="Home"
-                  className="relative"
+                  className="flex items-center p-2 pl-0"
                 >
-                  <motion.div className="h-8">
-                    <div className="flex items-center p-2 pl-0">
-                      <span className="font-medium text-sm sm:text-sm">
-                        Dony Alior
-                      </span>
-                    </div>
-                  </motion.div>
+                  <span className="font-medium text-sm sm:text-sm">
+                    Dony Alior
+                  </span>
                 </Link>
               </div>
 

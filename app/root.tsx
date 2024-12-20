@@ -18,17 +18,18 @@ import {
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
 import clsx from 'clsx'
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { GlobalHeader } from '#app/interface/components/navigation/headers/header-global'
 import { href as iconsHref } from '#app/interface/foundations/icons/icon'
 import { Footer } from '#app/interface/portfolio/footer'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
-import PageLoader from '#app/interface/shared/page-loader';
 import { useToast } from '#app/interface/shared/toaster'
 import { type DonHandle } from '#app/types.ts'
+import { LoadingProvider, useLoading } from '#app/utils/loading-context';
 import { EpicToaster } from './interface/shadcn/sonner.tsx'
+import PageLoader from './interface/shared/page-loader'
 import { EpicProgress } from './interface/shared/progress-bar'
 import { useTheme } from './routes/resources+/theme-switch.tsx'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
@@ -208,12 +209,15 @@ function App() {
 	const data = useLoaderData<typeof loader>();
 	const nonce = useNonce();
 	const theme = useTheme();
-	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false'
-	useToast(data.toast);
 	const location = useLocation();
+	const { isLoading, isMounted } = useLoading();
+	const allowIndexing = data.ENV.ALLOW_INDEXING !== 'false';
+	useToast(data.toast);
 
 	const showHeader = !location.pathname.startsWith('/login');
 	const isIndexPage = location.pathname === '/';
+
+	console.log('App render - isLoading:', isLoading, 'isMounted:', isMounted, 'isIndexPage:', isIndexPage);
 
 	return (
 		<Document
@@ -223,21 +227,30 @@ function App() {
 			env={data.ENV}
 		>
 			<div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-background">
-				{showHeader && (
-					<GlobalHeader />
-				)}
-
-				<div className="flex-1">
-					<Outlet />
-				</div>
-
-				{isIndexPage ? (
-					<Footer />
-				) : (
-					<footer className="bg-neutral-100 dark:bg-background">
-						{/* Footer content if needed */}
-					</footer>
-				)}
+				<AnimatePresence mode="wait">
+					{isIndexPage && isMounted && isLoading ? (
+						<PageLoader key="loader" />
+					) : (
+						<motion.div
+							key="content"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+						>
+							{showHeader && <GlobalHeader />}
+							<div className="flex-1">
+								<Outlet />
+							</div>
+							{isIndexPage ? (
+								<Footer />
+							) : (
+								<footer className="bg-neutral-100 dark:bg-background">
+									{/* Footer content if needed */}
+								</footer>
+							)}
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</div>
 			<EpicToaster closeButton position="top-center" theme={theme} />
 			<EpicProgress />
@@ -245,18 +258,18 @@ function App() {
 	);
 }
 
-
-
 function AppWithProviders() {
-	const data = useLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>();
 	return (
 		<HoneypotProvider {...data.honeyProps}>
-			<App />
+			<LoadingProvider>
+				<App />
+			</LoadingProvider>
 		</HoneypotProvider>
-	)
+	);
 }
 
-export default withSentry(AppWithProviders)
+export default withSentry(AppWithProviders);
 
 
 export function ErrorBoundary() {
