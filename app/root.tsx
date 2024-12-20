@@ -23,6 +23,7 @@ import { useState, useEffect } from 'react';
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { GlobalHeader } from '#app/interface/components/navigation/headers/header-global'
 import { href as iconsHref } from '#app/interface/foundations/icons/icon'
+import { Footer } from '#app/interface/portfolio/footer'
 import { GeneralErrorBoundary } from '#app/interface/shared/error-boundary.tsx'
 import PageLoader from '#app/interface/shared/page-loader';
 import { useToast } from '#app/interface/shared/toaster'
@@ -211,10 +212,8 @@ function App() {
 	useToast(data.toast);
 	const location = useLocation();
 
-
 	const showHeader = !location.pathname.startsWith('/login');
-
-
+	const isIndexPage = location.pathname === '/';
 
 	return (
 		<Document
@@ -223,21 +222,22 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
-			{/* <AnimatePresence mode="wait">
-				{location.pathname === '/' && isLoading && <PageLoader />}
-			</AnimatePresence> */}
 			<div className="flex flex-col min-h-screen bg-neutral-100 dark:bg-background">
-				{showHeader  && (
+				{showHeader && (
 					<GlobalHeader />
 				)}
 
 				<div className="flex-1">
-					{ <Outlet />}
+					<Outlet />
 				</div>
 
-				<footer className="bg-neutral-100 dark:bg-background">
-					{/* Footer content if needed */}
-				</footer>
+				{isIndexPage ? (
+					<Footer />
+				) : (
+					<footer className="bg-neutral-100 dark:bg-background">
+						{/* Footer content if needed */}
+					</footer>
+				)}
 			</div>
 			<EpicToaster closeButton position="top-center" theme={theme} />
 			<EpicProgress />
