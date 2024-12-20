@@ -77,6 +77,8 @@ export const NoiseOverlay = React.forwardRef<HTMLDivElement, NoiseOverlayProps>(
       opacity,
       mixBlendMode: 'overlay' as const,
       backgroundColor: '#000000',
+      maskImage: 'radial-gradient(circle at center, black 85%, transparent 100%)',
+      WebkitMaskImage: 'radial-gradient(circle at center, black 85%, transparent 100%)',
     };
 
     return React.createElement('div', {

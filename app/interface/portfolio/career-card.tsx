@@ -122,8 +122,10 @@ export const CareerCard: FC<CareerCardProps & HTMLMotionProps<"div">> = ({
           }}
         />
         
-        {/* Noise overlay - adjust opacity based on state */}
-        <NoiseOverlay opacity={showDetail ? 0.2 : 0} />
+        {/* Noise overlay - with masked edges */}
+        <NoiseOverlay 
+          opacity={showDetail ? 0.15 : 0} 
+        />
 
         <div className="absolute z-10 h-full w-full">
           <AnimatePresence mode="wait">
