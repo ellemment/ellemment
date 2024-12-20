@@ -68,7 +68,10 @@ const Background: FC<{
   transitionData: LocationData; 
   currentSlideData: CurrentSlideData;
 }> = React.memo(({ transitionData, currentSlideData }) => (
-  <div className="absolute left-0 top-0 h-full w-full bg-secondary" />
+  <div 
+    className="absolute left-0 top-0 h-full w-full" 
+    style={{ backgroundColor: transitionData?.color || currentSlideData.data.color }}
+  />
 ));
 Background.displayName = "Background";
 
@@ -172,15 +175,15 @@ const OtherInfo: FC<{ data: LocationData }> = React.memo(({ data }) => (
     aria-label="Slide details"
   >
     <AnimatedText
-      className="spacing overflow-hidden text-gray-600"
+      className="spacing overflow-hidden text-white"
       data={data.location || ''}
     />
     <AnimatedText
-      className="my-1 text-4xl font-semibold md:my-3 md:text-8xl md:leading-[100px] text-gray-900"
+      className="my-1 text-4xl font-semibold md:my-3 md:text-8xl md:leading-[100px] text-white"
       data={data.title || ''}
     />
     <AnimatedText
-      className="text-xs text-gray-600"
+      className="text-xs text-white"
       data={data.description || ''}
     />
   </motion.div>
