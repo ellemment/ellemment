@@ -51,7 +51,6 @@ export default function IndexRoute() {
       <Landing dimensions={dimensions} />
       <Career />
       <Showcase />
-  
     </div>
   );
 }

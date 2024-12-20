@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
+import  CareerCompany  from "#app/interface/portfolio/company";
 import Skills from "#app/interface/portfolio/skills";
 
 
@@ -28,7 +29,7 @@ export const Career = () => {
         variant="overlay-headline"
     
       >
-        <Skills />
+        <CareerCompany />
       </ShowcaseParallax>
     </div>
   );

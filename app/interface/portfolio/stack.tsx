@@ -30,6 +30,8 @@ export const Stack = () => {
       >
         <Skills />
       </ShowcaseParallax>
+      
+
     </div>
   );
 };
