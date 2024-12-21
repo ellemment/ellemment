@@ -1,12 +1,8 @@
-// #app/interface/portfolio/career-section.tsx
-
 import { AnimatePresence, motion, type Variants, useMotionValue,  type PanInfo  } from "framer-motion";
 import React, { useCallback, useMemo, useRef,  type FC } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { NoiseFilter } from "#app/interface/shared/noise-filter";
-import { NoiseOverlay } from "#app/utils/grainy";
 import { type LocationData, locationData, initialData } from "#app/utils/company";
-import CareerCard from "./career-card";
+import { CompanyCard } from "./career-card";
 
 // Constants
 const TRANSITION_DELAY = 500;
@@ -71,37 +67,12 @@ SliderButton.displayName = "SliderButton";
 const Background: FC<{ 
   transitionData: LocationData; 
   currentSlideData: CurrentSlideData;
-}> = React.memo(({ transitionData, currentSlideData }) => {
-  const activeData = transitionData || currentSlideData.data;
-  const { type, colors } = activeData.background;
-  
-  return (
-    <>
-      <NoiseFilter />
-      <div className="absolute left-0 top-0 h-full w-full">
-        <div 
-          className="absolute inset-0" 
-          style={{
-            background: type === 'radial'
-              ? `radial-gradient(circle at 49% 50%, ${(colors as [string, string])[0]}, ${(colors as [string, string])[1]})`
-              : type === 'gradient'
-              ? `linear-gradient(45deg, ${(colors as [string, string])[0]}, ${(colors as [string, string])[1]})`
-              : colors as string,
-          }}
-        />
-        <div 
-          className="absolute inset-0"
-          style={{
-            filter: 'url(#noise)',
-            opacity: 0.25,
-            mixBlendMode: 'overlay',
-            backgroundColor: '#000000',
-          }}
-        />
-      </div>
-    </>
-  );
-});
+}> = React.memo(({ transitionData, currentSlideData }) => (
+  <div 
+    className="absolute left-0 top-0 h-full w-full" 
+    style={{ backgroundColor: transitionData?.color || currentSlideData.data.color }}
+  />
+));
 Background.displayName = "Background";
 
 const Progress: FC<{ curIndex: number; length: number }> = React.memo(
@@ -284,13 +255,13 @@ const DraggableSlides: FC<{
               key={item.id} 
               className="flex-shrink-0 transform-gpu"
             >
-              <CareerCard
+              <CompanyCard
                 id={item.id}
                 title={item.title}
                 description={item.description}
                 detailContent={item.description}
                 location={item.location}
-                color={item.background.colors as string}
+                color={item.color}
               />
             </div>
           ))}
